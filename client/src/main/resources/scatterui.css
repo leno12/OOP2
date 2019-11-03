@@ -1,0 +1,16 @@
+.mrnjau
+{
+    -fx-background-color: #000000;
+}
+.label
+{
+    -fx-text-fill: white;
+}
+
+
+.progress-bar .bar {
+    -fx-background-color: -fx-box-border, red;
+    -fx-background-insets: 0, 1, 2;
+    -fx-padding: 0.416667em; /* 5 */
+    -fx-pref-height: 12;
+}

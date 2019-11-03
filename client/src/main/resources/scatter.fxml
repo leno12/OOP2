@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.controlsfx.control.RangeSlider?>
+<?import at.tugraz.oo2.client.ui.component.DateTimePicker?>
+<fx:root styleClass="mrnjau" xmlns:fx="http://javafx.com/fxml/1" type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/8.0.221" stylesheets="application.css">
+	<GridPane styleClass="leftPanelPane">
+		<columnConstraints>
+			<ColumnConstraints hgrow="SOMETIMES"/>
+		</columnConstraints>
+		<rowConstraints>
+			<RowConstraints vgrow="SOMETIMES"/>
+			<RowConstraints vgrow="ALWAYS"/>
+			<RowConstraints vgrow="SOMETIMES"/>
+			<RowConstraints vgrow="ALWAYS"/>
+		</rowConstraints>
+		<children>
+			<Label  text="Sensor X" GridPane.rowIndex="0"/>
+			<ListView  fx:id="lvSensorX" GridPane.rowIndex="1"/>
+			<Label  text="Sensor Y" GridPane.rowIndex="2"/>
+			<ListView  fx:id="lvSensorY" GridPane.rowIndex="3"/>
+		</children>
+	</GridPane>
+	<Separator orientation="VERTICAL" prefHeight="200.0">
+		<HBox.margin>
+			<Insets left="-1.0" right="-5.0"/>
+		</HBox.margin>
+	</Separator>
+	<VBox HBox.hgrow="ALWAYS">
+		<HBox>
+			<VBox>
+		<Label  text="From:">
+			<VBox.margin>
+				<Insets>
+					<left>10</left>
+				</Insets>
+			</VBox.margin>
+		</Label>
+		<DateTimePicker prefWidth="200" fx:id="dpFrom">
+			<VBox.margin>
+				<Insets>
+					<left>10</left>
+				</Insets>
+			</VBox.margin>
+		</DateTimePicker>
+
+		<Label  text="To:">
+			<VBox.margin>
+				<Insets>
+					<left>10</left>
+				</Insets>
+			</VBox.margin>
+		</Label>
+		<DateTimePicker prefWidth="200" fx:id="dpTo">
+			<VBox.margin>
+				<Insets>
+					<left>10</left>
+				</Insets>
+			</VBox.margin>
+		</DateTimePicker>
+			</VBox>
+			<VBox>
+		<Label  text="Interval:">
+			<VBox.margin>
+				<Insets>
+					<left>30</left>
+				</Insets>
+			</VBox.margin>
+		</Label>
+		<Spinner prefWidth="200" fx:id="spInterval">
+			<VBox.margin>
+				<Insets>
+					<left>30</left>
+				</Insets>
+			</VBox.margin>
+		</Spinner>
+				<Button prefWidth="200" styleClass="draw-button" fx:id="drawChartButton" text="Draw Scatter Plot" onAction="#drawScatterPlotButton">
+					<VBox.margin>
+						<Insets>
+							<left>30</left>
+							<top>15</top>
+						</Insets>
+					</VBox.margin>
+				</Button>
+			</VBox>
+
+		</HBox>
+
+		<AnchorPane fx:id="ap" VBox.vgrow="ALWAYS" HBox.hgrow="NEVER">
+
+		</AnchorPane>
+		<VBox HBox.hgrow="NEVER">
+			<RangeSlider fx:id="slDay" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" styleClass="genericPadding"/>
+			<Label fx:id="lbFromToSlider" styleClass="genericPadding"/>
+		</VBox>
+	</VBox>
+
+</fx:root>

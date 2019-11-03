@@ -1,0 +1,117 @@
+.leftPanelPane {
+    -fx-pref-width: 250px;
+    -fx-max-width: 250px;
+    -fx-padding: 5px;
+}
+
+.leftPanelPane > * {
+    -fx-pref-width: 250px;
+}
+
+.leftPanelPane > .label {
+    -fx-label-padding: 5px;
+    -fx-text-fill: #ffffff;
+}
+.list-view
+{
+    -fx-background-color: rgba(52, 52, 52, 0.85);
+    -fx-border-color: #4581ff;
+    -fx-border-width: 2px;
+}
+.list-cell:filled:selected:focused, .list-cell:filled:selected {
+    -fx-background-color: linear-gradient(#ff3e3e 0%, #ff282c 25%, #ff1f17 75%, #ff1207 100%);
+    -fx-text-fill: white;
+}
+
+.list-cell:even
+{
+    -fx-background-color: rgb(2, 2, 4);
+    -fx-text-fill: white;
+}
+.list-cell:odd
+{
+    -fx-background-color: rgba(0, 0, 0, 0.63);
+    -fx-text-fill: white;
+}
+
+
+.list-cell:filled:hover {
+    -fx-background-color: #ff4b44;
+    -fx-text-fill: white;
+}
+
+.genericPadding {
+    -fx-padding: 5px;
+}
+.date-picker .text-field
+{
+    -fx-background-color: rgba(38, 38, 38, 0.85);
+    -fx-text-fill: white;
+}
+/*
+.date-picker-popup  > * > .date-cell{
+    -fx-background-color: rgba(56, 144, 208, 0.93);
+    -fx-text-fill: white;
+}
+*/
+.date-picker-popup > .month-year-pane
+{
+    -fx-background-color: #232323;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);;
+}
+
+.date-picker-popup > .calendar-grid {
+    -fx-background-color: rgba(205, 51, 54, 0.89);
+}
+.date-picker .label
+{
+    -fx-text-fill: rgba(207, 29, 44, 0.93);
+}
+
+.spinner .text-field
+{
+    -fx-background-color: rgba(38, 38, 38, 0.85);
+    -fx-text-fill: white;
+}
+.spinner
+{
+    -fx-border-color: #8a8a8a;
+    -fx-border-width: 2px;
+    -fx-border-radius: 3 3 3 3;
+    -fx-background-radius: 3 3 3 3;
+}
+.draw-button
+{
+
+    -fx-background-color:
+            #000000,
+            linear-gradient(#7ebcea, #2f4b8f),
+            linear-gradient(#426ab7, #263e75),
+            linear-gradient(#395cab, #223768);
+    -fx-background-insets: 0,1,2,3;
+    -fx-background-radius: 3,2,2,2;
+    -fx-padding: 12 30 12 30;
+    -fx-text-fill: white;
+
+
+}
+
+.draw-button Text {
+    -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.8) , 0, 0.0 , 0 , 1);
+}
+
+.draw-button:hover
+{
+    -fx-background-color: #ff4b44;
+}
+.progress-bar .bar {
+    -fx-background-color: -fx-box-border, red;
+    -fx-background-insets: 0, 1, 2;
+    -fx-padding: 0.416667em; /* 5 */
+    -fx-pref-height: 12;
+}
+.table-view
+{
+    -fx-background-color: black;
+    -fx-text-fill: white;
+}

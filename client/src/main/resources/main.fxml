@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<fx:root xmlns:fx="http://javafx.com/fxml" xmlns="http://javafx.com/javafx" fx:controller="at.tugraz.oo2.client.ui.controller.MainUI" type="VBox">
+
+</fx:root>

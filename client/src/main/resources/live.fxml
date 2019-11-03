@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.*?>
+<fx:root xmlns:fx="http://javafx.com/fxml/1" prefHeight="274.0" prefWidth="421.0" stylesheets="application.css" type="javafx.scene.layout.AnchorPane" xmlns="http://javafx.com/javafx/8.0.221">
+	<TableView fx:id="tvData"  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+	</TableView>
+</fx:root>

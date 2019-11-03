@@ -1,0 +1,7 @@
+#!/bin/bash
+INFLUX_URL=https://belinda.cgv.tugraz.at/influxdb
+DATABASE_NAME=oo2
+SERVER_PORT=3888
+USER_NAME=oo2ro
+PASSWORD=ier9ieYaiJei
+java -jar analysis-server/target/analysis-server-1.0-SNAPSHOT-jar-with-dependencies.jar $INFLUX_URL $DATABASE_NAME $USER_NAME $PASSWORD $SERVER_PORT

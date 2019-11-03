@@ -1,0 +1,4 @@
+#!/bin/bash
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/
+export MAVEN_OPTS="-XX:+TieredCompilation -XX:TieredStopAtLevel=1"
+mvn -T4 -DskipTests -Dmaven.javadoc.skip=true -DdependencyLocationsEnabled=false install && ./server

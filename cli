@@ -1,0 +1,4 @@
+#!/bin/bash
+SERVER_URL=localhost
+SERVER_PORT=3888
+java -jar client/target/client-1.0-SNAPSHOT-jar-with-dependencies.jar $SERVER_URL $SERVER_PORT $@

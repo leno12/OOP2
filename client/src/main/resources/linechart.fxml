@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import at.tugraz.oo2.client.ui.component.DateTimePicker?>
+<fx:root xmlns:fx="http://javafx.com/fxml/1"
+		 type="javafx.scene.layout.AnchorPane" xmlns="http://javafx.com/javafx/8.0.221" stylesheets="application.css">
+
+	<HBox styleClass="Hbox" AnchorPane.topAnchor="0"  AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0">
+		<GridPane HBox.hgrow="ALWAYS" styleClass="leftPanelPane">
+			<children>
+				<ListView styleClass="list" fx:id="lvSensors" GridPane.rowIndex="0"/>
+				<Label  text="From:" GridPane.rowIndex="1"/>
+				<DatePicker fx:id="dpFrom" GridPane.rowIndex="2"/>
+				<Label  prefWidth="250.0" text="To:" GridPane.rowIndex="3"/>
+				<DatePicker fx:id="dpTo" GridPane.rowIndex="4"/>
+				<Label  text="Interval:" GridPane.rowIndex="5"/>
+				<Spinner fx:id="spInterval" GridPane.rowIndex="6"/>
+				<Button styleClass="draw-button" fx:id="drawChartButton" text="Draw Chart"   GridPane.rowIndex="7" onAction="#drawChartButton">
+				<GridPane.margin>
+					<Insets>
+						<top>90</top>
+					</Insets>
+				</GridPane.margin>
+				</Button>
+
+
+			</children>
+			<columnConstraints>
+				<ColumnConstraints/>
+			</columnConstraints>
+			<rowConstraints>
+				<RowConstraints/>
+				<RowConstraints/>
+				<RowConstraints/>
+				<RowConstraints/>
+				<RowConstraints/>
+				<RowConstraints/>
+				<RowConstraints/>
+			</rowConstraints>
+		</GridPane>
+		<Separator orientation="VERTICAL" prefHeight="200.0">
+			<HBox.margin>
+				<Insets left="-1.0" right="-5.0"/>
+			</HBox.margin>
+		</Separator>
+		<AnchorPane prefHeight="300.0" prefWidth="400.0" HBox.hgrow="ALWAYS">
+		</AnchorPane>
+	</HBox>
+</fx:root>
