@@ -173,7 +173,7 @@ public class ScatterUI extends HBox {
 		Label progress_label = new Label("Creating graph");
 		progress_label.setLayoutX(300);
 		progress_label.setLayoutY(220);
-		progress_label.setStyle("-fx-text-fill: white");
+		progress_label.setStyle("-fx-text-fill: white; -fx-font-weight: bold");
 		ProgressBar pb = new ProgressBar();
 		pb.setLayoutX(300);
 		pb.setLayoutY(250);

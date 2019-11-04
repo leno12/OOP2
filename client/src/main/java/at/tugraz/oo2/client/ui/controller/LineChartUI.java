@@ -149,7 +149,7 @@ public class LineChartUI extends AnchorPane {
 		Label progress_label = new Label("Creating graph");
 		progress_label.setLayoutX(550);
 		progress_label.setLayoutY(320);
-		progress_label.setStyle("-fx-text-fill: white");
+		progress_label.setStyle("-fx-text-fill: white; -fx-font-weight:bold");
 		ProgressBar pb = new ProgressBar();
 		pb.setLayoutX(550);
 		pb.setLayoutY(350);
