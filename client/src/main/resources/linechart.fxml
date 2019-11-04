@@ -20,7 +20,7 @@
 				<Button styleClass="draw-button" fx:id="drawChartButton" text="Draw Chart"   GridPane.rowIndex="7" onAction="#drawChartButton">
 				<GridPane.margin>
 					<Insets>
-						<top>90</top>
+						<top>20</top>
 					</Insets>
 				</GridPane.margin>
 				</Button>

@@ -108,11 +108,11 @@ public class LiveUI extends AnchorPane {
 		 this.tvData.getStylesheets().add("/liveui.css");
 		 ProgressBar pb = new ProgressBar();
 		 Label fetching_data = new Label("Fetching Live Data");
-		 fetching_data.setLayoutX(390);
-		 fetching_data.setLayoutY(320);
-		 fetching_data.setStyle("-fx-text-fill: white; -fx-font-weight: bold");
-		 pb.setLayoutX(400);
-		 pb.setLayoutY(350);
+		 fetching_data.setLayoutX(510);
+		 fetching_data.setLayoutY(350);
+		 fetching_data.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font: 20px 'Arial'");
+		 pb.setLayoutX(540);
+		 pb.setLayoutY(380);
 		 this.getChildren().add(pb);
 		 this.getChildren().add(fetching_data);
 

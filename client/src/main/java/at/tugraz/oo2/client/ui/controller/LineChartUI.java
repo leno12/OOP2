@@ -1,6 +1,7 @@
 package at.tugraz.oo2.client.ui.controller;
 
 import at.tugraz.oo2.client.ClientConnection;
+import at.tugraz.oo2.client.ui.GUIMain;
 import at.tugraz.oo2.data.DataPoint;
 import at.tugraz.oo2.data.DataSeries;
 import at.tugraz.oo2.data.Sensor;
@@ -8,6 +9,8 @@ import com.github.javafx.charts.zooming.ZoomManager;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -35,6 +38,7 @@ import java.util.concurrent.ExecutionException;
 public class LineChartUI extends AnchorPane {
 	private final ClientConnection clientConnection;
 	private Label fetching_data_status;
+	private boolean maximised = false;
 
 
 	@FXML
@@ -147,12 +151,12 @@ public class LineChartUI extends AnchorPane {
 			return;
 		}
 		Label progress_label = new Label("Creating graph");
-		progress_label.setLayoutX(550);
-		progress_label.setLayoutY(320);
-		progress_label.setStyle("-fx-text-fill: white; -fx-font-weight:bold");
+		progress_label.setLayoutX(635);
+		progress_label.setLayoutY(350);
+		progress_label.setStyle("-fx-text-fill: white; -fx-font-weight:bold; -fx-font: 20px 'Arial'");
 		ProgressBar pb = new ProgressBar();
-		pb.setLayoutX(550);
-		pb.setLayoutY(350);
+		pb.setLayoutX(650);
+		pb.setLayoutY(380);
 		this.getChildren().add(pb);
 		this.getChildren().add(progress_label);
 		new Thread(() -> {
@@ -239,23 +243,41 @@ public class LineChartUI extends AnchorPane {
 			lineChart.getStylesheets().add("/chart.css");
 			for (int i = 0; i < data_points.size(); i++) {
 				Date date2 = new Date(data_points.get(i).getTime());
-				String print_date = date2.toString().replace("CEST 2019", " ");
 				Double value = data_points.get(i).getValue();
+				if(date2.toString().contains("CEST"))
+				{
+					String print_date[] = date2.toString().split("CEST");
+					series1.getData().add(new XYChart.Data(print_date[0], value));
+				}
+				else if(date2.toString().contains("CET"))
+				{
+					String print_date[] = date2.toString().split("CET");
+					series1.getData().add(new XYChart.Data(print_date[0], value));
 
-				series1.getData().add(new XYChart.Data(print_date, value));
+				}
 			}
 			lineChart.getData().add(series1);
-			lineChart.setPrefWidth(650);
+
 			HBox chart = new HBox();
 			chart.setId("chart");
 			chart.setStyle("-fx-background-color: #000000;");
 		//	chart.prefWidthProperty().bind(this.widthProperty());
 
-			chart.setLayoutX(250);
+			if(!maximised)
+			{
+				lineChart.setPrefWidth(900);
+				chart.setLayoutX(250);
+
+			}
+			else
+			{
+				lineChart.setPrefWidth(1500);
+				chart.setLayoutX(350);
+
+			}
 			chart.setLayoutY(70);
-			//chart.autosize();
-			lineChart.setPrefHeight(650);
-			lineChart.autosize();
+			lineChart.setPrefHeight(900);
+
 
 
 			chart.getChildren().addAll(lineChart);
@@ -263,6 +285,29 @@ public class LineChartUI extends AnchorPane {
 			Platform.runLater(() -> {
 				this.getChildren().add(chart);
 			//	new ZoomManager(chart, lineChart, series1);
+			});
+
+			GUIMain.getStage().maximizedProperty().addListener(new ChangeListener<Boolean>() {
+
+				@Override
+				public void changed(ObservableValue<? extends Boolean> ov, Boolean t, Boolean t1) {
+
+					if(t1.booleanValue())
+					{
+						lineChart.setPrefWidth(1500);
+						lineChart.setPrefHeight(900);
+						chart.setLayoutX(350);
+						maximised = true;
+					}
+					else
+					{
+						lineChart.setPrefWidth(900);
+						lineChart.setPrefHeight(900);
+						chart.setLayoutX(250);
+						maximised = false;
+
+					}
+				}
 			});
 
 		}catch (ExecutionException | InterruptedException e )

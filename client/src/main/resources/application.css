@@ -108,7 +108,8 @@
     -fx-background-color: -fx-box-border, red;
     -fx-background-insets: 0, 1, 2;
     -fx-padding: 0.416667em; /* 5 */
-    -fx-pref-height: 12;
+    -fx-pref-height: 15;
+    -fx-pref-width: 15;
 }
 .table-view
 {

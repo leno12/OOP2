@@ -26,15 +26,8 @@ public final class GUIMain extends Application {
 		guiStage = stage;
 
 		final Parent root = new MainUI();
-		final Scene scene = new Scene(root,900,800);
+		final Scene scene = new Scene(root,1200,1000);
 		stage.setScene(scene);
-		stage.maximizedProperty().addListener(new ChangeListener<Boolean>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Boolean> ov, Boolean t, Boolean t1) {
-				System.out.println("maximized:" + t1.booleanValue());
-			}
-		});
 
 		stage.show();
 	}
