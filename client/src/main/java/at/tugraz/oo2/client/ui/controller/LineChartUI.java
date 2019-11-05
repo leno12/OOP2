@@ -18,6 +18,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
@@ -25,7 +26,9 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
+import javafx.util.StringConverter;
 
 import java.io.IOException;
 import java.time.Instant;
@@ -38,8 +41,6 @@ import java.util.concurrent.ExecutionException;
 public class LineChartUI extends AnchorPane {
 	private final ClientConnection clientConnection;
 	private Label fetching_data_status;
-	private boolean maximised = false;
-
 
 	@FXML
 	private ListView<String> lvSensors;
@@ -51,8 +52,6 @@ public class LineChartUI extends AnchorPane {
 	private Spinner<Integer> spInterval;
 	@FXML
 	public Button drawChartButton;
-
-
 
 
 	public LineChartUI(ClientConnection clientConnection) {
@@ -86,6 +85,8 @@ public class LineChartUI extends AnchorPane {
 				synchronized (clientConnection) {
 
 					try {
+						if(!clientConnection.getRunning())
+							return;
 
 						List<Sensor> sensors = clientConnection.querySensors().get();
 						ObservableList<String> live_data = FXCollections.observableArrayList();
@@ -151,13 +152,22 @@ public class LineChartUI extends AnchorPane {
 			return;
 		}
 		Label progress_label = new Label("Creating graph");
-		progress_label.setLayoutX(635);
-		progress_label.setLayoutY(350);
+		progress_label.setMaxWidth(Double.MAX_VALUE);
+		AnchorPane.setLeftAnchor(progress_label, 300.0);
+		AnchorPane.setRightAnchor(progress_label, 0.0);
+		AnchorPane.setBottomAnchor(progress_label, 0.0);
+		AnchorPane.setTopAnchor(progress_label, -80.0);
+		progress_label.setAlignment(Pos.CENTER);
 		progress_label.setStyle("-fx-text-fill: white; -fx-font-weight:bold; -fx-font: 20px 'Arial'");
 		ProgressBar pb = new ProgressBar();
-		pb.setLayoutX(650);
-		pb.setLayoutY(380);
-		this.getChildren().add(pb);
+		HBox new_progress_bar = new HBox();
+		AnchorPane.setLeftAnchor(new_progress_bar, 300.0);
+		AnchorPane.setRightAnchor(new_progress_bar, 0.0);
+		AnchorPane.setBottomAnchor(new_progress_bar, 0.0);
+		AnchorPane.setTopAnchor(new_progress_bar, 0.0);
+		new_progress_bar.setAlignment(Pos.CENTER);
+		new_progress_bar.getChildren().add(pb);
+		this.getChildren().add(new_progress_bar);
 		this.getChildren().add(progress_label);
 		new Thread(() -> {
 
@@ -192,7 +202,7 @@ public class LineChartUI extends AnchorPane {
 							drawLineChart(sensor, date_from, date_to, interval, selected_sensor);
 							Platform.runLater(() -> {
 								this.getChildren().remove(progress_label);
-								this.getChildren().remove(pb);
+								this.getChildren().remove(new_progress_bar);
 
 							});
 
@@ -227,12 +237,31 @@ public class LineChartUI extends AnchorPane {
 
 			DataSeries new_data_series = clientConnection.queryData(sensor, date_from, date_to, interval).get();
 			List<DataPoint> data_points = new_data_series.getDataPoints();
+			ObservableList<String> live_data = FXCollections.observableArrayList();
+			String str = "";
 
-			final CategoryAxis xAxis = new CategoryAxis();
+			int label_gap = data_points.size()/24;
+			final NumberAxis xAxis = new NumberAxis(data_points.get(0).getTime()/3600000, data_points.get(data_points.size() - 1).getTime()/3600000, label_gap);
+			xAxis.setTickLabelFormatter(new StringConverter<Number>() {
+				@Override
+				public String toString(Number number) {
+					double temp = Double.parseDouble(number.toString());
+					long date = (long)temp * 3600000;
+					Date new_date = new Date(date);
+					return new_date.toString();
+				}
+
+				@Override
+				public Number fromString(String s) {
+					return null;
+				}
+			});
+			xAxis.setAutoRanging(false);
+			xAxis.setTickLabelRotation(90);
 			final NumberAxis yAxis = new NumberAxis();
 			xAxis.setLabel("Date");
-			final LineChart<String, Number> lineChart =
-					new LineChart<String, Number>(xAxis, yAxis);
+			final LineChart<Number, Number> lineChart =
+					new LineChart<Number, Number>(xAxis, yAxis);
 			lineChart.setCreateSymbols(false);
 			lineChart.setTitle(selected_sensor);
 			//List<DataPoint> za_grafa =  lista_za_graf;
@@ -247,35 +276,36 @@ public class LineChartUI extends AnchorPane {
 				if(date2.toString().contains("CEST"))
 				{
 					String print_date[] = date2.toString().split("CEST");
-					series1.getData().add(new XYChart.Data(print_date[0], value));
+					series1.getData().add(new XYChart.Data(data_points.get(i).getTime()/3600000, value));
 				}
 				else if(date2.toString().contains("CET"))
 				{
 					String print_date[] = date2.toString().split("CET");
-					series1.getData().add(new XYChart.Data(print_date[0], value));
+					series1.getData().add(new XYChart.Data(data_points.get(i).getTime()/3600000, value));
 
 				}
 			}
 			lineChart.getData().add(series1);
 
-			HBox chart = new HBox();
+			VBox chart = new VBox();
 			chart.setId("chart");
 			chart.setStyle("-fx-background-color: #000000;");
+
+			AnchorPane.setLeftAnchor(chart, 250.0);
+			AnchorPane.setRightAnchor(chart, 0.0);
+			AnchorPane.setBottomAnchor(chart, 0.0);
+			AnchorPane.setTopAnchor(chart, 0.0);
+			chart.setAlignment(Pos.CENTER);
 		//	chart.prefWidthProperty().bind(this.widthProperty());
 
-			if(!maximised)
+			if(!clientConnection.getMaximised())
 			{
-				lineChart.setPrefWidth(900);
-				chart.setLayoutX(250);
-
+				lineChart.setPrefWidth(800);
 			}
 			else
 			{
 				lineChart.setPrefWidth(1500);
-				chart.setLayoutX(350);
-
 			}
-			chart.setLayoutY(70);
 			lineChart.setPrefHeight(900);
 
 
@@ -296,15 +326,13 @@ public class LineChartUI extends AnchorPane {
 					{
 						lineChart.setPrefWidth(1500);
 						lineChart.setPrefHeight(900);
-						chart.setLayoutX(350);
-						maximised = true;
+						clientConnection.setMaximised(true);
 					}
 					else
 					{
 						lineChart.setPrefWidth(900);
 						lineChart.setPrefHeight(900);
-						chart.setLayoutX(250);
-						maximised = false;
+						clientConnection.setMaximised(false);
 
 					}
 				}

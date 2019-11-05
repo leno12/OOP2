@@ -17,12 +17,14 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Duration;
@@ -108,12 +110,21 @@ public class LiveUI extends AnchorPane {
 		 this.tvData.getStylesheets().add("/liveui.css");
 		 ProgressBar pb = new ProgressBar();
 		 Label fetching_data = new Label("Fetching Live Data");
-		 fetching_data.setLayoutX(510);
-		 fetching_data.setLayoutY(350);
+		 fetching_data.setMaxWidth(Double.MAX_VALUE);
+		 AnchorPane.setLeftAnchor(fetching_data, 0.0);
+		 AnchorPane.setRightAnchor(fetching_data, 0.0);
+		 AnchorPane.setBottomAnchor(fetching_data, 0.0);
+		 AnchorPane.setTopAnchor(fetching_data, -80.0);
+		 fetching_data.setAlignment(Pos.CENTER);
+		 HBox new_progress_bar = new HBox();
+		 AnchorPane.setLeftAnchor(new_progress_bar, 0.0);
+		 AnchorPane.setRightAnchor(new_progress_bar, 0.0);
+		 AnchorPane.setBottomAnchor(new_progress_bar, 0.0);
+		 AnchorPane.setTopAnchor(new_progress_bar, 0.0);
+		 new_progress_bar.setAlignment(Pos.CENTER);
+		 new_progress_bar.getChildren().add(pb);
+		 this.getChildren().add(new_progress_bar);
 		 fetching_data.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font: 20px 'Arial'");
-		 pb.setLayoutX(540);
-		 pb.setLayoutY(380);
-		 this.getChildren().add(pb);
 		 this.getChildren().add(fetching_data);
 
 	 ses = new ScheduledThreadPoolExecutor(1);
@@ -153,7 +164,7 @@ public class LiveUI extends AnchorPane {
 							 public void run() {
 								 tvData.setItems(live_data);
 								 if (!tvData.getItems().isEmpty()) {
-									 getChildren().remove(pb);
+									 getChildren().remove(new_progress_bar);
 									 getChildren().remove(fetching_data);
 									 //pb.setVisible(false);
 								 }

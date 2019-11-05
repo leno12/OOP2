@@ -14,6 +14,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
@@ -97,6 +98,8 @@ public class ScatterUI extends HBox {
 				synchronized (clientConnection) {
 
 					try {
+						if(!clientConnection.getRunning())
+							return;
 
 						List<Sensor> sensors = clientConnection.querySensors().get();
 						ObservableList<String> live_data = FXCollections.observableArrayList();
@@ -171,13 +174,22 @@ public class ScatterUI extends HBox {
 			return;
 		}
 		Label progress_label = new Label("Creating graph");
-		progress_label.setLayoutX(300);
-		progress_label.setLayoutY(220);
-		progress_label.setStyle("-fx-text-fill: white; -fx-font-weight: bold");
+		progress_label.setMaxWidth(Double.MAX_VALUE);
+		AnchorPane.setLeftAnchor(progress_label, 0.0);
+		AnchorPane.setRightAnchor(progress_label, 0.0);
+		AnchorPane.setBottomAnchor(progress_label, 0.0);
+		AnchorPane.setTopAnchor(progress_label, -80.0);
+		progress_label.setAlignment(Pos.CENTER);
+		progress_label.setStyle("-fx-text-fill: white; -fx-font-weight:bold; -fx-font: 20px 'Arial'");
 		ProgressBar pb = new ProgressBar();
-		pb.setLayoutX(300);
-		pb.setLayoutY(250);
-		ap.getChildren().add(pb);
+		HBox new_progress_bar = new HBox();
+		AnchorPane.setLeftAnchor(new_progress_bar, 0.0);
+		AnchorPane.setRightAnchor(new_progress_bar, 0.0);
+		AnchorPane.setBottomAnchor(new_progress_bar, 0.0);
+		AnchorPane.setTopAnchor(new_progress_bar, 0.0);
+		new_progress_bar.setAlignment(Pos.CENTER);
+		new_progress_bar.getChildren().add(pb);
+		ap.getChildren().add(new_progress_bar);
 		ap.getChildren().add(progress_label);
 		new Thread(() -> {
 
@@ -217,7 +229,7 @@ public class ScatterUI extends HBox {
 					this.drawScatterPlot(sensor_x,sensor_y ,date_from, date_to, interval);
 					Platform.runLater(() -> {
 						ap.getChildren().remove(progress_label);
-						ap.getChildren().remove(pb);
+						ap.getChildren().remove(new_progress_bar);
 					});
 
 
@@ -248,7 +260,11 @@ public class ScatterUI extends HBox {
 
 			final NumberAxis xAxis = new NumberAxis();
 			final NumberAxis yAxis = new NumberAxis();
-			xAxis.setLabel("Date");
+			String x_label = sensor_x.getLocation() + "/" + sensor_x.getMetric();
+			xAxis.setLabel(x_label);
+			String y_label = sensor_y.getLocation() + "/" + sensor_y.getMetric();
+			yAxis.setLabel(y_label);
+
 			final ScatterChart<Number, Number> scatterChart =
 					new ScatterChart<Number, Number>(xAxis, yAxis);
 			scatterChart.setTitle("Scatter Plot");
@@ -264,9 +280,20 @@ public class ScatterUI extends HBox {
 				series1.getData().add(new XYChart.Data(value_x, value_y));
 			}
 			scatterChart.getData().add(series1);
-			scatterChart.setPrefWidth(650);
-			scatterChart.setPrefHeight(550);
-			scatterChart.setLayoutY(30);
+
+			if(!clientConnection.getMaximised())
+			{
+				scatterChart.setPrefWidth(800);
+			}
+			else
+			{
+				scatterChart.setPrefWidth(1500);
+			}
+			scatterChart.setPrefHeight(900);
+			AnchorPane.setLeftAnchor(scatterChart, 0.0);
+			AnchorPane.setRightAnchor(scatterChart, 0.0);
+			AnchorPane.setBottomAnchor(scatterChart, 0.0);
+			AnchorPane.setTopAnchor(scatterChart, 0.0);
 
 
 			Platform.runLater(() -> {

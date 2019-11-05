@@ -33,6 +33,16 @@ public final class ClientConnection implements AutoCloseable {
 	public static final String ANSI_RED = "\u001B[31m";
 	public static final String ANSI_RESET = "\u001B[0m";
 	private boolean running = true;
+	private boolean maximised = false;
+
+	public boolean getMaximised()
+	{
+		return this.maximised;
+	}
+	public void setMaximised(boolean maximised_)
+	{
+		this.maximised = maximised_;
+	}
 
 	public ClientConnection() {
 		connectionClosedEventHandlers = new LinkedBlockingQueue<>();
@@ -42,6 +52,11 @@ public final class ClientConnection implements AutoCloseable {
 	public void setRunning(boolean running)
 	{
 		this.running = running;
+	}
+
+	public boolean getRunning()
+	{
+		return this.running;
 	}
 	/**
 	 * Establishes a connection to the server.
