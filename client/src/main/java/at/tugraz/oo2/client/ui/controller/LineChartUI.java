@@ -86,7 +86,8 @@ public class LineChartUI extends AnchorPane {
 
 					try {
 						if(!clientConnection.getRunning())
-							return;
+						  return;
+
 
 						List<Sensor> sensors = clientConnection.querySensors().get();
 						ObservableList<String> live_data = FXCollections.observableArrayList();

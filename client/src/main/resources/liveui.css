@@ -5,7 +5,7 @@
 }
 
 .table-view .table-cell{
-    -fx-text-fill: #ff1f17;
+    -fx-text-fill: #ffffff;
     -fx-background-color: rgba(2, 2, 4, 0.8);
     -fx-font: 15px "Arial";
     -fx-alignment: CENTER;
@@ -15,7 +15,7 @@
 }
 .table-view .table-cell:odd
 {
-    -fx-background-color: rgba(28, 28, 28, 0.61);
+    -fx-background-color:rgb(2,0,36),linear-gradient(rgba(2,0,36,1) 0%, rgba(6,34,40,1) 33%);
 }
 
 

@@ -134,18 +134,38 @@ public class LiveUI extends AnchorPane {
 			 public void run() {
 
 					 synchronized (clientConnection) {
+
 						 List<Sensor> sensors = null;
 						 try {
 							 sensors = clientConnection.querySensors().get();
 						 } catch (InterruptedException e) {
+							 Platform.runLater(new Runnable() {
+								 @Override
+								 public void run() {
+									 getChildren().remove(fetching_data);
+									 getChildren().remove(new_progress_bar);
+								 }
+							 });
 							 System.out.println("Disconnected!");
 						 } catch (ExecutionException e) {
 							 e.printStackTrace();
 						 }
 						 ObservableList<LiveData> live_data = FXCollections.observableArrayList();
+
 						 for (int i = 0; i < sensors.size(); i++) {
 							 DataPoint new_data_point = null;
 							 try {
+								 if(!clientConnection.getRunning())
+								 {
+									 Platform.runLater(new Runnable() {
+										 @Override
+										 public void run() {
+											 getChildren().remove(fetching_data);
+											 getChildren().remove(new_progress_bar);
+										 }
+									 });
+									 return;
+								 }
 
 								 new_data_point = clientConnection.queryValue(sensors.get(i)).get();
 								 LiveData live = new LiveData(sensors.get(i).getLocation(), sensors.get(i).getMetric());
@@ -153,6 +173,14 @@ public class LiveUI extends AnchorPane {
 								 live.timestamp = Util.TIME_FORMAT.format(new Date(new_data_point.getTime()));
 								 live_data.add(live);
 							 } catch (InterruptedException e) {
+								 Platform.runLater(new Runnable() {
+								  @Override
+									public void run() {
+									  getChildren().remove(fetching_data);
+									  getChildren().remove(new_progress_bar);
+								  }
+								  });
+
 								 System.out.println("Disconnected!");
 							 } catch (ExecutionException e) {
 								 e.printStackTrace();
@@ -179,7 +207,6 @@ public class LiveUI extends AnchorPane {
 		ses.setContinueExistingPeriodicTasksAfterShutdownPolicy(true);
 
 		sched_future = ses.scheduleAtFixedRate(new_runnable , 0, 10, TimeUnit.SECONDS);
-
 
 	}
 

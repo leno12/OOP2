@@ -87,10 +87,22 @@ public class ScatterUI extends HBox {
 		progress_label.setLayoutY(220);
 		progress_label.setStyle("-fx-text-fill: white; -fx-font-weight: bold");
 		ProgressBar pb = new ProgressBar();
-		pb.setLayoutX(300);
-		pb.setLayoutY(250);
-		ap.getChildren().add(pb);
+		progress_label.setMaxWidth(Double.MAX_VALUE);
+		AnchorPane.setLeftAnchor(progress_label, 0.0);
+		AnchorPane.setRightAnchor(progress_label, 0.0);
+		AnchorPane.setBottomAnchor(progress_label, 0.0);
+		AnchorPane.setTopAnchor(progress_label, -80.0);
+		progress_label.setAlignment(Pos.CENTER);
+		progress_label.setStyle("-fx-text-fill: white; -fx-font-weight:bold; -fx-font: 20px 'Arial'");
+		HBox new_progress_bar = new HBox();
+		AnchorPane.setLeftAnchor(new_progress_bar, 0.0);
+		AnchorPane.setRightAnchor(new_progress_bar, 0.0);
+		AnchorPane.setBottomAnchor(new_progress_bar, 0.0);
+		AnchorPane.setTopAnchor(new_progress_bar, 0.0);
+		new_progress_bar.setAlignment(Pos.CENTER);
+		new_progress_bar.getChildren().add(pb);
 		ap.getChildren().add(progress_label);
+		ap.getChildren().add(new_progress_bar);
 		Runnable task = new Runnable()
 		{
 			public void run()
@@ -99,7 +111,17 @@ public class ScatterUI extends HBox {
 
 					try {
 						if(!clientConnection.getRunning())
+						{
+							Platform.runLater(new Runnable() {
+								@Override
+								public void run() {
+									ap.getChildren().remove(progress_label);
+									ap.getChildren().remove(new_progress_bar);
+								}
+								});
+
 							return;
+						}
 
 						List<Sensor> sensors = clientConnection.querySensors().get();
 						ObservableList<String> live_data = FXCollections.observableArrayList();
@@ -117,7 +139,7 @@ public class ScatterUI extends HBox {
 								lvSensorX.setItems(live_data);
 								lvSensorY.setItems(live_data);
 								ap.getChildren().remove(progress_label);
-								ap.getChildren().remove(pb);
+								ap.getChildren().remove(new_progress_bar);
 							}
 						});
 
@@ -223,8 +245,9 @@ public class ScatterUI extends HBox {
 							alert.setAlertType(Alert.AlertType.ERROR);
 							alert.setContentText("End Date should be bigger than Start Date");
 							alert.show();
-							return;
+
 						});
+						return;
 					}
 					this.drawScatterPlot(sensor_x,sensor_y ,date_from, date_to, interval);
 					Platform.runLater(() -> {

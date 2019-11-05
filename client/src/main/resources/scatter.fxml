@@ -91,10 +91,7 @@
 		<AnchorPane fx:id="ap" VBox.vgrow="ALWAYS" HBox.hgrow="NEVER">
 
 		</AnchorPane>
-		<VBox HBox.hgrow="NEVER">
-			<RangeSlider fx:id="slDay" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" styleClass="genericPadding"/>
-			<Label fx:id="lbFromToSlider" styleClass="genericPadding"/>
-		</VBox>
+
 	</VBox>
 
 </fx:root>
