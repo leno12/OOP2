@@ -127,7 +127,7 @@ public final class InfluxConnection {
 			}
 
 			DataSeries data_series = new DataSeries(from,to, cache_interval, data, present);
-			cache.insertNewEntry(location, metric, data_series);
+			cache.insertNewEntry(location, metric, data_series, false);
 			data_series = data_series.scale(interval);
 
 			return data_series;

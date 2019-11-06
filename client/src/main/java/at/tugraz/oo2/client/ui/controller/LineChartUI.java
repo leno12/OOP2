@@ -2,6 +2,7 @@ package at.tugraz.oo2.client.ui.controller;
 
 import at.tugraz.oo2.client.ClientConnection;
 import at.tugraz.oo2.client.ui.GUIMain;
+import at.tugraz.oo2.client.ui.component.DateTimePicker;
 import at.tugraz.oo2.data.DataPoint;
 import at.tugraz.oo2.data.DataSeries;
 import at.tugraz.oo2.data.Sensor;
@@ -46,9 +47,9 @@ public class LineChartUI extends AnchorPane {
 	@FXML
 	private ListView<String> lvSensors;
 	@FXML
-	private DatePicker dpFrom;
+	private DateTimePicker dpFrom;
 	@FXML
-	private DatePicker dpTo;
+	private DateTimePicker dpTo;
 	@FXML
 	private Spinner<Integer> spInterval;
 	@FXML
@@ -153,7 +154,7 @@ public class LineChartUI extends AnchorPane {
 			alert.show();
 			return;
 		}
-		/*
+
 		else if(dpFrom.getValue().isAfter(LocalDateTime.now()) || dpTo.getValue().isAfter(LocalDateTime.now()))
 		{
 			alert.setAlertType(Alert.AlertType.ERROR);
@@ -168,7 +169,7 @@ public class LineChartUI extends AnchorPane {
 			alert.show();
 			return;
 		}
-		*/
+
 
 		Label progress_label = new Label("Creating graph");
 		progress_label.setMaxWidth(Double.MAX_VALUE);
@@ -200,12 +201,12 @@ public class LineChartUI extends AnchorPane {
 							String metric = current_sensor[1].replaceAll("\\s+", "");
 							Sensor sensor = new Sensor(location, metric);
 
-							LocalDate localDate = dpFrom.getValue();
-							Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
+							LocalDateTime localDate = dpFrom.getValue();
+							Instant instant = localDate.atZone(ZoneId.of(ZoneId.systemDefault().toString())).toInstant();
 							Date date = Date.from(instant);
 							long date_from = date.getTime();
 							localDate = dpTo.getValue();
-							instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
+							instant = localDate.atZone(ZoneId.of(ZoneId.systemDefault().toString())).toInstant();
 							date = Date.from(instant);
 							long date_to = date.getTime();
 							long interval = spInterval.getValue() * 60 * 1000;
@@ -224,7 +225,6 @@ public class LineChartUI extends AnchorPane {
 								this.getChildren().remove(new_progress_bar);
 
 							});
-
 
 
 						} catch (NullPointerException e) {
@@ -256,17 +256,17 @@ public class LineChartUI extends AnchorPane {
 
 			DataSeries new_data_series = clientConnection.queryData(sensor, date_from, date_to, interval).get();
 			List<DataPoint> data_points = new_data_series.getDataPoints();
-			ObservableList<String> live_data = FXCollections.observableArrayList();
-			String str = "";
-
 			int label_gap = data_points.size()/24;
-			final NumberAxis xAxis = new NumberAxis(data_points.get(0).getTime()/3600000, data_points.get(data_points.size() - 1).getTime()/3600000, label_gap);
+			final NumberAxis xAxis = new NumberAxis(data_points.get(0).getTime()/3600000.0, data_points.get(data_points.size() - 1).getTime()/3600000, label_gap);
+			xAxis.setLowerBound(data_points.get(0).getTime()/3600000);
+			xAxis.setUpperBound(data_points.get(data_points.size() - 1).getTime()/3600000);
+			xAxis.setTickUnit(label_gap);
+			//xAxis.setMinorTickVisible(false);
 			xAxis.setTickLabelFormatter(new StringConverter<Number>() {
 				@Override
 				public String toString(Number number) {
-					double temp = Double.parseDouble(number.toString());
-					long date = (long)temp * 3600000;
-					Date new_date = new Date(date);
+					double test = number.doubleValue() * 3600000.0;
+					Date new_date = new Date((long)test);
 					return new_date.toString();
 				}
 
@@ -292,17 +292,8 @@ public class LineChartUI extends AnchorPane {
 			for (int i = 0; i < data_points.size(); i++) {
 				Date date2 = new Date(data_points.get(i).getTime());
 				Double value = data_points.get(i).getValue();
-				if(date2.toString().contains("CEST"))
-				{
-					String print_date[] = date2.toString().split("CEST");
-					series1.getData().add(new XYChart.Data(data_points.get(i).getTime()/3600000, value));
-				}
-				else if(date2.toString().contains("CET"))
-				{
-					String print_date[] = date2.toString().split("CET");
-					series1.getData().add(new XYChart.Data(data_points.get(i).getTime()/3600000, value));
+				series1.getData().add(new XYChart.Data(data_points.get(i).getTime()/3600000, value));
 
-				}
 			}
 			lineChart.getData().add(series1);
 

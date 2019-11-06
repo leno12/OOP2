@@ -12,9 +12,9 @@
 			<children>
 				<ListView styleClass="list" fx:id="lvSensors" GridPane.rowIndex="0"/>
 				<Label  text="From:" GridPane.rowIndex="1"/>
-				<DatePicker fx:id="dpFrom" GridPane.rowIndex="2"/>
+				<DateTimePicker fx:id="dpFrom" GridPane.rowIndex="2"/>
 				<Label  prefWidth="250.0" text="To:" GridPane.rowIndex="3"/>
-				<DatePicker fx:id="dpTo" GridPane.rowIndex="4"/>
+				<DateTimePicker fx:id="dpTo" GridPane.rowIndex="4"/>
 				<Label  text="Interval:" GridPane.rowIndex="5"/>
 				<Spinner fx:id="spInterval" GridPane.rowIndex="6"/>
 				<Button styleClass="draw-button" fx:id="drawChartButton" text="Draw Chart"   GridPane.rowIndex="7" onAction="#drawChartButton">
