@@ -64,7 +64,7 @@ public final class ClientConnection implements AutoCloseable {
 	public void connect(String url, int port) throws IOException {
 
 			this.client_socket = new Socket(url,port);
-		 //   this.client_socket.setSoTimeout(20*1000);
+		    this.client_socket.setSoTimeout(20*1000);
 			this.out = new ObjectOutputStream(this.client_socket.getOutputStream());
 			this.ois = new ObjectInputStream(this.client_socket.getInputStream());
 
@@ -216,7 +216,7 @@ public final class ClientConnection implements AutoCloseable {
 			double[] array = new double[1];
 			boolean[] array2 = new boolean[1];
 
-			DataSeries data_series = new DataSeries(0, 1, array, array2);
+			DataSeries data_series = new DataSeries(0, 1,1, array, array2);
 			try {
 				if (interval < 1) {
 					System.out.println(ANSI_RED + "[ERROR] Wrong interval - interval" +
@@ -224,13 +224,18 @@ public final class ClientConnection implements AutoCloseable {
 				} else if (from >= to) {
 					System.out.println(ANSI_RED + "[ERROR] Wrong date - End time should  " +
 							"be greater than Start time" + ANSI_RESET);
-				} else {
+				} else if(from >= System.currentTimeMillis() || to >= System.currentTimeMillis()) {
+					System.out.println(ANSI_RED + "[ERROR] Wrong date - Date should be smaller than the current date"
+							+ ANSI_RESET);
+				}
+				else
+				{
 					List<Object> list = new ArrayList<>(Arrays.asList("data", sensor, from, to, interval));
 					this.out.writeObject(list);
 					Object received_object = this.ois.readObject();
 					data_series = (DataSeries) received_object;
 					if (data_series == null) {
-						data_series = new DataSeries(0, 1, array, array2);
+						data_series = new DataSeries(0, 1, 1, array, array2);
 						System.out.println(ANSI_RED + "[ERROR] Wrong parameters or there " +
 								           "are no values for the selected date" + ANSI_RESET);
 

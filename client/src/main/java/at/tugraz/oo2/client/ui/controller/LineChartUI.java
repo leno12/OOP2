@@ -33,6 +33,7 @@ import javafx.util.StringConverter;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
@@ -152,6 +153,23 @@ public class LineChartUI extends AnchorPane {
 			alert.show();
 			return;
 		}
+		/*
+		else if(dpFrom.getValue().isAfter(LocalDateTime.now()) || dpTo.getValue().isAfter(LocalDateTime.now()))
+		{
+			alert.setAlertType(Alert.AlertType.ERROR);
+			alert.setContentText("Date should be smaller than the current date");
+			alert.show();
+			return;
+		}
+		else if(dpFrom.getValue().isAfter(dpTo.getValue()))
+		{
+			alert.setAlertType(Alert.AlertType.ERROR);
+			alert.setContentText("End Date should be bigger than Start Date");
+			alert.show();
+			return;
+		}
+		*/
+
 		Label progress_label = new Label("Creating graph");
 		progress_label.setMaxWidth(Double.MAX_VALUE);
 		AnchorPane.setLeftAnchor(progress_label, 300.0);

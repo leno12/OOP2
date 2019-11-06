@@ -110,13 +110,14 @@ public final class InfluxConnection {
 		}
 		try {
 			JsonArray values = this.getJsonArrayWithValues(request);
+		//	System.out.println(values);
 
 			double data[] = new double[values.size()];
 			boolean present[] = new boolean[values.size()];
 
 			for (int i = 0; i < values.size(); i++) {
 				double current_sensor_value = values.get(i).getAsJsonArray().get(1).getAsDouble();
-				if (current_sensor_value != 0) {
+				if (current_sensor_value != 0.0) {
 					present[i] = true;
 				} else {
 					present[i] = false;
@@ -125,7 +126,7 @@ public final class InfluxConnection {
 
 			}
 
-			DataSeries data_series = new DataSeries(from, cache_interval, data, present);
+			DataSeries data_series = new DataSeries(from,to, cache_interval, data, present);
 			cache.insertNewEntry(location, metric, data_series);
 			data_series = data_series.scale(interval);
 

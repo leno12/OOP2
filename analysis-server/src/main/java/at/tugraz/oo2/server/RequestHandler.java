@@ -67,7 +67,10 @@ public class RequestHandler extends Thread {
 
                             data_series = influx_connection.getDataSeries(sensor1, from, to, interval, cache);
                         } else {
+                            System.out.println("cache");
+
                             if (from > data_series.getMinTime() || to < data_series.getMaxTime()) {
+                                System.out.println("Subseries");
                                 data_series = data_series.subSeries(from, to);
                                 data_series = data_series.scale(interval);
                             } else {

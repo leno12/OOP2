@@ -2,14 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b2d30622-dbb3-4f3a-b800-74617faff348" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/analysis-server/src/main/java/at/tugraz/oo2/server/Cache.java" beforeDir="false" afterPath="$PROJECT_DIR$/analysis-server/src/main/java/at/tugraz/oo2/server/Cache.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/analysis-server/src/main/java/at/tugraz/oo2/server/InfluxConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/analysis-server/src/main/java/at/tugraz/oo2/server/InfluxConnection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/analysis-server/src/main/java/at/tugraz/oo2/server/RequestHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/analysis-server/src/main/java/at/tugraz/oo2/server/RequestHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ClientConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ClientConnection.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/LineChartUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/LineChartUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/LiveUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/LiveUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/ScatterUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/ScatterUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/resources/application.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/application.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/resources/chart.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/chart.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/resources/liveui.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/liveui.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/resources/scatter.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/scatter.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared/src/main/java/at/tugraz/oo2/data/DataSeries.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/at/tugraz/oo2/data/DataSeries.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -117,7 +120,9 @@
       <option name="presentableId" value="Default" />
       <updated>1572875231603</updated>
       <workItem from="1572875392908" duration="19938000" />
-      <workItem from="1572985156583" duration="2796000" />
+      <workItem from="1572985156583" duration="3619000" />
+      <workItem from="1573046047813" duration="2229000" />
+      <workItem from="1573048525295" duration="6726000" />
     </task>
     <servers />
   </component>
@@ -129,6 +134,11 @@
       <screen x="0" y="24" width="1600" height="876" />
     </state>
     <state x="612" y="177" key="#com.intellij.ide.util.MemberChooser/0.24.1600.876@0.24.1600.876" timestamp="1572986009350" />
+    <state x="487" y="265" key="com.intellij.ide.util.TipDialog" timestamp="1573048525383">
+      <screen x="0" y="0" width="1600" height="876" />
+    </state>
+    <state x="487" y="265" key="com.intellij.ide.util.TipDialog/0.0.1600.876@0.0.1600.876" timestamp="1573048525383" />
+    <state x="487" y="289" key="com.intellij.ide.util.TipDialog/0.24.1600.876@0.24.1600.876" timestamp="1573046050786" />
   </component>
   <component name="masterDetails">
     <states>

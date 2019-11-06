@@ -25,6 +25,7 @@ import javafx.util.Duration;
 import org.controlsfx.control.RangeSlider;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -195,6 +196,20 @@ public class ScatterUI extends HBox {
 			alert.show();
 			return;
 		}
+		else if(dpFrom.getValue().isAfter(LocalDateTime.now()) || dpTo.getValue().isAfter(LocalDateTime.now()))
+		{
+			alert.setAlertType(Alert.AlertType.ERROR);
+			alert.setContentText("Date should be smaller than the current date");
+			alert.show();
+			return;
+		}
+		else if(dpFrom.getValue().isAfter(dpTo.getValue()))
+		{
+			alert.setAlertType(Alert.AlertType.ERROR);
+			alert.setContentText("End Date should be bigger than Start Date");
+			alert.show();
+			return;
+		}
 		Label progress_label = new Label("Creating graph");
 		progress_label.setMaxWidth(Double.MAX_VALUE);
 		AnchorPane.setLeftAnchor(progress_label, 0.0);
@@ -239,16 +254,6 @@ public class ScatterUI extends HBox {
 					date = Date.from(instant);
 					long date_to = date.getTime();
 					long interval = spInterval.getValue() * 60 * 1000;
-					if(date_from >= date_to)
-					{
-						Platform.runLater(() -> {
-							alert.setAlertType(Alert.AlertType.ERROR);
-							alert.setContentText("End Date should be bigger than Start Date");
-							alert.show();
-
-						});
-						return;
-					}
 					this.drawScatterPlot(sensor_x,sensor_y ,date_from, date_to, interval);
 					Platform.runLater(() -> {
 						ap.getChildren().remove(progress_label);
@@ -304,6 +309,14 @@ public class ScatterUI extends HBox {
 			}
 			scatterChart.getData().add(series1);
 
+			for (XYChart.Series<Number, Number> s : scatterChart.getData()) {
+				for(int i = 0; i < s.getData().size(); i++)
+				{
+					Date date = new Date(data_points_x.get(i).getTime());
+					Tooltip.install(s.getData().get(i).getNode(), new Tooltip(date.toString()));
+				}
+			}
+
 			if(!clientConnection.getMaximised())
 			{
 				scatterChart.setPrefWidth(800);
@@ -321,6 +334,7 @@ public class ScatterUI extends HBox {
 
 			Platform.runLater(() -> {
 				this.ap.getChildren().addAll(scatterChart);
+
 			});
 
 		}catch (ExecutionException | InterruptedException e )

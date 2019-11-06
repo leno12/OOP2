@@ -15,7 +15,7 @@
 }
 .table-view .table-cell:odd
 {
-    -fx-background-color:rgb(2,0,36),linear-gradient(rgba(2,0,36,1) 0%, rgba(6,34,40,1) 33%);
+    -fx-background-color:rgb(2,0,36),linear-gradient(rgba(2,0,36,1) 0%, rgba(4,19,22,1) 50%);
 }
 
 

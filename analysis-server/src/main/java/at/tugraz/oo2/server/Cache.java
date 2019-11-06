@@ -41,7 +41,6 @@ public class Cache {
             {
                 List<DataSeries> new_list = new ArrayList<>();
                 new_list.add(data_series);
-
                 get_map.put(metric, new_list);
 
 
@@ -72,8 +71,7 @@ public class Cache {
 
                     if(from >= data_series2.get(i).getMinTime() && to <= data_series2.get(i).getMaxTime())
                     {
-                        result = data_series2.get(i);
-                        break;
+                        return data_series2.get(i);
                     }
                 }
                 return result;
