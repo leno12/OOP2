@@ -4,17 +4,10 @@ import at.tugraz.oo2.Util;
 import at.tugraz.oo2.client.ClientConnection;
 import at.tugraz.oo2.client.ui.GUIMain;
 import at.tugraz.oo2.data.DataPoint;
-import at.tugraz.oo2.data.DataSeries;
 import at.tugraz.oo2.data.Sensor;
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
-import javafx.beans.binding.DoubleBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,22 +19,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import javafx.util.Duration;
 import lombok.Data;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-
 import java.io.IOException;
-import java.time.Clock;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.Date;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 import java.util.concurrent.*;
 
 public class LiveUI extends AnchorPane {
@@ -63,8 +44,8 @@ public class LiveUI extends AnchorPane {
 	private TableView<LiveData> tvData;
 
 	public LiveUI(ClientConnection clientConnection) {
-		this.clientConnection = clientConnection;
 
+		this.clientConnection = clientConnection;
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/live.fxml"));
 		loader.setRoot(this);
 		loader.setController(this);
@@ -81,16 +62,22 @@ public class LiveUI extends AnchorPane {
 
 		GUIMain.getStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
 			public void handle(WindowEvent we) {
-
-				clientConnection.close();
+				if(clientConnection.getConnectedButton())
+				{
+					clientConnection.setRunning(false);
+					clientConnection.close();
+				}
+				Platform.exit();
+				System.exit(0);
 			}
 		});
 
 	}
 
+	/**
+	 * Cancel and shutdown scheduled executor service
+ 	 */
 	private void onConnectionClosed()  {
-
-
 
 			try {
 					sched_future.cancel(true);
@@ -106,30 +93,21 @@ public class LiveUI extends AnchorPane {
 
 	}
 
-
+	/**
+	 * Fetch all latest data for every sensor and location available
+	 * Display values
+	 * Refresh every 10 seconds
+	 */
 	private void onConnectionOpened()  {
 
-		 this.tvData.getStylesheets().add("/liveui.css");
-		 ProgressBar pb = new ProgressBar();
-		 Label fetching_data = new Label("Fetching Live Data");
-		 fetching_data.setMaxWidth(Double.MAX_VALUE);
-		 AnchorPane.setLeftAnchor(fetching_data, 0.0);
-		 AnchorPane.setRightAnchor(fetching_data, 0.0);
-		 AnchorPane.setBottomAnchor(fetching_data, 0.0);
-		 AnchorPane.setTopAnchor(fetching_data, -80.0);
-		 fetching_data.setAlignment(Pos.CENTER);
-		 HBox new_progress_bar = new HBox();
-		 AnchorPane.setLeftAnchor(new_progress_bar, 0.0);
-		 AnchorPane.setRightAnchor(new_progress_bar, 0.0);
-		 AnchorPane.setBottomAnchor(new_progress_bar, 0.0);
-		 AnchorPane.setTopAnchor(new_progress_bar, 0.0);
-		 new_progress_bar.setAlignment(Pos.CENTER);
-		 new_progress_bar.getChildren().add(pb);
-		 this.getChildren().add(new_progress_bar);
-		 fetching_data.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font: 20px 'Arial'");
-		 this.getChildren().add(fetching_data);
 
-	 ses = new ScheduledThreadPoolExecutor(1, new ThreadFactoryBuilder().setDaemon(true).build());
+		ProgressBar pb = new ProgressBar();
+		Label fetching_data = new Label("Fetching Live Data");
+		HBox new_progress_bar = new HBox();
+		this.createProgressBar(fetching_data,pb,new_progress_bar);
+
+
+	    ses = new ScheduledThreadPoolExecutor(1);
 
 		this.new_runnable = new Runnable() {
 			 @Override
@@ -200,10 +178,7 @@ public class LiveUI extends AnchorPane {
 								 }
 							 }
 						 });
-
 					 }
-
-
 			 }
 		 };
 		ses.setContinueExistingPeriodicTasksAfterShutdownPolicy(true);
@@ -229,7 +204,33 @@ public class LiveUI extends AnchorPane {
 		dataColumn.setCellValueFactory(new PropertyValueFactory<LiveData, String>("data"));
 		timestampColumn.setCellValueFactory(new PropertyValueFactory<LiveData, String>("timestamp"));
 		tvData.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+		this.tvData.getStylesheets().add("/liveui.css");
 
 
+	}
+
+	/**
+	 * Create progress bar so the user knows that data is being collected from the server
+	 * @param fetching_data
+	 * @param pb
+	 * @param new_progress_bar
+	 */
+	public void createProgressBar(Label fetching_data, ProgressBar pb, HBox new_progress_bar)
+	{
+		fetching_data.setMaxWidth(Double.MAX_VALUE);
+		AnchorPane.setLeftAnchor(fetching_data, 0.0);
+		AnchorPane.setRightAnchor(fetching_data, 0.0);
+		AnchorPane.setBottomAnchor(fetching_data, 0.0);
+		AnchorPane.setTopAnchor(fetching_data, -80.0);
+		fetching_data.setAlignment(Pos.CENTER);
+		AnchorPane.setLeftAnchor(new_progress_bar, 0.0);
+		AnchorPane.setRightAnchor(new_progress_bar, 0.0);
+		AnchorPane.setBottomAnchor(new_progress_bar, 0.0);
+		AnchorPane.setTopAnchor(new_progress_bar, 0.0);
+		new_progress_bar.setAlignment(Pos.CENTER);
+		new_progress_bar.getChildren().add(pb);
+		this.getChildren().add(new_progress_bar);
+		fetching_data.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font: 20px 'Arial'");
+		this.getChildren().add(fetching_data);
 	}
 }

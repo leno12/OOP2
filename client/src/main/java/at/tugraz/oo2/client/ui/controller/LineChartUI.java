@@ -6,7 +6,6 @@ import at.tugraz.oo2.client.ui.component.DateTimePicker;
 import at.tugraz.oo2.data.DataPoint;
 import at.tugraz.oo2.data.DataSeries;
 import at.tugraz.oo2.data.Sensor;
-import com.github.javafx.charts.zooming.ZoomManager;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -20,7 +19,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
-import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
@@ -30,10 +28,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
-
 import java.io.IOException;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -72,6 +68,10 @@ public class LineChartUI extends AnchorPane {
 
 		clientConnection.addConnectionOpenedListener(this::onConnectionOpened);
 	}
+
+	/**
+	 * Get avaliable sensors and display them in list view
+	 */
 
 	private void onConnectionOpened() {
 		if(fetching_data_status == null)
@@ -130,6 +130,12 @@ public class LineChartUI extends AnchorPane {
 
 
 	}
+
+	/**
+	 * Get data needed to draw a linear chart when draw Chart Button is pressed
+	 * Create new thread so that GUI stays responsive
+	 * @param event
+	 */
 	@FXML protected void drawChartButton(ActionEvent event) {
 
 
@@ -181,7 +187,6 @@ public class LineChartUI extends AnchorPane {
 
 							});
 
-
 						} catch (NullPointerException e) {
 							Platform.runLater(() -> {
 								alert2.setAlertType(Alert.AlertType.ERROR);
@@ -204,6 +209,14 @@ public class LineChartUI extends AnchorPane {
 		this.setStyle("-fx-background-color: #000000;");
 	}
 
+	/**
+	 * Draws a line chart and displays it
+	 * @param sensor
+	 * @param date_from
+	 * @param date_to
+	 * @param interval
+	 * @param selected_sensor
+	 */
 	public void drawLineChart(Sensor sensor, long date_from, long date_to, long interval, String selected_sensor)
 	{
 
@@ -238,30 +251,24 @@ public class LineChartUI extends AnchorPane {
 					new LineChart<Number, Number>(xAxis, yAxis);
 			lineChart.setCreateSymbols(false);
 			lineChart.setTitle(selected_sensor);
-			//List<DataPoint> za_grafa =  lista_za_graf;
 			XYChart.Series series1 = new XYChart.Series();
 			series1.setName("Line Chart");
 			lineChart.setHorizontalGridLinesVisible(false);
 			lineChart.setVerticalGridLinesVisible(false);
 			lineChart.getStylesheets().add("/chart.css");
 			for (int i = 0; i < data_points.size(); i++) {
-				Date date2 = new Date(data_points.get(i).getTime());
 				Double value = data_points.get(i).getValue();
 				series1.getData().add(new XYChart.Data(data_points.get(i).getTime()/3600000, value));
-
 			}
 			lineChart.getData().add(series1);
-
 			VBox chart = new VBox();
 			chart.setId("chart");
 			chart.setStyle("-fx-background-color: #000000;");
-
 			AnchorPane.setLeftAnchor(chart, 250.0);
 			AnchorPane.setRightAnchor(chart, 0.0);
 			AnchorPane.setBottomAnchor(chart, 0.0);
 			AnchorPane.setTopAnchor(chart, 0.0);
 			chart.setAlignment(Pos.CENTER);
-		//	chart.prefWidthProperty().bind(this.widthProperty());
 
 			if(!clientConnection.getMaximised())
 			{
@@ -274,12 +281,10 @@ public class LineChartUI extends AnchorPane {
 			lineChart.setPrefHeight(900);
 
 
-
 			chart.getChildren().addAll(lineChart);
 
 			Platform.runLater(() -> {
 				this.getChildren().add(chart);
-			//	new ZoomManager(chart, lineChart, series1);
 			});
 
 			GUIMain.getStage().maximizedProperty().addListener(new ChangeListener<Boolean>() {
@@ -314,6 +319,11 @@ public class LineChartUI extends AnchorPane {
 		}
 	}
 
+	/**
+	 * Created fetching data Animation so that user knows that sensor data is being fetched
+	 * @param fetching_data_status
+	 */
+
 	private void fetchingDataAnimation(Label fetching_data_status)
 	{
 
@@ -338,6 +348,15 @@ public class LineChartUI extends AnchorPane {
 		this.getChildren().add(fetching_data_status);
 		fetching_data_animation.play();
 	}
+
+	/**
+	 * Checks if user input is correct (Sensor, Date, Interval)
+	 * @param lvSensors
+	 * @param lvSensorsY
+	 * @param dpFrom
+	 * @param dpTo
+	 * @return
+	 */
 	public static boolean checkParameters(ListView<String> lvSensors, ListView<String> lvSensorsY, DateTimePicker dpFrom, DateTimePicker dpTo)
 	{
 		Alert alert = new Alert(Alert.AlertType.NONE);
@@ -375,6 +394,12 @@ public class LineChartUI extends AnchorPane {
      return true;
 	}
 
+	/**
+	 * Create progress bar so that user knows that graph is being created or sensor data is being fetched
+	 * @param pb
+	 * @param progress_label
+	 * @param new_progress_bar
+	 */
 	public void createProgressBar(ProgressBar pb, Label progress_label, HBox new_progress_bar)
 	{
 		progress_label.setMaxWidth(Double.MAX_VALUE);

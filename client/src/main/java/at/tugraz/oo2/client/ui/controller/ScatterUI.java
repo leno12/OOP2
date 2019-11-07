@@ -5,13 +5,9 @@ import at.tugraz.oo2.client.ui.component.DateTimePicker;
 import at.tugraz.oo2.data.DataPoint;
 import at.tugraz.oo2.data.DataSeries;
 import at.tugraz.oo2.data.Sensor;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -19,15 +15,9 @@ import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
-import javafx.util.Duration;
 import org.controlsfx.control.RangeSlider;
-
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -81,6 +71,9 @@ public class ScatterUI extends HBox {
 		clientConnection.addConnectionOpenedListener(this::onConnectionOpened);
 	}
 
+	/**
+	 * Get avalibale sensors from the server and display them in list view
+	 */
 	private void onConnectionOpened() {
 
 		Label progress_label = new Label("Fetching sensor data");
@@ -153,6 +146,11 @@ public class ScatterUI extends HBox {
 
 
 	}
+
+	/**
+	 * Get needed data from server to draw a scatter plot
+	 * Create new thread so that GUI stays responsive
+	 */
 	@FXML
 	public void drawScatterPlotButton() {
 		this.getChildren().remove(this.lookup("#chart"));
@@ -214,6 +212,15 @@ public class ScatterUI extends HBox {
 
 
 	}
+
+	/**
+	 * Draw scatter plot and display it
+	 * @param sensor_x
+	 * @param sensor_y
+	 * @param date_from
+	 * @param date_to
+	 * @param interval
+	 */
 	public void drawScatterPlot(Sensor sensor_x,Sensor sensor_y, long date_from, long date_to, long interval)
 	{
 
@@ -284,6 +291,13 @@ public class ScatterUI extends HBox {
 			});
 		}
 	}
+
+	/**
+	 * Create progress bar so that user knows that graph is being created or sensor data is being fetched
+	 * @param pb
+	 * @param progress_label
+	 * @param new_progress_bar
+	 */
 	public void createProgressBar(ProgressBar pb, Label progress_label, HBox new_progress_bar)
 	{
 		progress_label.setMaxWidth(Double.MAX_VALUE);

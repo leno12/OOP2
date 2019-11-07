@@ -33,12 +33,17 @@ public final class InfluxConnection {
 	}
 
 
-
+	/**
+	 * 	Get list of all locations and metrics available in the influxdb
+	 * @return List of sensors
+	 * @throws UnirestException
+	 */
 	public List<Sensor> getLocationandMetrics() throws UnirestException {
 
 		List<Sensor> ls = new ArrayList<>();
 		String request = Unirest
-				.get(url + '/' + "query?db=" + databaseName + "&u=" + userName + "&p=" + password + "&q=SHOW%20SERIES%20on%20oo2")
+				.get(url + '/' + "query?db=" + databaseName + "&u=" + userName + "&p=" + password +
+						"&q=SHOW%20SERIES%20on%20oo2")
 				.asString()
 				.getBody();
 
@@ -56,6 +61,13 @@ public final class InfluxConnection {
 
 	}
 
+
+	/**
+	 * Get the latest value from influxdb for the wanted sensor
+	 * @param sensor
+	 * @return DataPoint
+	 * @throws UnirestException
+	 */
 	public DataPoint getCurrentSensorValue(Sensor sensor) throws UnirestException {
 		String location = sensor.getLocation();
 		String metric = sensor.getMetric();
@@ -88,7 +100,18 @@ public final class InfluxConnection {
 
 	}
 
-	public DataSeries getDataSeries(Sensor sensor, long from, long to, long interval, Cache cache) throws UnirestException {
+
+	/**
+	 * 	Get data series from the Influxdb for the wanted sensor, time range and interval
+	 * @param sensor
+	 * @param from
+	 * @param to
+	 * @param interval
+	 * @param cache
+	 * @return DataSeries
+	 * @throws UnirestException
+	 */
+	public DataSeries getDataSeries(Sensor sensor, long from, long to, long interval, Cache cache)  {
 		String location = sensor.getLocation();
 		String metric = sensor.getMetric();
 		long cache_interval = Util.EPOCH;
@@ -96,12 +119,12 @@ public final class InfluxConnection {
 		time_offset = time_offset*cache_interval;
 		time_offset = from - time_offset;
 		String request = null;
+		String query = "&q=SELECT%20FIRST(*)%20FROM%20" + metric + "%20WHERE%20location%20=%20%27" + location +
+				"%27%20and%20time%3E%3D" + from + "ms%20and%20time%3C" + to +
+				"ms%20GROUP%20BY%20time(" + cache_interval + "ms," + time_offset + "ms)%20fill(0)";
 		try {
 			 request = Unirest
-					.get(url + '/' + "query?db=" + databaseName + "&u=" + userName + "&p=" + password +
-							"&q=SELECT%20FIRST(*)%20FROM%20" + metric + "%20WHERE%20location%20=%20%27" + location +
-							"%27%20and%20time%3E%3D" + from + "ms%20and%20time%3C" + to + "ms%20GROUP%20BY%20time(" + cache_interval + "ms," + time_offset +
-							"ms)%20fill(0)")
+					.get(url + '/' + "query?db=" + databaseName + "&u=" + userName + "&p=" + password + query)
 					.asString()
 					.getBody();
 		}catch (UnirestException e)
@@ -110,12 +133,11 @@ public final class InfluxConnection {
 		}
 		try {
 			JsonArray values = this.getJsonArrayWithValues(request);
-		//	System.out.println(values);
 
 			double data[] = new double[values.size()];
 			boolean present[] = new boolean[values.size()];
 
-			for (int i = 0; i < values.size(); i++) {
+			for(int i = 0; i < values.size(); i++) {
 				double current_sensor_value = values.get(i).getAsJsonArray().get(1).getAsDouble();
 				if (current_sensor_value != 0.0) {
 					present[i] = true;
@@ -134,28 +156,29 @@ public final class InfluxConnection {
 		}catch (NullPointerException e)
 		{
 			System.out.println("Sensor does not exist");
-			//e.printStackTrace();
 			return null;
 		}
 
-
 	}
 
-	//This Method is used to parse json that we get from the api using Unirest
-	//Returns JsonArray containing values
+	/**
+	 * 	This Method is used to parse json that we get from the api using Unirest
+	 * 	Returns JsonArray containing needed values
+	 * @param request
+	 * @return JsonArray
+	 */
+
 	public JsonArray getJsonArrayWithValues(String request)
 	{
-		JsonElement jelement = new JsonParser().parse(request);
+		JsonElement jElement = new JsonParser().parse(request);
 
-		JsonObject jobject = jelement.getAsJsonObject();
-		JsonArray results_jarray = jobject.getAsJsonArray("results");
-		JsonObject jsonObject = results_jarray.get(0).getAsJsonObject();
-		//System.out.println(jsonObject.get("series"));
-		JsonArray series_jsonarray = jsonObject.get("series").getAsJsonArray();
-		JsonObject series_jobject = series_jsonarray.get(0).getAsJsonObject();
-		JsonArray values = series_jobject.get("values").getAsJsonArray();
+		JsonObject jObject = jElement.getAsJsonObject();
+		JsonArray resultsJArray = jObject.getAsJsonArray("results");
+		JsonObject jsonObject = resultsJArray.get(0).getAsJsonObject();
+		JsonArray seriesJsonArray = jsonObject.get("series").getAsJsonArray();
+		JsonObject seriesJObject = seriesJsonArray.get(0).getAsJsonObject();
+		JsonArray values = seriesJObject.get("values").getAsJsonArray();
 		return  values;
 
 	}
-	// TODO Implement Influx commands here.
 }

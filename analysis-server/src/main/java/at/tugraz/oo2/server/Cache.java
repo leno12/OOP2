@@ -30,6 +30,9 @@ public class Cache {
       }
   }
 
+    /**
+     * Load cache from the file in RAM
+     */
     public void loadCache()
     {
         BufferedReader reader;
@@ -74,6 +77,14 @@ public class Cache {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Inserts new entry in cache
+     * @param location
+     * @param metric
+     * @param data_series
+     * @param startup
+     */
     public void insertNewEntry(String location, String metric,DataSeries data_series, boolean startup)
     {
         if(cache.containsKey(location))
@@ -125,6 +136,13 @@ public class Cache {
 
             }
     }
+
+    /**
+     * Saves cache entry into file on the hard disk
+     * @param location
+     * @param metric
+     * @param data_series
+     */
     public void saveToCache(String location, String metric, DataSeries data_series)
     {
         FileWriter fw = null;
@@ -153,6 +171,16 @@ public class Cache {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Checks if the wanted query already exists in cache if yes send response from cache otherwise get data from
+     * influxdb
+     * @param location
+     * @param metric
+     * @param from
+     * @param to
+     * @return DataSeries
+     */
     public DataSeries checkIfEntryExists(String location,String metric, long from, long to)
     {
         if(cache.containsKey(location))

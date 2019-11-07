@@ -33,6 +33,11 @@ public class RequestHandler extends Thread {
 
     }
 
+
+    /**
+     *    Handle commands received from the client, If command valid send request to Influxdb to get data
+     *       If exit is received close the connection with client
+     */
     @Override
     public void run()
     {
@@ -88,7 +93,6 @@ public class RequestHandler extends Thread {
         }
         try
         {
-            // closing resources
 
             this.out_stream.close();
             this.in_stream.close();
