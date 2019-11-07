@@ -2,11 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b2d30622-dbb3-4f3a-b800-74617faff348" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Cache.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cache.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Cache.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/analysis-server/src/main/java/at/tugraz/oo2/server/Cache.java" beforeDir="false" afterPath="$PROJECT_DIR$/analysis-server/src/main/java/at/tugraz/oo2/server/Cache.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/analysis-server/src/main/java/at/tugraz/oo2/server/RequestHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/analysis-server/src/main/java/at/tugraz/oo2/server/RequestHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ClientConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ClientConnection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ClientMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ClientMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/ConnectionUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/ConnectionUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/LineChartUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/LineChartUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/resources/linechart.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/linechart.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/LiveUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/LiveUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/ScatterUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/ScatterUI.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,6 +21,9 @@
   <component name="DefaultGradleProjectSettings">
     <option name="testRunner" value="GRADLE" />
     <option name="delegatedBuild" value="true" />
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="oo2" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -120,7 +128,8 @@
       <workItem from="1572875392908" duration="19938000" />
       <workItem from="1572985156583" duration="3619000" />
       <workItem from="1573046047813" duration="2229000" />
-      <workItem from="1573048525295" duration="21691000" />
+      <workItem from="1573048525295" duration="22170000" />
+      <workItem from="1573130968275" duration="6601000" />
     </task>
     <servers />
   </component>
@@ -140,6 +149,10 @@
     </state>
     <state x="487" y="265" key="com.intellij.ide.util.TipDialog/0.0.1600.876@0.0.1600.876" timestamp="1573048525383" />
     <state x="487" y="289" key="com.intellij.ide.util.TipDialog/0.24.1600.876@0.24.1600.876" timestamp="1573046050786" />
+    <state x="484" y="188" width="632" height="528" key="find.popup" timestamp="1573137426722">
+      <screen x="0" y="0" width="1600" height="876" />
+    </state>
+    <state x="484" y="188" width="632" height="528" key="find.popup/0.0.1600.876@0.0.1600.876" timestamp="1573137426722" />
     <state x="267" y="41" key="new project wizard" timestamp="1573060088214">
       <screen x="0" y="0" width="1600" height="876" />
     </state>

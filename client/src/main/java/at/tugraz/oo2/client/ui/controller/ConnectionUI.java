@@ -93,7 +93,15 @@ public class ConnectionUI extends GridPane {
 			}
 			String server_url = serverTextField.getText();
 			int port = Integer.parseInt(portTextField.getText());
-			clientConnection.connect(server_url, port);
+			if(!clientConnection.connect(server_url, port))
+			{
+				Alert alert = new Alert(Alert.AlertType.NONE);
+				alert.setAlertType(Alert.AlertType.ERROR);
+				alert.setContentText("Can't reach the server");
+				alert.show();
+				return;
+
+			}
 		}catch (NullPointerException e)
 		{
 			Alert alert = new Alert(Alert.AlertType.NONE);

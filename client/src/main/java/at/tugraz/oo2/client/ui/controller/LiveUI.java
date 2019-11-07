@@ -6,6 +6,7 @@ import at.tugraz.oo2.client.ui.GUIMain;
 import at.tugraz.oo2.data.DataPoint;
 import at.tugraz.oo2.data.DataSeries;
 import at.tugraz.oo2.data.Sensor;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -80,9 +81,8 @@ public class LiveUI extends AnchorPane {
 
 		GUIMain.getStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
 			public void handle(WindowEvent we) {
-				if(ses != null)
-					ses.shutdownNow();
 
+				clientConnection.close();
 			}
 		});
 
@@ -93,13 +93,15 @@ public class LiveUI extends AnchorPane {
 
 
 			try {
-				sched_future.cancel(true);
-				ses.shutdown();
-				ses.awaitTermination(10, TimeUnit.SECONDS);
+					sched_future.cancel(true);
+					ses.shutdown();
+					ses.awaitTermination(10, TimeUnit.SECONDS);
+
+
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			ses.shutdownNow();
+		ses.shutdownNow();
 
 
 	}
@@ -127,7 +129,7 @@ public class LiveUI extends AnchorPane {
 		 fetching_data.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font: 20px 'Arial'");
 		 this.getChildren().add(fetching_data);
 
-	 ses = new ScheduledThreadPoolExecutor(1);
+	 ses = new ScheduledThreadPoolExecutor(1, new ThreadFactoryBuilder().setDaemon(true).build());
 
 		this.new_runnable = new Runnable() {
 			 @Override

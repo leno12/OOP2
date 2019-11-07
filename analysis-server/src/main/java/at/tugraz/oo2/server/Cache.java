@@ -55,17 +55,13 @@ public class Cache {
                 interval = Long.parseLong(splitted_temp[4]);
                 String values_split[] = splitted[1].split("\\s+");
                 values = new double[values_split.length];
+                String present_split[] = splitted[2].split("\\s+");
+                present =  new boolean[present_split.length];
                 for(int i = 0; i < values_split.length; i++)
                 {
                     values[i] = Double.parseDouble(values_split[i]);
-                }
-                String present_split[] = splitted[2].split("\\s+");
-                present =  new boolean[present_split.length];
-                for(int i = 0; i < present.length; i++)
-                {
                     present[i] = Boolean.parseBoolean(present_split[i]);
                 }
-
                 DataSeries new_data_series = new DataSeries(min, max,interval,values,present);
                 this.insertNewEntry(location,metric,new_data_series, true);
                 line = reader.readLine();

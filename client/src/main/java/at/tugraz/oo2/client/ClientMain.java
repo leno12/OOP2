@@ -16,7 +16,8 @@ public final class ClientMain {
 			try {
 				ClientConnection conn = new ClientConnection();
 				conn.addConnectionClosedListener(() -> System.out.println("Client disconnected."));
-				conn.connect(url, port);
+				if(!conn.connect(url, port))
+					return;
 				final CommandHandler handler = new CommandHandler(conn);
 				if (args.length == 2) {
 					handler.openCLI();

@@ -121,12 +121,10 @@ public class LineChartUI extends AnchorPane {
 			}
 		};
 
-		// Run the task in a background thread
-		Thread backgroundThread = new Thread(task);
-		// Terminate the running thread if the application exits
-		backgroundThread.setDaemon(true);
-		// Start the thread
-		backgroundThread.start();
+
+		Thread thread = new Thread(task);
+		thread.setDaemon(true);
+		thread.start();
 
 
 
@@ -138,57 +136,14 @@ public class LineChartUI extends AnchorPane {
 		this.getChildren().remove(this.lookup("#chart"));
 		Alert alert = new Alert(Alert.AlertType.NONE);
 		Alert alert2 = new Alert(Alert.AlertType.NONE);
-
-		if(lvSensors.getSelectionModel().isEmpty())
-		{
-
-				alert.setAlertType(Alert.AlertType.ERROR);
-				alert.setContentText("Please choose one sensor");
-				alert.show();
-				return;
-		}
-		else if(dpFrom.getValue() == null || dpTo.getValue() == null)
-		{
-			alert.setAlertType(Alert.AlertType.ERROR);
-			alert.setContentText("Please select date");
-			alert.show();
+		if(!LineChartUI.checkParameters(lvSensors,null,dpFrom,dpTo))
 			return;
-		}
-
-		else if(dpFrom.getValue().isAfter(LocalDateTime.now()) || dpTo.getValue().isAfter(LocalDateTime.now()))
-		{
-			alert.setAlertType(Alert.AlertType.ERROR);
-			alert.setContentText("Date should be smaller than the current date");
-			alert.show();
-			return;
-		}
-		else if(dpFrom.getValue().isAfter(dpTo.getValue()))
-		{
-			alert.setAlertType(Alert.AlertType.ERROR);
-			alert.setContentText("End Date should be bigger than Start Date");
-			alert.show();
-			return;
-		}
-
 
 		Label progress_label = new Label("Creating graph");
-		progress_label.setMaxWidth(Double.MAX_VALUE);
-		AnchorPane.setLeftAnchor(progress_label, 300.0);
-		AnchorPane.setRightAnchor(progress_label, 0.0);
-		AnchorPane.setBottomAnchor(progress_label, 0.0);
-		AnchorPane.setTopAnchor(progress_label, -80.0);
-		progress_label.setAlignment(Pos.CENTER);
-		progress_label.setStyle("-fx-text-fill: white; -fx-font-weight:bold; -fx-font: 20px 'Arial'");
 		ProgressBar pb = new ProgressBar();
 		HBox new_progress_bar = new HBox();
-		AnchorPane.setLeftAnchor(new_progress_bar, 300.0);
-		AnchorPane.setRightAnchor(new_progress_bar, 0.0);
-		AnchorPane.setBottomAnchor(new_progress_bar, 0.0);
-		AnchorPane.setTopAnchor(new_progress_bar, 0.0);
-		new_progress_bar.setAlignment(Pos.CENTER);
-		new_progress_bar.getChildren().add(pb);
-		this.getChildren().add(new_progress_bar);
-		this.getChildren().add(progress_label);
+		this.createProgressBar(pb,progress_label,new_progress_bar);
+
 		new Thread(() -> {
 
 					synchronized (clientConnection) {
@@ -382,5 +337,60 @@ public class LineChartUI extends AnchorPane {
 		fetching_data_status.setLayoutY(180);
 		this.getChildren().add(fetching_data_status);
 		fetching_data_animation.play();
+	}
+	public static boolean checkParameters(ListView<String> lvSensors, ListView<String> lvSensorsY, DateTimePicker dpFrom, DateTimePicker dpTo)
+	{
+		Alert alert = new Alert(Alert.AlertType.NONE);
+		Alert alert2 = new Alert(Alert.AlertType.NONE);
+		if(lvSensors.getSelectionModel().isEmpty() || (lvSensorsY != null && lvSensorsY.getSelectionModel().isEmpty()))
+		{
+
+			alert.setAlertType(Alert.AlertType.ERROR);
+			alert.setContentText("Please choose one sensor");
+			alert.show();
+			return false;
+		}
+		else if(dpFrom.getValue() == null || dpTo.getValue() == null)
+		{
+			alert.setAlertType(Alert.AlertType.ERROR);
+			alert.setContentText("Please select date");
+			alert.show();
+			return false;
+		}
+
+		else if(dpFrom.getValue().isAfter(LocalDateTime.now()) || dpTo.getValue().isAfter(LocalDateTime.now()))
+		{
+			alert.setAlertType(Alert.AlertType.ERROR);
+			alert.setContentText("Date should be smaller than the current date");
+			alert.show();
+			return false;
+		}
+		else if(dpFrom.getValue().isAfter(dpTo.getValue()))
+		{
+			alert.setAlertType(Alert.AlertType.ERROR);
+			alert.setContentText("End Date should be bigger than Start Date");
+			alert.show();
+			return false;
+		}
+     return true;
+	}
+
+	public void createProgressBar(ProgressBar pb, Label progress_label, HBox new_progress_bar)
+	{
+		progress_label.setMaxWidth(Double.MAX_VALUE);
+		AnchorPane.setLeftAnchor(progress_label, 300.0);
+		AnchorPane.setRightAnchor(progress_label, 0.0);
+		AnchorPane.setBottomAnchor(progress_label, 0.0);
+		AnchorPane.setTopAnchor(progress_label, -80.0);
+		progress_label.setAlignment(Pos.CENTER);
+		progress_label.setStyle("-fx-text-fill: white; -fx-font-weight:bold; -fx-font: 20px 'Arial'");
+		AnchorPane.setLeftAnchor(new_progress_bar, 300.0);
+		AnchorPane.setRightAnchor(new_progress_bar, 0.0);
+		AnchorPane.setBottomAnchor(new_progress_bar, 0.0);
+		AnchorPane.setTopAnchor(new_progress_bar, 0.0);
+		new_progress_bar.setAlignment(Pos.CENTER);
+		new_progress_bar.getChildren().add(pb);
+		this.getChildren().add(new_progress_bar);
+		this.getChildren().add(progress_label);
 	}
 }

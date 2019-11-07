@@ -61,17 +61,23 @@ public final class ClientConnection implements AutoCloseable {
 	/**
 	 * Establishes a connection to the server.
 	 */
-	public void connect(String url, int port) throws IOException {
+	public boolean connect(String url, int port) throws IOException {
 
+		try {
 			this.client_socket = new Socket(url,port);
-		    this.client_socket.setSoTimeout(20*1000);
-			this.out = new ObjectOutputStream(this.client_socket.getOutputStream());
-			this.ois = new ObjectInputStream(this.client_socket.getInputStream());
+			this.client_socket.setSoTimeout(30*1000);
+		} catch (IOException e) {
+			System.out.println(ANSI_RED + "[ERROR] Can't reach the server" + ANSI_RESET);
+			return false;
+		}
 
-		Iterator<ConnectionEventHandler> open_event = connectionOpenedEventHandlers.iterator();
-		while(open_event.hasNext())
-			open_event.next().apply();
+		this.out = new ObjectOutputStream(this.client_socket.getOutputStream());
+		this.ois = new ObjectInputStream(this.client_socket.getInputStream());
 
+		for (ConnectionEventHandler connectionOpenedEventHandler : connectionOpenedEventHandlers)
+			connectionOpenedEventHandler.apply();
+
+		return true;
 
 	}
 
@@ -93,9 +99,8 @@ public final class ClientConnection implements AutoCloseable {
 	@Override
 	public void close() {
 		try {
-			Iterator<ConnectionEventHandler> close_event = connectionClosedEventHandlers.iterator();
-			while(close_event.hasNext())
-				close_event.next().apply();
+			for (ConnectionEventHandler connectionClosedEventHandler : connectionClosedEventHandlers)
+				connectionClosedEventHandler.apply();
 			List<Object> list = new ArrayList<>();
 			list.add("exit");
 			out.writeObject(list);
@@ -111,8 +116,9 @@ public final class ClientConnection implements AutoCloseable {
 	 * Returns a future holding a list of all known sensors.
 	 */
 	public CompletableFuture<List<Sensor>> querySensors() throws InterruptedException {
-   if(!running)
-   	return null;
+
+    if(!running)
+    	return null;
 	try {
 
 		CompletableFuture<List<Sensor>> completableFuture = CompletableFuture.supplyAsync(() ->
@@ -126,7 +132,11 @@ public final class ClientConnection implements AutoCloseable {
 				out.writeObject(list);
 				Object received_object = ois.readObject();
 				sensors = (List<Sensor>) received_object;
-			} catch (IOException e) {
+			}
+			catch (SocketTimeoutException e) {
+				System.out.println(ANSI_RED + "[ERROR] Socket timeout" + ANSI_RESET);
+			}
+			catch (IOException e) {
 				System.out.println(ANSI_RED + "[ERROR] Can't reach the server - " +
 						"check your internet Connection" + ANSI_RESET);
 			} catch (ClassNotFoundException e) {
@@ -175,12 +185,12 @@ public final class ClientConnection implements AutoCloseable {
 
 					return data_point;
 
-				} catch  (IOException  e) {
-					try {
-						client_socket.close();
-					} catch (IOException ex) {
-						System.out.println(ANSI_RED + "[ERROR] Socket is already closed" + ANSI_RESET);
-					}
+				}
+				catch (SocketTimeoutException e) {
+					System.out.println(ANSI_RED + "[ERROR] Socket timeout" + ANSI_RESET);
+				}
+				catch  (IOException  e) {
+
 					System.out.println(ANSI_RED + "[ERROR] Can't reach the server - " +
 							"check your internet Connection" + ANSI_RESET);
 
@@ -244,12 +254,11 @@ public final class ClientConnection implements AutoCloseable {
 
 				return data_series;
 
-			} catch (IOException e) {
-				try {
-					client_socket.close();
-				} catch (IOException ex) {
-					System.out.println(ANSI_RED + "[ERROR] Socket is already closed" + ANSI_RESET);
-				}
+			} catch (SocketTimeoutException e) {
+				System.out.println(ANSI_RED + "[ERROR] Socket timeout" + ANSI_RESET);
+			}
+
+			catch (IOException e) {
 				System.out.println(ANSI_RED + "[ERROR] Can't reach the server - " +
 						           "check your internet Connection" + ANSI_RESET);
 
@@ -257,7 +266,9 @@ public final class ClientConnection implements AutoCloseable {
 				System.out.println(ANSI_RED + "[ERROR] Class could not be found" + ANSI_RESET);
 
 			}
+
 			return data_series;
+
 		});
 		completableFuture.get();
 		return completableFuture;
