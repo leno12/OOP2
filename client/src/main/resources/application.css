@@ -30,7 +30,7 @@
 }
 .list-cell:odd
 {
-    -fx-background-color: rgba(0, 0, 0, 0.63);
+    -fx-background-color: #0a1e25;
     -fx-text-fill: white;
 }
 

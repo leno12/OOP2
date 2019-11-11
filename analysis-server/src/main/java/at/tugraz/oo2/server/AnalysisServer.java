@@ -28,6 +28,9 @@ public final class AnalysisServer {
 
 	}
 
+	/**
+	 * Create new server socket and wait for client requests. Create a new thread for every client
+	 */
 	public void run() {
 		try {
 			Cache new_cache = new Cache();
@@ -49,7 +52,5 @@ public final class AnalysisServer {
 		}
 
 
-
-		// TODO Start here with a loop accepting new client connections.
 	}
 }

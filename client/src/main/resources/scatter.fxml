@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import org.controlsfx.control.RangeSlider?>
 <?import at.tugraz.oo2.client.ui.component.DateTimePicker?>
-<fx:root styleClass="mrnjau" xmlns:fx="http://javafx.com/fxml/1" type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/8.0.221" stylesheets="application.css">
+<fx:root styleClass="backround" xmlns:fx="http://javafx.com/fxml/1" type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/8.0.221" stylesheets="application.css">
 	<GridPane prefHeight="1000" styleClass="leftPanelPane">
 		<columnConstraints>
 			<ColumnConstraints hgrow="SOMETIMES"/>
@@ -91,10 +91,7 @@
 		<AnchorPane fx:id="ap" VBox.vgrow="ALWAYS" HBox.hgrow="NEVER">
 
 		</AnchorPane>
-		<VBox HBox.hgrow="NEVER">
-			<RangeSlider fx:id="slDay" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" styleClass="genericPadding"/>
-			<Label fx:id="lbFromToSlider" styleClass="genericPadding"/>
-		</VBox>
+
 	</VBox>
 
 </fx:root>

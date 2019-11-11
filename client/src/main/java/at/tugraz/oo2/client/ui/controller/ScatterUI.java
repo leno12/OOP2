@@ -5,13 +5,9 @@ import at.tugraz.oo2.client.ui.component.DateTimePicker;
 import at.tugraz.oo2.data.DataPoint;
 import at.tugraz.oo2.data.DataSeries;
 import at.tugraz.oo2.data.Sensor;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -19,14 +15,11 @@ import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import org.controlsfx.control.RangeSlider;
-
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -80,17 +73,15 @@ public class ScatterUI extends HBox {
 		clientConnection.addConnectionOpenedListener(this::onConnectionOpened);
 	}
 
+	/**
+	 * Get avalibale sensors from the server and display them in list view
+	 */
 	private void onConnectionOpened() {
 
 		Label progress_label = new Label("Fetching sensor data");
-		progress_label.setLayoutX(280);
-		progress_label.setLayoutY(220);
-		progress_label.setStyle("-fx-text-fill: white; -fx-font-weight: bold");
 		ProgressBar pb = new ProgressBar();
-		pb.setLayoutX(300);
-		pb.setLayoutY(250);
-		ap.getChildren().add(pb);
-		ap.getChildren().add(progress_label);
+		HBox new_progress_bar = new HBox();
+		this.createProgressBar(pb,progress_label,new_progress_bar);
 		Runnable task = new Runnable()
 		{
 			public void run()
@@ -99,8 +90,17 @@ public class ScatterUI extends HBox {
 
 					try {
 						if(!clientConnection.getRunning())
-							return;
+						{
+							Platform.runLater(new Runnable() {
+								@Override
+								public void run() {
+									ap.getChildren().remove(progress_label);
+									ap.getChildren().remove(new_progress_bar);
+								}
+								});
 
+							return;
+						}
 						List<Sensor> sensors = clientConnection.querySensors().get();
 						ObservableList<String> live_data = FXCollections.observableArrayList();
 
@@ -117,7 +117,7 @@ public class ScatterUI extends HBox {
 								lvSensorX.setItems(live_data);
 								lvSensorY.setItems(live_data);
 								ap.getChildren().remove(progress_label);
-								ap.getChildren().remove(pb);
+								ap.getChildren().remove(new_progress_bar);
 							}
 						});
 
@@ -132,12 +132,9 @@ public class ScatterUI extends HBox {
 			}
 		};
 
-		// Run the task in a background thread
-		Thread backgroundThread = new Thread(task);
-		// Terminate the running thread if the application exits
-		backgroundThread.setDaemon(true);
-		// Start the thread
-		backgroundThread.start();
+		Thread thread = new Thread(task);
+		thread.setDaemon(true);
+		thread.start();
 
 
 	}
@@ -151,46 +148,24 @@ public class ScatterUI extends HBox {
 
 
 	}
+
+	/**
+	 * Get needed data from server to draw a scatter plot
+	 * Create new thread so that GUI stays responsive
+	 */
 	@FXML
 	public void drawScatterPlotButton() {
 		this.getChildren().remove(this.lookup("#chart"));
 
 		Alert alert = new Alert(Alert.AlertType.NONE);
 		Alert alert2 = new Alert(Alert.AlertType.NONE);
-
-		if(lvSensorX.getSelectionModel().isEmpty() || lvSensorY.getSelectionModel().isEmpty())
-		{
-
-			alert.setAlertType(Alert.AlertType.ERROR);
-			alert.setContentText("Please choose two sensors");
-			alert.show();
+		if(!LineChartUI.checkParameters(lvSensorX,lvSensorY,dpFrom,dpTo))
 			return;
-		}
-		else if(dpFrom.getValue() == null || dpTo.getValue() == null)
-		{
-			alert.setAlertType(Alert.AlertType.ERROR);
-			alert.setContentText("Please select date");
-			alert.show();
-			return;
-		}
 		Label progress_label = new Label("Creating graph");
-		progress_label.setMaxWidth(Double.MAX_VALUE);
-		AnchorPane.setLeftAnchor(progress_label, 0.0);
-		AnchorPane.setRightAnchor(progress_label, 0.0);
-		AnchorPane.setBottomAnchor(progress_label, 0.0);
-		AnchorPane.setTopAnchor(progress_label, -80.0);
-		progress_label.setAlignment(Pos.CENTER);
-		progress_label.setStyle("-fx-text-fill: white; -fx-font-weight:bold; -fx-font: 20px 'Arial'");
 		ProgressBar pb = new ProgressBar();
 		HBox new_progress_bar = new HBox();
-		AnchorPane.setLeftAnchor(new_progress_bar, 0.0);
-		AnchorPane.setRightAnchor(new_progress_bar, 0.0);
-		AnchorPane.setBottomAnchor(new_progress_bar, 0.0);
-		AnchorPane.setTopAnchor(new_progress_bar, 0.0);
-		new_progress_bar.setAlignment(Pos.CENTER);
-		new_progress_bar.getChildren().add(pb);
-		ap.getChildren().add(new_progress_bar);
-		ap.getChildren().add(progress_label);
+		this.createProgressBar(pb,progress_label,new_progress_bar);
+
 		new Thread(() -> {
 
 			synchronized (clientConnection) {
@@ -217,15 +192,6 @@ public class ScatterUI extends HBox {
 					date = Date.from(instant);
 					long date_to = date.getTime();
 					long interval = spInterval.getValue() * 60 * 1000;
-					if(date_from >= date_to)
-					{
-						Platform.runLater(() -> {
-							alert.setAlertType(Alert.AlertType.ERROR);
-							alert.setContentText("End Date should be bigger than Start Date");
-							alert.show();
-							return;
-						});
-					}
 					this.drawScatterPlot(sensor_x,sensor_y ,date_from, date_to, interval);
 					Platform.runLater(() -> {
 						ap.getChildren().remove(progress_label);
@@ -248,6 +214,15 @@ public class ScatterUI extends HBox {
 
 
 	}
+
+	/**
+	 * Draw scatter plot and display it
+	 * @param sensor_x
+	 * @param sensor_y
+	 * @param date_from
+	 * @param date_to
+	 * @param interval
+	 */
 	public void drawScatterPlot(Sensor sensor_x,Sensor sensor_y, long date_from, long date_to, long interval)
 	{
 
@@ -281,6 +256,20 @@ public class ScatterUI extends HBox {
 			}
 			scatterChart.getData().add(series1);
 
+			for (XYChart.Series<Number, Number> s : scatterChart.getData()) {
+				for(int i = 0; i < s.getData().size(); i++)
+				{
+					Date date = new Date(data_points_x.get(i).getTime());
+					DecimalFormat df = new DecimalFormat("#.##");
+
+					String str = date.toString() + '\n' + x_label + " - " + df.format(s.getData().get(i).getXValue()) +
+							'\n' + y_label + " - " + df.format(s.getData().get(i).getYValue());
+					Tooltip hover = new Tooltip(str);
+					hover.setShowDelay(Duration.seconds(0));
+					Tooltip.install(s.getData().get(i).getNode(), hover);
+				}
+			}
+
 			if(!clientConnection.getMaximised())
 			{
 				scatterChart.setPrefWidth(800);
@@ -295,9 +284,9 @@ public class ScatterUI extends HBox {
 			AnchorPane.setBottomAnchor(scatterChart, 0.0);
 			AnchorPane.setTopAnchor(scatterChart, 0.0);
 
-
 			Platform.runLater(() -> {
 				this.ap.getChildren().addAll(scatterChart);
+
 			});
 
 		}catch (ExecutionException | InterruptedException e )
@@ -309,5 +298,30 @@ public class ScatterUI extends HBox {
 				alert.show();
 			});
 		}
+	}
+
+	/**
+	 * Create progress bar so that user knows that graph is being created or sensor data is being fetched
+	 * @param pb
+	 * @param progress_label
+	 * @param new_progress_bar
+	 */
+	public void createProgressBar(ProgressBar pb, Label progress_label, HBox new_progress_bar)
+	{
+		progress_label.setMaxWidth(Double.MAX_VALUE);
+		AnchorPane.setLeftAnchor(progress_label, 0.0);
+		AnchorPane.setRightAnchor(progress_label, 0.0);
+		AnchorPane.setBottomAnchor(progress_label, 0.0);
+		AnchorPane.setTopAnchor(progress_label, -80.0);
+		progress_label.setAlignment(Pos.CENTER);
+		progress_label.setStyle("-fx-text-fill: white; -fx-font-weight:bold; -fx-font: 20px 'Arial'");
+		AnchorPane.setLeftAnchor(new_progress_bar, 0.0);
+		AnchorPane.setRightAnchor(new_progress_bar, 0.0);
+		AnchorPane.setBottomAnchor(new_progress_bar, 0.0);
+		AnchorPane.setTopAnchor(new_progress_bar, 0.0);
+		new_progress_bar.setAlignment(Pos.CENTER);
+		new_progress_bar.getChildren().add(pb);
+		ap.getChildren().add(new_progress_bar);
+		ap.getChildren().add(progress_label);
 	}
 }

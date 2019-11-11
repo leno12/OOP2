@@ -5,7 +5,6 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -32,46 +31,105 @@ public final class ClientConnection implements AutoCloseable {
 	private ObjectInputStream ois;
 	public static final String ANSI_RED = "\u001B[31m";
 	public static final String ANSI_RESET = "\u001B[0m";
-	private boolean running = true;
+	private boolean running = false;
 	private boolean maximised = false;
+	static final String EXIT_COMMAND = "exit";
+	static final String TIMEOUT_ERROR = "[ERROR] Socket timeout";
+	static final String WRONG_PARAM_ERROR =  "[ERROR] Wrong parameters";
+	static final String WRONG_INTERVAL_ERROR =  "[ERROR] Wrong interval - interval" +
+			" should be bigger than 0";
+	static final String WRONG_END_DATE_ERROR = "[ERROR] Wrong date - End time should  " +
+			"be greater than Start time";
+	static final String WRONG_DATE_ERROR = "[ERROR] Wrong date - Date should be smaller than the current date";
+	static final String CANT_REACH_SERVER_ERROR = "[ERROR] Can't reach the server - " +
+			"check your internet Connection";
 
-	public boolean getMaximised()
-	{
-		return this.maximised;
-	}
-	public void setMaximised(boolean maximised_)
-	{
-		this.maximised = maximised_;
-	}
+	static final String NO_VALUES_ERROR =  "[ERROR] Wrong parameters or there " +
+			"are no values for the selected date";
+	static  final String CLASS_NOT_FOUND_ERROR = "[ERROR] Class could not be found";
+	static final String LS_COMMAND = "ls";
+	static final String NOW_COMMAND = "now";
+	static final String DATA_COMMAND = "data";
+	private boolean connectedButton = false;
+
+
+
+
+
 
 	public ClientConnection() {
 		connectionClosedEventHandlers = new LinkedBlockingQueue<>();
 		connectionOpenedEventHandlers = new LinkedBlockingQueue<>();
 	}
 
+	/**
+		Get maximised variable to check if stage is maximized
+	 */
+	public boolean getMaximised()
+	{
+		return this.maximised;
+	}
+
+	/**
+		Set maximised when stage is maximized
+	 */
+	public void setMaximised(boolean maximised_)
+	{
+		this.maximised = maximised_;
+	}
+
+	/**
+	  Set status of client connection -> when connected to server true otherwise false
+	 */
 	public void setRunning(boolean running)
 	{
 		this.running = running;
 	}
 
+	/**
+	   Get status of client connection
+	 */
 	public boolean getRunning()
 	{
 		return this.running;
 	}
 	/**
+	 Set status of connectedButton
+	 */
+	public void setConnectedButton(boolean connectedButton)
+	{
+		this.connectedButton = connectedButton;
+	}
+
+	/**
+	 Get status of connectedButton
+	 */
+	public boolean getConnectedButton()
+	{
+		return this.connectedButton;
+	}
+
+	/**
 	 * Establishes a connection to the server.
 	 */
-	public void connect(String url, int port) throws IOException {
+	public boolean connect(String url, int port) throws IOException {
 
+		try {
+			this.running = true;
 			this.client_socket = new Socket(url,port);
-		 //   this.client_socket.setSoTimeout(20*1000);
-			this.out = new ObjectOutputStream(this.client_socket.getOutputStream());
-			this.ois = new ObjectInputStream(this.client_socket.getInputStream());
+			this.client_socket.setSoTimeout(30*1000);
+		} catch (IOException e) {
+			System.out.println(ANSI_RED + CANT_REACH_SERVER_ERROR + ANSI_RESET);
+			return false;
+		}
 
-		Iterator<ConnectionEventHandler> open_event = connectionOpenedEventHandlers.iterator();
-		while(open_event.hasNext())
-			open_event.next().apply();
+		this.out = new ObjectOutputStream(this.client_socket.getOutputStream());
+		this.ois = new ObjectInputStream(this.client_socket.getInputStream());
 
+		for (ConnectionEventHandler connectionOpenedEventHandler : connectionOpenedEventHandlers)
+			connectionOpenedEventHandler.apply();
+
+		return true;
 
 	}
 
@@ -93,15 +151,20 @@ public final class ClientConnection implements AutoCloseable {
 	@Override
 	public void close() {
 		try {
-			Iterator<ConnectionEventHandler> close_event = connectionClosedEventHandlers.iterator();
-			while(close_event.hasNext())
-				close_event.next().apply();
+			for (ConnectionEventHandler connectionClosedEventHandler : connectionClosedEventHandlers)
+				connectionClosedEventHandler.apply();
 			List<Object> list = new ArrayList<>();
-			list.add("exit");
+			list.add(EXIT_COMMAND);
 			out.writeObject(list);
 			this.client_socket.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			System.out.println(ANSI_RED + "Fix your goddamn server mate\n" + ANSI_RESET);
+			try {
+				this.client_socket.close();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
 		}
 
 
@@ -111,8 +174,9 @@ public final class ClientConnection implements AutoCloseable {
 	 * Returns a future holding a list of all known sensors.
 	 */
 	public CompletableFuture<List<Sensor>> querySensors() throws InterruptedException {
-   if(!running)
-   	return null;
+
+    if(!running)
+    	return null;
 	try {
 
 		CompletableFuture<List<Sensor>> completableFuture = CompletableFuture.supplyAsync(() ->
@@ -122,15 +186,18 @@ public final class ClientConnection implements AutoCloseable {
 
 			try {
 				List<Object> list = new ArrayList<>();
-				list.add("ls");
+				list.add(LS_COMMAND);
 				out.writeObject(list);
 				Object received_object = ois.readObject();
 				sensors = (List<Sensor>) received_object;
-			} catch (IOException e) {
-				System.out.println(ANSI_RED + "[ERROR] Can't reach the server - " +
-						"check your internet Connection" + ANSI_RESET);
+			}
+			catch (SocketTimeoutException e) {
+				System.out.println(ANSI_RED + TIMEOUT_ERROR + ANSI_RESET);
+			}
+			catch (IOException e) {
+				System.out.println(ANSI_RED + CANT_REACH_SERVER_ERROR + ANSI_RESET);
 			} catch (ClassNotFoundException e) {
-				System.out.println(ANSI_RED + "[ERROR] Class could not be found" + ANSI_RESET);
+				System.out.println(ANSI_RED + CLASS_NOT_FOUND_ERROR + ANSI_RESET);
 			}
 
 
@@ -161,7 +228,7 @@ public final class ClientConnection implements AutoCloseable {
 				try {
 
 					List<Object> list = new ArrayList<>();
-					list.add("now");
+					list.add(NOW_COMMAND);
 					list.add(sensor);
 					out.writeObject(list);
 					Object received_object = ois.readObject();
@@ -170,23 +237,22 @@ public final class ClientConnection implements AutoCloseable {
 					if(data_point == null)
 					{
 						data_point = new DataPoint(0,0.0);
-						System.out.println(ANSI_RED +  "[ERROR] Wrong parameters" + ANSI_RESET);
+						System.out.println(ANSI_RED + WRONG_PARAM_ERROR + ANSI_RESET);
 					}
 
 					return data_point;
 
-				} catch  (IOException  e) {
-					try {
-						client_socket.close();
-					} catch (IOException ex) {
-						System.out.println(ANSI_RED + "[ERROR] Socket is already closed" + ANSI_RESET);
-					}
-					System.out.println(ANSI_RED + "[ERROR] Can't reach the server - " +
-							"check your internet Connection" + ANSI_RESET);
+				}
+				catch (SocketTimeoutException e) {
+					System.out.println(ANSI_RED + TIMEOUT_ERROR + ANSI_RESET);
+				}
+				catch  (IOException  e) {
+
+					System.out.println(ANSI_RED + CANT_REACH_SERVER_ERROR + ANSI_RESET);
 
 				}catch (ClassNotFoundException e)
 				{
-					System.out.println(ANSI_RED + "[ERROR] Class could not be found" + ANSI_RESET);
+					System.out.println(ANSI_RED + CLASS_NOT_FOUND_ERROR + ANSI_RESET);
 				}
 				return data_point;
 			});
@@ -216,43 +282,45 @@ public final class ClientConnection implements AutoCloseable {
 			double[] array = new double[1];
 			boolean[] array2 = new boolean[1];
 
-			DataSeries data_series = new DataSeries(0, 1, array, array2);
+			DataSeries data_series = new DataSeries(0, 1,1, array, array2);
 			try {
 				if (interval < 1) {
-					System.out.println(ANSI_RED + "[ERROR] Wrong interval - interval" +
-							           " should be bigger than 0" + ANSI_RESET);
+					System.out.println(ANSI_RED + WRONG_INTERVAL_ERROR + ANSI_RESET);
 				} else if (from >= to) {
-					System.out.println(ANSI_RED + "[ERROR] Wrong date - End time should  " +
-							"be greater than Start time" + ANSI_RESET);
-				} else {
-					List<Object> list = new ArrayList<>(Arrays.asList("data", sensor, from, to, interval));
+					System.out.println(ANSI_RED + WRONG_END_DATE_ERROR + ANSI_RESET);
+				} else if(from >= System.currentTimeMillis() || to >= System.currentTimeMillis()) {
+					System.out.println(ANSI_RED + WRONG_DATE_ERROR
+							+ ANSI_RESET);
+				}
+				else
+				{
+					List<Object> list = new ArrayList<>(Arrays.asList(DATA_COMMAND, sensor, from, to, interval));
 					this.out.writeObject(list);
 					Object received_object = this.ois.readObject();
 					data_series = (DataSeries) received_object;
-					if (data_series == null) {
-						data_series = new DataSeries(0, 1, array, array2);
-						System.out.println(ANSI_RED + "[ERROR] Wrong parameters or there " +
-								           "are no values for the selected date" + ANSI_RESET);
-
+					if (data_series == null)
+					{
+						data_series = new DataSeries(0, 1, 1, array, array2);
+						System.out.println(ANSI_RED + NO_VALUES_ERROR + ANSI_RESET);
 					}
 				}
 
 				return data_series;
 
-			} catch (IOException e) {
-				try {
-					client_socket.close();
-				} catch (IOException ex) {
-					System.out.println(ANSI_RED + "[ERROR] Socket is already closed" + ANSI_RESET);
-				}
-				System.out.println(ANSI_RED + "[ERROR] Can't reach the server - " +
-						           "check your internet Connection" + ANSI_RESET);
+			} catch (SocketTimeoutException e) {
+				System.out.println(ANSI_RED + TIMEOUT_ERROR + ANSI_RESET);
+			}
+
+			catch (IOException e) {
+				System.out.println(ANSI_RED + CANT_REACH_SERVER_ERROR + ANSI_RESET);
 
 			} catch (ClassNotFoundException e) {
-				System.out.println(ANSI_RED + "[ERROR] Class could not be found" + ANSI_RESET);
+				System.out.println(ANSI_RED + CLASS_NOT_FOUND_ERROR + ANSI_RESET);
 
 			}
+
 			return data_series;
+
 		});
 		completableFuture.get();
 		return completableFuture;

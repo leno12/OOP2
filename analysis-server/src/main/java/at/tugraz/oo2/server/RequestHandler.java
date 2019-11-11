@@ -33,6 +33,11 @@ public class RequestHandler extends Thread {
 
     }
 
+
+    /**
+     *    Handle commands received from the client, If command valid send request to Influxdb to get data
+     *       If exit is received close the connection with client
+     */
     @Override
     public void run()
     {
@@ -67,6 +72,7 @@ public class RequestHandler extends Thread {
 
                             data_series = influx_connection.getDataSeries(sensor1, from, to, interval, cache);
                         } else {
+
                             if (from > data_series.getMinTime() || to < data_series.getMaxTime()) {
                                 data_series = data_series.subSeries(from, to);
                                 data_series = data_series.scale(interval);
@@ -82,19 +88,12 @@ public class RequestHandler extends Thread {
                         break;
                 }
             } catch (IOException | UnirestException | ClassNotFoundException e) {
-                try {
-                    this.socket.close();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-                System.out.println("Connection closed");
-
-                break;
+               e.printStackTrace();
             }
         }
         try
         {
-            // closing resources
+
             this.out_stream.close();
             this.in_stream.close();
 

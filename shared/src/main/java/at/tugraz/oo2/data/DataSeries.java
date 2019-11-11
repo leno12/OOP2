@@ -12,16 +12,17 @@ import org.apache.commons.math3.util.MathArrays;
 import at.tugraz.oo2.Util;
 
 public final class DataSeries implements Serializable, Iterable<DataPoint> {
-	private final long minTime, interval;
+	private final long minTime, maxTime, interval;
 	private final double[] data;
 	private final boolean[] present;
 
 
-	public DataSeries(long minTime, long interval, double[] data, boolean[] present) {
+	public DataSeries(long minTime, long maxTime,long interval, double[] data, boolean[] present) {
 		if (data.length == 0 || interval <= 0 || data.length != present.length) {
 			throw new IllegalArgumentException();
 		}
 		this.minTime = minTime;
+		this.maxTime = maxTime;
 		this.interval = interval;
 		this.data = data;
 		this.present = present;
@@ -40,7 +41,7 @@ public final class DataSeries implements Serializable, Iterable<DataPoint> {
 	 * The end of this data series. Exclusive.
 	 */
 	public long getMaxTime() {
-		return minTime + interval * data.length;
+		return this.maxTime;
 	}
 
 	public long getInterval() {
@@ -166,7 +167,7 @@ public final class DataSeries implements Serializable, Iterable<DataPoint> {
 		final int end = (int) ((endTime - minTime) / interval);
 		final double[] dataCopy = Arrays.copyOfRange(data, start, end);
 		final boolean[] presentCopy = Arrays.copyOfRange(present, start, end);
-		return new DataSeries(minTime + start * interval, interval, dataCopy, presentCopy);
+		return new DataSeries(minTime + start * interval, maxTime,interval, dataCopy, presentCopy);
 	}
 
 	/**
@@ -206,7 +207,7 @@ public final class DataSeries implements Serializable, Iterable<DataPoint> {
 				newPresent[i] = true;
 			}
 		}
-		return new DataSeries(minTime, newInterval, newData, newPresent);
+		return new DataSeries(minTime, maxTime, newInterval, newData, newPresent);
 	}
 
 	/**
@@ -243,7 +244,7 @@ public final class DataSeries implements Serializable, Iterable<DataPoint> {
 				}
 			}
 		}
-		return new DataSeries(minTime, interval, normalizedData, present);
+		return new DataSeries(minTime,maxTime, interval, normalizedData, present);
 	}
 
 	/**
@@ -286,7 +287,7 @@ public final class DataSeries implements Serializable, Iterable<DataPoint> {
 				resultPresent[i] = true;
 			}
 		}
-		return new DataSeries(minTime, interval, resultData, resultPresent);
+		return new DataSeries(minTime,maxTime, interval, resultData, resultPresent);
 	}
 
 	/**

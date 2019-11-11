@@ -1,5 +1,6 @@
 package at.tugraz.oo2.client;
 
+import java.io.EOFException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -53,12 +54,26 @@ public final class CommandHandler {
 	public void openCLI() {
 		System.out.println("Welcome to the command line interface. " + MSG_HELP);
 		try (Scanner scanner = new Scanner(System.in)) {
+
+			Runtime.getRuntime().addShutdownHook(new Thread() {
+				public void run() {
+					try {
+						Thread.sleep(200);
+						conn.close();
+
+					} catch (InterruptedException e) {
+						Thread.currentThread().interrupt();
+						e.printStackTrace();
+					}
+				}
+			});
 			while (true) {
 				final String line;
 				System.out.print("> ");
 				try {
 					line = scanner.nextLine().trim();
-				} catch (final NoSuchElementException ex) { // EOF
+				} catch (final NoSuchElementException ex) {
+					conn.close();// EOF
 					break;
 				}
 				if (line.startsWith("#")) {
@@ -70,6 +85,8 @@ public final class CommandHandler {
 				}
 			}
 		}
+
+
 		System.out.println("Bye!");
 	}
 

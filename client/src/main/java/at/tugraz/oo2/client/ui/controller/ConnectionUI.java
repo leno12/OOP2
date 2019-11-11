@@ -12,10 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
-import java.net.Socket;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-
 public class ConnectionUI extends GridPane {
 
 	private final ClientConnection clientConnection;
@@ -69,6 +66,7 @@ public class ConnectionUI extends GridPane {
 	public void onConnectClick(ActionEvent actionEvent) throws IOException {
 
 		try {
+			clientConnection.setConnectedButton(true);
 			clientConnection.setRunning(true);
 			if((serverTextField.getText() == null || serverTextField.getText().trim().isEmpty())
 			   || !serverTextField.getText().equals("localhost"))
@@ -93,7 +91,15 @@ public class ConnectionUI extends GridPane {
 			}
 			String server_url = serverTextField.getText();
 			int port = Integer.parseInt(portTextField.getText());
-			clientConnection.connect(server_url, port);
+			if(!clientConnection.connect(server_url, port))
+			{
+				Alert alert = new Alert(Alert.AlertType.NONE);
+				alert.setAlertType(Alert.AlertType.ERROR);
+				alert.setContentText("Can't reach the server");
+				alert.show();
+				return;
+
+			}
 		}catch (NullPointerException e)
 		{
 			Alert alert = new Alert(Alert.AlertType.NONE);
@@ -103,12 +109,11 @@ public class ConnectionUI extends GridPane {
 		}
 
 
-
 	}
 
 	public void onDisconnectClick(ActionEvent actionEvent) throws ExecutionException, InterruptedException {
 
-
+			clientConnection.setConnectedButton(false);
    			clientConnection.setRunning(false);
 
 			clientConnection.close();
