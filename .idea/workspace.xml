@@ -2,34 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b2d30622-dbb3-4f3a-b800-74617faff348" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Cache.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cache.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/analysis-server/src/main/java/at/tugraz/oo2/server/AnalysisServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/analysis-server/src/main/java/at/tugraz/oo2/server/AnalysisServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/analysis-server/src/main/java/at/tugraz/oo2/server/Cache.java" beforeDir="false" afterPath="$PROJECT_DIR$/analysis-server/src/main/java/at/tugraz/oo2/server/Cache.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/analysis-server/src/main/java/at/tugraz/oo2/server/InfluxConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/analysis-server/src/main/java/at/tugraz/oo2/server/InfluxConnection.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/analysis-server/src/main/java/at/tugraz/oo2/server/RequestHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/analysis-server/src/main/java/at/tugraz/oo2/server/RequestHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ClientConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ClientConnection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ClientMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ClientMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/CommandHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/CommandHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/GUIMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/GUIMain.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/ConnectionUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/ConnectionUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/LineChartUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/LineChartUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/LiveUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/LiveUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/ScatterUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/ScatterUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/resources/application.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/application.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/resources/chart.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/chart.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/resources/linechart.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/linechart.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/resources/liveui.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/liveui.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/resources/scatter.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/scatter.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/resources/scatterui.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/scatterui.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/src/main/java/at/tugraz/oo2/data/DataSeries.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/at/tugraz/oo2/data/DataSeries.java" afterDir="false" />
     </list>
-    <ignored path="$PROJECT_DIR$/classes/" />
-    <ignored path="$PROJECT_DIR$/shared/target/" />
-    <ignored path="$PROJECT_DIR$/client/target/" />
-    <ignored path="$PROJECT_DIR$/analysis-server/target/" />
-    <ignored path="$PROJECT_DIR$/target/" />
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -38,136 +22,11 @@
   <component name="DefaultGradleProjectSettings">
     <option name="isMigrated" value="true" />
   </component>
-  <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/src/main/resources/scatterui.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="1" column="1" lean-forward="true" selection-start-line="1" selection-start-column="1" selection-end-line="1" selection-end-column="1" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/client/src/main/resources/scatter.fxml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="7" column="30" selection-start-line="7" selection-start-column="30" selection-end-line="7" selection-end-column="30" />
-            </state>
-          </provider>
-          <provider editor-type-id="JavaFX-Scene-Builder" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/src/main/resources/application.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1605">
-              <caret line="107" column="46" selection-start-line="107" selection-start-column="46" selection-end-line="107" selection-end-column="46" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/ScatterUI.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
-              <caret line="265" column="28" selection-start-line="265" selection-start-column="28" selection-end-line="265" selection-end-column="28" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/CommandHandler.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="56" selection-start-line="56" selection-end-line="56" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/analysis-server/src/main/java/at/tugraz/oo2/server/RequestHandler.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1155">
-              <caret line="86" column="46" selection-start-line="86" selection-start-column="46" selection-end-line="86" selection-end-column="46" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/analysis-server/src/main/java/at/tugraz/oo2/server/InfluxConnection.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2205">
-              <caret line="160" selection-start-line="160" selection-end-line="160" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/LiveUI.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2145">
-              <caret line="183" column="70" selection-start-line="183" selection-start-column="70" selection-end-line="183" selection-end-column="70" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/analysis-server/src/main/java/at/tugraz/oo2/server/Cache.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/analysis-server/src/main/java/at/tugraz/oo2/server/AnalysisServer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="21" column="33" selection-start-line="21" selection-start-column="33" selection-end-line="21" selection-end-column="33" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
-  </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>drawChartBu</find>
-      <find>System.ou</find>
-      <find>pb</find>
-      <find>obser</find>
-      <find>draw</find>
-      <find>creating</find>
-      <find>Date</find>
-      <find>maxi</find>
-      <find>queryd</find>
-      <find>run</find>
-      <find>connect</find>
-      <find>ANSI</find>
-      <find>fix</find>
-      <find>tool</find>
-    </findStrings>
+  <component name="FavoritesManager">
+    <favorites_list name="oo2" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
-      <list>
-        <option value="$PROJECT_DIR$/client/src/main/resources/application.css" />
-        <option value="$PROJECT_DIR$/client/src/main/resources/linechart.fxml" />
-        <option value="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/GUIMain.java" />
-        <option value="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/LiveUI.java" />
-        <option value="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ClientConnection.java" />
-        <option value="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/LineChartUI.java" />
-        <option value="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/ScatterUI.java" />
-        <option value="$PROJECT_DIR$/client/src/main/resources/scatterui.css" />
-        <option value="$PROJECT_DIR$/client/src/main/resources/scatter.fxml" />
-      </list>
-    </option>
   </component>
   <component name="ProjectConfigurationFiles">
     <option name="files">
@@ -226,130 +85,26 @@
     <option name="width" value="1400" />
     <option name="height" value="995" />
   </component>
-  <component name="ProjectView">
-    <navigator proportions="" version="1">
-      <foldersAlwaysOnTop value="true" />
-    </navigator>
-    <panes>
-      <pane id="Scope" />
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="oo2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="OOP2" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="oo2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="OOP2" type="462c0819:PsiDirectoryNode" />
-              <item name="analysis-server" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="oo2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="OOP2" type="462c0819:PsiDirectoryNode" />
-              <item name="analysis-server" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="oo2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="OOP2" type="462c0819:PsiDirectoryNode" />
-              <item name="analysis-server" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="oo2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="OOP2" type="462c0819:PsiDirectoryNode" />
-              <item name="analysis-server" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="oo2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="OOP2" type="462c0819:PsiDirectoryNode" />
-              <item name="analysis-server" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="server" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="oo2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="OOP2" type="462c0819:PsiDirectoryNode" />
-              <item name="client" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="oo2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="OOP2" type="462c0819:PsiDirectoryNode" />
-              <item name="client" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="oo2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="OOP2" type="462c0819:PsiDirectoryNode" />
-              <item name="client" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="oo2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="OOP2" type="462c0819:PsiDirectoryNode" />
-              <item name="client" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="oo2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="OOP2" type="462c0819:PsiDirectoryNode" />
-              <item name="client" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="client" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="oo2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="OOP2" type="462c0819:PsiDirectoryNode" />
-              <item name="client" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="client" type="462c0819:PsiDirectoryNode" />
-              <item name="ui" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="oo2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="OOP2" type="462c0819:PsiDirectoryNode" />
-              <item name="client" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="client" type="462c0819:PsiDirectoryNode" />
-              <item name="ui" type="462c0819:PsiDirectoryNode" />
-              <item name="controller" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="oo2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="OOP2" type="462c0819:PsiDirectoryNode" />
-              <item name="client" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="PackagesPane" />
-    </panes>
+  <component name="ProjectId" id="1TTZ1detZJ8vE1jX166eFKEYZ8b" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/pom.xml" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
@@ -358,15 +113,15 @@
     <property name="project.structure.side.proportion" value="0.0" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
+  <component name="ServiceViewManager">
+    <option name="viewStates">
       <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
       </list>
     </option>
   </component>
@@ -385,11 +140,10 @@
       <workItem from="1573479883535" duration="1674000" />
       <workItem from="1573481729562" duration="1324000" />
       <workItem from="1573483117047" duration="998000" />
+      <workItem from="1573485847272" duration="11420000" />
+      <workItem from="1573645218390" duration="12192000" />
     </task>
     <servers />
-  </component>
-  <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="30860000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -400,164 +154,26 @@
       <is-autoscroll-to-source value="true" />
     </todo-panel>
   </component>
-  <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1920" height="1035" extended-state="6" />
-    <editor active="true" />
-    <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25773746" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Image Layers" order="2" />
-      <window_info id="Designer" order="3" />
-      <window_info id="UI Designer" order="4" />
-      <window_info id="Capture Tool" order="5" />
-      <window_info id="Favorites" order="6" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" weight="0.3296582" />
-      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" />
-      <window_info anchor="bottom" id="Database Changes" order="9" />
-      <window_info anchor="bottom" id="Terminal" order="10" visible="true" weight="0.31532526" />
-      <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Palette" order="3" />
-      <window_info anchor="right" id="Theme Preview" order="4" />
-      <window_info anchor="right" id="Maven" order="5" />
-      <window_info anchor="right" id="Capture Analysis" order="6" />
-      <window_info anchor="right" id="Palette&#9;" order="7" />
-      <window_info anchor="right" id="Database" order="8" />
-    </layout>
-  </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
-  <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/GUIMain.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/main/resources/linechart.fxml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="22" column="30" selection-start-line="22" selection-start-column="30" selection-end-line="22" selection-end-column="30" />
-        </state>
-      </provider>
-      <provider editor-type-id="JavaFX-Scene-Builder" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/main/resources/liveui.css">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/LineChartUI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="248" column="14" selection-start-line="248" selection-start-column="14" selection-end-line="248" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ClientConnection.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3660">
-          <caret line="276" column="24" selection-start-line="276" selection-start-column="24" selection-end-line="276" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Cache.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="8070">
-          <caret line="12" column="20702" selection-start-line="12" selection-start-column="20702" selection-end-line="12" selection-end-column="20702" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/ConnectionUI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1590">
-          <caret line="118" selection-start-line="118" selection-end-line="118" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/analysis-server/src/main/java/at/tugraz/oo2/server/RequestHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1155">
-          <caret line="86" column="46" selection-start-line="86" selection-start-column="46" selection-end-line="86" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/analysis-server/src/main/java/at/tugraz/oo2/server/InfluxConnection.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2205">
-          <caret line="160" selection-start-line="160" selection-end-line="160" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/LiveUI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2145">
-          <caret line="183" column="70" selection-start-line="183" selection-start-column="70" selection-end-line="183" selection-end-column="70" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/analysis-server/src/main/java/at/tugraz/oo2/server/Cache.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/analysis-server/src/main/java/at/tugraz/oo2/server/AnalysisServer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="21" column="33" selection-start-line="21" selection-start-column="33" selection-end-line="21" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/CommandHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="56" selection-start-line="56" selection-end-line="56" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/main/resources/application.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1605">
-          <caret line="107" column="46" selection-start-line="107" selection-start-column="46" selection-end-line="107" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/ScatterUI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="265" column="28" selection-start-line="265" selection-start-column="28" selection-end-line="265" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/main/resources/scatterui.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="1" column="1" lean-forward="true" selection-start-line="1" selection-start-column="1" selection-end-line="1" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/main/resources/scatter.fxml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="30" selection-start-line="7" selection-start-column="30" selection-end-line="7" selection-end-column="30" />
-        </state>
-      </provider>
-      <provider editor-type-id="JavaFX-Scene-Builder" />
-    </entry>
+  <component name="WindowStateProjectService">
+    <state x="487" y="279" key="com.intellij.ide.util.TipDialog" timestamp="1573645218323">
+      <screen x="0" y="0" width="1600" height="876" />
+    </state>
+    <state x="487" y="279" key="com.intellij.ide.util.TipDialog/0.0.1600.876@0.0.1600.876" timestamp="1573645218323" />
+    <state x="484" y="188" width="632" height="528" key="find.popup" timestamp="1573683234787">
+      <screen x="0" y="0" width="1600" height="876" />
+    </state>
+    <state x="484" y="188" width="632" height="528" key="find.popup/0.0.1600.876@0.0.1600.876" timestamp="1573683234787" />
+    <state x="464" y="198" key="run.anything.popup" timestamp="1573485358791">
+      <screen x="0" y="0" width="1600" height="876" />
+    </state>
+    <state x="464" y="198" key="run.anything.popup/0.0.1600.876@0.0.1600.876" timestamp="1573485358791" />
+    <state x="463" y="197" width="672" height="678" key="search.everywhere.popup" timestamp="1573682515714">
+      <screen x="0" y="0" width="1600" height="876" />
+    </state>
+    <state x="463" y="197" width="672" height="678" key="search.everywhere.popup/0.0.1600.876@0.0.1600.876" timestamp="1573682515714" />
   </component>
   <component name="masterDetails">
     <states>

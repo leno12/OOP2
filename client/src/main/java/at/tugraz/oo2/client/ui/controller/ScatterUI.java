@@ -93,7 +93,8 @@ public class ScatterUI extends HBox {
 						{
 							Platform.runLater(new Runnable() {
 								@Override
-								public void run() {
+								public void run()
+								{
 									ap.getChildren().remove(progress_label);
 									ap.getChildren().remove(new_progress_bar);
 								}
@@ -102,6 +103,19 @@ public class ScatterUI extends HBox {
 							return;
 						}
 						List<Sensor> sensors = clientConnection.querySensors().get();
+						if(sensors == null)
+						{
+							Platform.runLater(() -> {
+								ap.getChildren().remove(progress_label);
+								ap.getChildren().remove(new_progress_bar);
+								Alert alert = new Alert(Alert.AlertType.NONE);
+								alert.setAlertType(Alert.AlertType.ERROR);
+								alert.setContentText("Can't reach the server please try to disconnect " +
+										"and then connect again");
+								alert.show();
+							});
+							return;
+						}
 						ObservableList<String> live_data = FXCollections.observableArrayList();
 
 						for (int i = 0; i < sensors.size(); i++) {
@@ -121,9 +135,11 @@ public class ScatterUI extends HBox {
 							}
 						});
 
-					} catch (InterruptedException e) {
+					} catch (InterruptedException e)
+					{
 						e.printStackTrace();
-					} catch (ExecutionException e) {
+					} catch (ExecutionException e)
+					{
 						e.printStackTrace();
 					}
 
@@ -173,6 +189,18 @@ public class ScatterUI extends HBox {
 
 					String selected_sensor_x = lvSensorX.getSelectionModel().getSelectedItem();
 					String selected_sensor_y = lvSensorY.getSelectionModel().getSelectedItem();
+					if(selected_sensor_x.equals(selected_sensor_y))
+					{
+						Platform.runLater(() -> {
+							ap.getChildren().remove(new_progress_bar);
+							ap.getChildren().remove(progress_label);
+							alert2.setAlertType(Alert.AlertType.ERROR);
+							alert2.setContentText("Please choose two distinct sensors");
+							alert2.show();
+
+						});
+						return;
+					}
 
 					String current_sensor[] = selected_sensor_x.split("-");
 					String location = current_sensor[0].replaceAll("\\s+", "");
@@ -200,10 +228,13 @@ public class ScatterUI extends HBox {
 
 
 
-				} catch (NullPointerException e) {
+				} catch (NullPointerException e)
+				{
 					Platform.runLater(() -> {
+						ap.getChildren().remove(progress_label);
+						ap.getChildren().remove(new_progress_bar);
 						alert2.setAlertType(Alert.AlertType.ERROR);
-						alert2.setContentText("Please check selected items");
+						alert2.setContentText("Disconnected!");
 						alert2.show();
 					});
 
@@ -229,10 +260,29 @@ public class ScatterUI extends HBox {
 		try {
 
 			DataSeries new_data_series_x = clientConnection.queryData(sensor_x, date_from, date_to, interval).get();
-			List<DataPoint> data_points_x = new_data_series_x.getDataPoints();
 			DataSeries new_data_series_y = clientConnection.queryData(sensor_y, date_from, date_to, interval).get();
+			if(new_data_series_x.getMinTime() == -1 || new_data_series_y.getMinTime() == -1)
+			{
+				Platform.runLater(() -> {
+					Alert alert = new Alert(Alert.AlertType.NONE);
+					alert.setAlertType(Alert.AlertType.ERROR);
+					alert.setContentText("No data could be found for the selected dates for one of the sensors");
+					alert.show();
+				});
+				return;
+			}
+			else if(new_data_series_x.getMinTime() == 0 || new_data_series_y.getMinTime() == 0)
+			{
+				Platform.runLater(() -> {
+					Alert alert = new Alert(Alert.AlertType.NONE);
+					alert.setAlertType(Alert.AlertType.ERROR);
+					alert.setContentText("Can't reach the server");
+					alert.show();
+				});
+				return;
+			}
+			List<DataPoint> data_points_x = new_data_series_x.getDataPoints();
 			List<DataPoint> data_points_y = new_data_series_y.getDataPoints();
-
 			final NumberAxis xAxis = new NumberAxis();
 			final NumberAxis yAxis = new NumberAxis();
 			String x_label = sensor_x.getLocation() + "/" + sensor_x.getMetric();
@@ -294,7 +344,7 @@ public class ScatterUI extends HBox {
 			Platform.runLater(() -> {
 				Alert alert = new Alert(Alert.AlertType.NONE);
 				alert.setAlertType(Alert.AlertType.ERROR);
-				alert.setContentText("Please check selected items");
+				alert.setContentText("Disconnected!");
 				alert.show();
 			});
 		}

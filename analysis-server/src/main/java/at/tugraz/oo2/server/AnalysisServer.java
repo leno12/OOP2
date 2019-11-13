@@ -48,7 +48,7 @@ public final class AnalysisServer {
 				}
 			}
 		} catch (IOException e) {
-			System.out.println(ANSI_RED + "[ERROR] Can't send the data" + ANSI_RESET);
+			System.out.println(ANSI_RED + "[ERROR] Server is already running" + ANSI_RESET);
 		}
 
 

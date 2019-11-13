@@ -157,12 +157,13 @@ public final class ClientConnection implements AutoCloseable {
 			list.add(EXIT_COMMAND);
 			out.writeObject(list);
 			this.client_socket.close();
-		} catch (IOException e) {
-			//e.printStackTrace();
+		} catch (IOException e)
+		{
 			System.out.println(ANSI_RED + "Fix your goddamn server mate\n" + ANSI_RESET);
 			try {
 				this.client_socket.close();
-			} catch (IOException ex) {
+			} catch (IOException ex)
+			{
 				ex.printStackTrace();
 			}
 		}
@@ -181,22 +182,24 @@ public final class ClientConnection implements AutoCloseable {
 
 		CompletableFuture<List<Sensor>> completableFuture = CompletableFuture.supplyAsync(() ->
 		{
-			List<Sensor> sensors = new ArrayList<>();
-
-
+			List<Sensor> sensors = null;
 			try {
 				List<Object> list = new ArrayList<>();
 				list.add(LS_COMMAND);
 				out.writeObject(list);
 				Object received_object = ois.readObject();
+				sensors = new ArrayList<>();
 				sensors = (List<Sensor>) received_object;
 			}
-			catch (SocketTimeoutException e) {
+			catch (SocketTimeoutException e)
+			{
 				System.out.println(ANSI_RED + TIMEOUT_ERROR + ANSI_RESET);
 			}
-			catch (IOException e) {
+			catch (IOException e)
+			{
 				System.out.println(ANSI_RED + CANT_REACH_SERVER_ERROR + ANSI_RESET);
-			} catch (ClassNotFoundException e) {
+			} catch (ClassNotFoundException e)
+			{
 				System.out.println(ANSI_RED + CLASS_NOT_FOUND_ERROR + ANSI_RESET);
 			}
 
@@ -243,10 +246,12 @@ public final class ClientConnection implements AutoCloseable {
 					return data_point;
 
 				}
-				catch (SocketTimeoutException e) {
+				catch (SocketTimeoutException e)
+				{
 					System.out.println(ANSI_RED + TIMEOUT_ERROR + ANSI_RESET);
 				}
-				catch  (IOException  e) {
+				catch  (IOException  e)
+				{
 
 					System.out.println(ANSI_RED + CANT_REACH_SERVER_ERROR + ANSI_RESET);
 
@@ -259,10 +264,12 @@ public final class ClientConnection implements AutoCloseable {
 
 		try {
 			completableFuture.get();
-		} catch (InterruptedException e) {
+		} catch (InterruptedException e)
+		{
 			System.out.println("Disconnected!");
-		} catch (ExecutionException e) {
-
+		} catch (ExecutionException e)
+		{
+			System.out.println("Disconnected!");
 		}
 		return completableFuture;
 
@@ -274,8 +281,9 @@ public final class ClientConnection implements AutoCloseable {
 	 */
 	public CompletableFuture<DataSeries> queryData(Sensor sensor, long from, long to, long interval) throws
 			ExecutionException,InterruptedException {
-			if(!running)
-				return null;
+
+		if(!running)
+			return null;
 
 		CompletableFuture<DataSeries> completableFuture = CompletableFuture.supplyAsync(() ->
 		{
@@ -284,11 +292,17 @@ public final class ClientConnection implements AutoCloseable {
 
 			DataSeries data_series = new DataSeries(0, 1,1, array, array2);
 			try {
-				if (interval < 1) {
+
+				if (interval < 1)
+				{
 					System.out.println(ANSI_RED + WRONG_INTERVAL_ERROR + ANSI_RESET);
-				} else if (from >= to) {
+				}
+				else if (from >= to)
+				{
 					System.out.println(ANSI_RED + WRONG_END_DATE_ERROR + ANSI_RESET);
-				} else if(from >= System.currentTimeMillis() || to >= System.currentTimeMillis()) {
+				}
+				else if(from >= System.currentTimeMillis() || to >= System.currentTimeMillis())
+				{
 					System.out.println(ANSI_RED + WRONG_DATE_ERROR
 							+ ANSI_RESET);
 				}
@@ -300,7 +314,7 @@ public final class ClientConnection implements AutoCloseable {
 					data_series = (DataSeries) received_object;
 					if (data_series == null)
 					{
-						data_series = new DataSeries(0, 1, 1, array, array2);
+						data_series = new DataSeries(-1, 1, 1, array, array2);
 						System.out.println(ANSI_RED + NO_VALUES_ERROR + ANSI_RESET);
 					}
 				}
