@@ -36,7 +36,8 @@ public class ConnectionUI extends GridPane {
 		loader.setRoot(this);
 		try {
 			loader.load(getClass().getResource("/connection.fxml").openStream());
-		} catch (IOException ex) {
+		} catch (IOException ex)
+		{
 			throw new RuntimeException(ex);
 		}
 
@@ -66,6 +67,23 @@ public class ConnectionUI extends GridPane {
 	public void onConnectClick(ActionEvent actionEvent) throws IOException {
 
 		try {
+			Runtime.getRuntime().addShutdownHook(new Thread() {
+				public void run() {
+					try {
+						Thread.sleep(200);
+						if(clientConnection.getConnectedButton())
+						{
+							clientConnection.setRunning(false);
+							clientConnection.close();
+						}
+
+					} catch (InterruptedException e)
+					{
+						Thread.currentThread().interrupt();
+						e.printStackTrace();
+					}
+				}
+			});
 			clientConnection.setConnectedButton(true);
 			clientConnection.setRunning(true);
 			if((serverTextField.getText() == null || serverTextField.getText().trim().isEmpty())
@@ -111,11 +129,10 @@ public class ConnectionUI extends GridPane {
 
 	}
 
-	public void onDisconnectClick(ActionEvent actionEvent) throws ExecutionException, InterruptedException {
+	public void onDisconnectClick(ActionEvent actionEvent) {
 
 			clientConnection.setConnectedButton(false);
    			clientConnection.setRunning(false);
-
 			clientConnection.close();
 
 

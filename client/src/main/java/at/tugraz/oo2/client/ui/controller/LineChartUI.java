@@ -92,6 +92,17 @@ public class LineChartUI extends AnchorPane {
 
 
 						List<Sensor> sensors = clientConnection.querySensors().get();
+						if(sensors == null)
+						{
+							Platform.runLater(() -> {
+								Alert alert = new Alert(Alert.AlertType.NONE);
+								alert.setAlertType(Alert.AlertType.ERROR);
+								alert.setContentText("Can't reach the server please try to disconnect " +
+										"and then connect again");
+								alert.show();
+							});
+							return;
+						}
 						ObservableList<String> live_data = FXCollections.observableArrayList();
 
 						for (int i = 0; i < sensors.size(); i++) {
@@ -109,9 +120,11 @@ public class LineChartUI extends AnchorPane {
 							}
 						});
 
-					} catch (InterruptedException e) {
+					} catch (InterruptedException e)
+					{
 						e.printStackTrace();
-					} catch (ExecutionException e) {
+					} catch (ExecutionException e)
+					{
 						e.printStackTrace();
 					}
 
@@ -137,7 +150,6 @@ public class LineChartUI extends AnchorPane {
 	 * @param event
 	 */
 	@FXML protected void drawChartButton(ActionEvent event) {
-
 
 		this.getChildren().remove(this.lookup("#chart"));
 		Alert alert = new Alert(Alert.AlertType.NONE);
@@ -189,8 +201,10 @@ public class LineChartUI extends AnchorPane {
 
 						} catch (NullPointerException e) {
 							Platform.runLater(() -> {
+								this.getChildren().remove(progress_label);
+								this.getChildren().remove(new_progress_bar);
 								alert2.setAlertType(Alert.AlertType.ERROR);
-								alert2.setContentText("Please check selected items");
+								alert2.setContentText("Disconnected");
 								alert2.show();
 							});
 
@@ -223,6 +237,27 @@ public class LineChartUI extends AnchorPane {
 		try {
 
 			DataSeries new_data_series = clientConnection.queryData(sensor, date_from, date_to, interval).get();
+			if(new_data_series.getMinTime() == -1)
+			{
+				Platform.runLater(() -> {
+					Alert alert = new Alert(Alert.AlertType.NONE);
+					alert.setAlertType(Alert.AlertType.ERROR);
+					alert.setContentText("No data could be found for the selected dates for sensor "
+							+ sensor.getLocation() + "/" + sensor.getMetric());
+					alert.show();
+				});
+				return;
+			}
+			else if(new_data_series.getMinTime() == 0)
+			{
+				Platform.runLater(() -> {
+					Alert alert = new Alert(Alert.AlertType.NONE);
+					alert.setAlertType(Alert.AlertType.ERROR);
+					alert.setContentText("Can't reach the server");
+					alert.show();
+				});
+				return;
+			}
 			List<DataPoint> data_points = new_data_series.getDataPoints();
 			final NumberAxis xAxis = new NumberAxis();
 			/*xAxis.setTickLabelFormatter(new StringConverter<Number>() {
@@ -243,7 +278,7 @@ public class LineChartUI extends AnchorPane {
 			xAxis.setTickLabelRotation(90);
 			final NumberAxis yAxis = new NumberAxis();
 			//yAxis.translateXProperty().bind(xAxis.widthProperty().divide(2));
-			xAxis.setLabel("Interval");
+			xAxis.setLabel("Interval in minutes");
 			final LineChart<Number, Number> lineChart =
 					new LineChart<Number, Number>(xAxis, yAxis);
 			lineChart.setCreateSymbols(false);
@@ -312,7 +347,7 @@ public class LineChartUI extends AnchorPane {
 			Platform.runLater(() -> {
 				Alert alert = new Alert(Alert.AlertType.NONE);
 				alert.setAlertType(Alert.AlertType.ERROR);
-				alert.setContentText("Please check selected items");
+				alert.setContentText("Disconnected!");
 				alert.show();
 			});
 		}

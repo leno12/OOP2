@@ -12,10 +12,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -60,17 +57,9 @@ public class LiveUI extends AnchorPane {
 		clientConnection.addConnectionClosedListener(this::onConnectionClosed);
 
 
-		GUIMain.getStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
-			public void handle(WindowEvent we) {
-				if(clientConnection.getConnectedButton())
-				{
-					clientConnection.setRunning(false);
-					clientConnection.close();
-				}
-				Platform.exit();
-				System.exit(0);
-			}
-		});
+
+
+
 
 	}
 
@@ -118,7 +107,21 @@ public class LiveUI extends AnchorPane {
 						 List<Sensor> sensors = null;
 						 try {
 							 sensors = clientConnection.querySensors().get();
-						 } catch (InterruptedException e) {
+							 if(sensors == null)
+							 {
+								 Platform.runLater(() -> {
+									 getChildren().remove(fetching_data);
+									 getChildren().remove(new_progress_bar);
+									 Alert alert = new Alert(Alert.AlertType.NONE);
+									 alert.setAlertType(Alert.AlertType.ERROR);
+									 alert.setContentText("Can't reach the server please try to disconnect " +
+											 "and then connect again");
+									 alert.show();
+								 });
+								 return;
+							 }
+						 } catch (InterruptedException e)
+						 {
 							 Platform.runLater(new Runnable() {
 								 @Override
 								 public void run() {
@@ -152,7 +155,8 @@ public class LiveUI extends AnchorPane {
 								 live.data = new_data_point.getValue();
 								 live.timestamp = Util.TIME_FORMAT.format(new Date(new_data_point.getTime()));
 								 live_data.add(live);
-							 } catch (InterruptedException e) {
+							 } catch (InterruptedException e)
+							 {
 								 Platform.runLater(new Runnable() {
 								  @Override
 									public void run() {
@@ -181,8 +185,8 @@ public class LiveUI extends AnchorPane {
 					 }
 			 }
 		 };
-		ses.setContinueExistingPeriodicTasksAfterShutdownPolicy(true);
 
+		ses.setContinueExistingPeriodicTasksAfterShutdownPolicy(true);
 		sched_future = ses.scheduleAtFixedRate(new_runnable , 0, 10, TimeUnit.SECONDS);
 
 	}

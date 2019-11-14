@@ -77,6 +77,7 @@ public class RequestHandler extends Thread {
 
                                 data_series = data_series.subSeries(from, to);
                                 data_series = data_series.scale(interval);
+
                             } else {
                                 data_series = data_series.scale(interval);
                             }
