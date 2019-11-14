@@ -74,6 +74,7 @@ public class RequestHandler extends Thread {
                         } else {
 
                             if (from > data_series.getMinTime() || to < data_series.getMaxTime()) {
+
                                 data_series = data_series.subSeries(from, to);
                                 data_series = data_series.scale(interval);
                             } else {

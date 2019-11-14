@@ -224,13 +224,8 @@ public class LineChartUI extends AnchorPane {
 
 			DataSeries new_data_series = clientConnection.queryData(sensor, date_from, date_to, interval).get();
 			List<DataPoint> data_points = new_data_series.getDataPoints();
-			int label_gap = data_points.size()/24;
-			final NumberAxis xAxis = new NumberAxis((double)data_points.get(0).getTime()/3600000.0, (double)data_points.get(data_points.size() - 1).getTime()/3600000, label_gap);
-			xAxis.setLowerBound((double)data_points.get(0).getTime()/3600000);
-			xAxis.setUpperBound((double)data_points.get(data_points.size() - 1).getTime()/3600000);
-			xAxis.setTickUnit(label_gap);
-			//xAxis.setMinorTickVisible(false);
-			xAxis.setTickLabelFormatter(new StringConverter<Number>() {
+			final NumberAxis xAxis = new NumberAxis();
+			/*xAxis.setTickLabelFormatter(new StringConverter<Number>() {
 				@Override
 				public String toString(Number number) {
 					double test = number.doubleValue() * 3600000.0;
@@ -240,14 +235,15 @@ public class LineChartUI extends AnchorPane {
 
 				@Override
 				public Number fromString(String s) {
+					System.out.println("problem\n");
 					return null;
 				}
-			});
-			xAxis.setAutoRanging(false);
+			});*/
+			//xAxis.setAutoRanging(false);
 			xAxis.setTickLabelRotation(90);
 			final NumberAxis yAxis = new NumberAxis();
 			//yAxis.translateXProperty().bind(xAxis.widthProperty().divide(2));
-			xAxis.setLabel("Date");
+			xAxis.setLabel("Interval");
 			final LineChart<Number, Number> lineChart =
 					new LineChart<Number, Number>(xAxis, yAxis);
 			lineChart.setCreateSymbols(false);
@@ -257,9 +253,11 @@ public class LineChartUI extends AnchorPane {
 			lineChart.setHorizontalGridLinesVisible(false);
 			lineChart.setVerticalGridLinesVisible(false);
 			lineChart.getStylesheets().add("/chart.css");
+			long inc = 0;
 			for (int i = 0; i < data_points.size(); i++) {
 				Double value = data_points.get(i).getValue();
-				series1.getData().add(new XYChart.Data(data_points.get(i).getTime()/3600000, value));
+				series1.getData().add(new XYChart.Data((double)inc/60000.0, value));
+				inc += interval;
 			}
 			lineChart.getData().add(series1);
 			VBox chart = new VBox();
