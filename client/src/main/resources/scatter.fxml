@@ -86,6 +86,17 @@
 				</Button>
 			</VBox>
 
+			<VBox>
+				<Button prefWidth="200" styleClass="draw-button" fx:id="scatterHistoryButton" text="Show recent queries" onAction="#scatterHistory">
+					<VBox.margin>
+						<Insets>
+							<left>30</left>
+							<top>60</top>
+						</Insets>
+					</VBox.margin>
+				</Button>
+			</VBox>
+
 		</HBox>
 
 		<AnchorPane fx:id="ap" VBox.vgrow="ALWAYS" HBox.hgrow="NEVER">

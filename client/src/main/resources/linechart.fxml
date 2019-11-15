@@ -24,6 +24,13 @@
 					</Insets>
 				</GridPane.margin>
 				</Button>
+				<Button styleClass="draw-button" fx:id="queryHistory" text="Show recent queries"   GridPane.rowIndex="7" onAction="#queryHistory">
+					<GridPane.margin>
+						<Insets>
+							<top>120</top>
+						</Insets>
+					</GridPane.margin>
+				</Button>
 
 
 			</children>

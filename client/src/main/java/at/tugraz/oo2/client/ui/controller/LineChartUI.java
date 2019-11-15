@@ -19,17 +19,30 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -50,6 +63,9 @@ public class LineChartUI extends AnchorPane {
 	private Spinner<Integer> spInterval;
 	@FXML
 	public Button drawChartButton;
+	@FXML
+	public Button queryHistory;
+	public String[] content_lines;
 
 
 	public LineChartUI(ClientConnection clientConnection) {
@@ -215,10 +231,69 @@ public class LineChartUI extends AnchorPane {
 
 	}
 
+	/**
+	 * Get data needed to show Line Chart query history when Show recent queries Button is pressed
+	 * @param event
+	 */
+	@FXML protected void queryHistory(ActionEvent event) {
+
+
+		String hist = "LineChartHistory.txt";
+		String content = null;
+		try {
+			content = Files.readString(Paths.get(hist), StandardCharsets.UTF_8);
+		} catch (IOException e) {
+			Alert alert = new Alert(Alert.AlertType.NONE);
+			alert.setAlertType(Alert.AlertType.ERROR);
+			alert.setContentText("No recent queries found");
+			alert.show();
+			return;
+
+		}
+		content_lines = content.split(System.getProperty("line.separator"));
+
+		ListView<String> history = new ListView<String>();
+		ObservableList<String> obs = FXCollections.observableArrayList(content_lines);
+		history.setItems(obs);
+
+		final Stage dialog = new Stage();
+		dialog.initModality(Modality.APPLICATION_MODAL);
+		dialog.initOwner(GUIMain.getStage());
+		VBox dialogVbox = new VBox(20);
+		dialogVbox.setVgrow(history, Priority.ALWAYS);
+		history.setStyle("-fx-text-fill: white");
+		dialogVbox.getChildren().add(history);
+		Scene dialogScene = new Scene(dialogVbox, 400, 500);
+		dialogVbox.setStyle("-fx-background-color: rgba(38, 38, 38, 0.85); -fx-text-fill: white");
+		dialog.setScene(dialogScene);
+		dialog.show();
+
+		history.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent mouseEvent) {
+				String selected_sensor = history.getSelectionModel().getSelectedItem();
+				String[] arr = selected_sensor.split(" ");
+				if(mouseEvent.getClickCount() == 2)
+				{
+					Date date_from = new Date(Long.parseLong(arr[2]));
+					Date date_to = new Date(Long.parseLong(arr[3]));
+					Integer inter = Integer.parseInt(arr[4]);
+					inter /= 60000;
+
+					dpFrom.setDate(date_from.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+					dpTo.setDate(date_to.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+					spInterval.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(5, 10000, inter, 5));
+					lvSensors.getSelectionModel().select(arr[0] + " - " + arr[1]);
+					dialog.close();
+				}
+			}
+		});
+	}
+
 
 	@FXML
 	public void initialize() {
-		lvSensors.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+		lvSensors.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		spInterval.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(5, 10000, 60, 5));
 		this.setStyle("-fx-background-color: #000000;");
 	}
@@ -258,6 +333,45 @@ public class LineChartUI extends AnchorPane {
 				});
 				return;
 			}
+			String history = "LineChartHistory.txt";
+			FileWriter fw = null;
+			try {
+				fw = new FileWriter(history, true);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			BufferedWriter bw = new BufferedWriter(fw);
+			String content = " ";
+			Boolean todo = true;
+			try {
+				content = Files.readString(Paths.get(history), StandardCharsets.UTF_8);
+				content_lines = content.split(System.getProperty("line.separator"));
+				for(int i = 0; i < content_lines.length; ++i)
+				{
+					String line_check = sensor.getLocation() + " " + sensor.getMetric() + " " +
+							date_from + " " + date_to + " " + interval;
+					if(line_check.equals(content_lines[i]))
+						todo = false;
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			if(todo)
+			{
+				try {
+					bw.write(sensor.getLocation() + " ");
+					bw.write(sensor.getMetric() + " ");
+					bw.write(date_from + " ");
+					bw.write(date_to + " ");
+					bw.write(interval + "\n");
+					bw.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+
+
+
 			List<DataPoint> data_points = new_data_series.getDataPoints();
 			final NumberAxis xAxis = new NumberAxis();
 			/*xAxis.setTickLabelFormatter(new StringConverter<Number>() {
