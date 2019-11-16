@@ -44,8 +44,7 @@ import java.util.concurrent.ExecutionException;
 public class ScatterUI extends HBox {
 
 	private final ClientConnection clientConnection;
-	private Label fetching_data_status;
-	private Label fetching_data_status_y;
+	private ProgressBar pb;
 
 	@FXML
 	private ListView<String> lvSensorX;
@@ -76,8 +75,7 @@ public class ScatterUI extends HBox {
 
 
 	public ScatterUI(ClientConnection clientConnection) {
-		this.fetching_data_status = null;
-		this.fetching_data_status_y = null;
+		this.pb = null;
 		this.clientConnection = clientConnection;
 
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/scatter.fxml"));
@@ -97,15 +95,17 @@ public class ScatterUI extends HBox {
 	 * Get avalibale sensors from the server and display them in list view
 	 */
 	private void onConnectionOpened() {
-
 		Label progress_label = new Label("Fetching sensor data");
-		ProgressBar pb = new ProgressBar();
 		HBox new_progress_bar = new HBox();
-		this.createProgressBar(pb,progress_label,new_progress_bar);
+        if(pb == null) {
+        	pb = new ProgressBar();
+			createProgressBar(pb, progress_label, new_progress_bar);
+		}
 		Runnable task = new Runnable()
 		{
 			public void run()
 			{
+
 				synchronized (clientConnection) {
 
 					try {
@@ -171,7 +171,6 @@ public class ScatterUI extends HBox {
 		Thread thread = new Thread(task);
 		thread.setDaemon(true);
 		thread.start();
-
 
 	}
 
@@ -314,7 +313,6 @@ public class ScatterUI extends HBox {
 					Date date_to = new Date(Long.parseLong(arr[5]));
 					Integer inter = Integer.parseInt(arr[6]);
 					inter /= 60000;
-
 					dpFrom.setDate(date_from.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
 					dpTo.setDate(date_to.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
 					spInterval.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(5, 10000, inter, 5));
@@ -336,9 +334,7 @@ public class ScatterUI extends HBox {
 	 */
 	public void drawScatterPlot(Sensor sensor_x,Sensor sensor_y, long date_from, long date_to, long interval)
 	{
-
 		try {
-
 			DataSeries new_data_series_x = clientConnection.queryData(sensor_x, date_from, date_to, interval).get();
 			DataSeries new_data_series_y = clientConnection.queryData(sensor_y, date_from, date_to, interval).get();
 			if(new_data_series_x.getMinTime() == -1 || new_data_series_y.getMinTime() == -1)
@@ -478,8 +474,7 @@ public class ScatterUI extends HBox {
 	 * @param progress_label
 	 * @param new_progress_bar
 	 */
-	public void createProgressBar(ProgressBar pb, Label progress_label, HBox new_progress_bar)
-	{
+	public void createProgressBar(ProgressBar pb, Label progress_label, HBox new_progress_bar) {
 		progress_label.setMaxWidth(Double.MAX_VALUE);
 		AnchorPane.setLeftAnchor(progress_label, 0.0);
 		AnchorPane.setRightAnchor(progress_label, 0.0);
@@ -493,7 +488,9 @@ public class ScatterUI extends HBox {
 		AnchorPane.setTopAnchor(new_progress_bar, 0.0);
 		new_progress_bar.setAlignment(Pos.CENTER);
 		new_progress_bar.getChildren().add(pb);
+
 		ap.getChildren().add(new_progress_bar);
 		ap.getChildren().add(progress_label);
+
 	}
 }

@@ -58,9 +58,6 @@ public class LiveUI extends AnchorPane {
 
 
 
-
-
-
 	}
 
 	/**
@@ -79,7 +76,6 @@ public class LiveUI extends AnchorPane {
 			}
 		ses.shutdownNow();
 
-
 	}
 
 	/**
@@ -89,19 +85,16 @@ public class LiveUI extends AnchorPane {
 	 */
 	private void onConnectionOpened()  {
 
-
 		ProgressBar pb = new ProgressBar();
 		Label fetching_data = new Label("Fetching Live Data");
 		HBox new_progress_bar = new HBox();
 		this.createProgressBar(fetching_data,pb,new_progress_bar);
-
 
 	    ses = new ScheduledThreadPoolExecutor(1);
 
 		this.new_runnable = new Runnable() {
 			 @Override
 			 public void run() {
-
 					 synchronized (clientConnection) {
 
 						 List<Sensor> sensors = null;
@@ -149,7 +142,6 @@ public class LiveUI extends AnchorPane {
 									 });
 									 return;
 								 }
-
 								 new_data_point = clientConnection.queryValue(sensors.get(i)).get();
 								 LiveData live = new LiveData(sensors.get(i).getLocation(), sensors.get(i).getMetric());
 								 live.data = new_data_point.getValue();

@@ -26,11 +26,7 @@
     -fx-stroke: #bb0000;
 }
 .chart-line-symbol {
-    -fx-background-insets: 0,0;
-    -fx-background-radius: 0px;
-    -fx-padding: 0px;
-    -fx-shape: "";
-    -fx-background-color: transparent;
+    -fx-background-color: #ff6f1b;
 }
 
 .axis {

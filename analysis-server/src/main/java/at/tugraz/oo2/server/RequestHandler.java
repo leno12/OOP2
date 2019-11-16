@@ -5,6 +5,7 @@ import at.tugraz.oo2.data.DataSeries;
 import at.tugraz.oo2.data.Sensor;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -90,12 +91,20 @@ public class RequestHandler extends Thread {
                         break;
                 }
             } catch (IOException | UnirestException | ClassNotFoundException e) {
-               e.printStackTrace();
+
+               //e.printStackTrace();
+                try {
+                    this.socket.close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+                System.out.println("Connection closed");
+                break;
+
             }
         }
         try
         {
-
             this.out_stream.close();
             this.in_stream.close();
 

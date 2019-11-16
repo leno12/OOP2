@@ -55,7 +55,7 @@ public final class CommandHandler {
 		System.out.println("Welcome to the command line interface. " + MSG_HELP);
 		try (Scanner scanner = new Scanner(System.in)) {
 
-			Runtime.getRuntime().addShutdownHook(new Thread() {
+			/*Runtime.getRuntime().addShutdownHook(new Thread() {
 				public void run() {
 					try {
 						Thread.sleep(200);
@@ -67,6 +67,8 @@ public final class CommandHandler {
 					}
 				}
 			});
+			*/
+
 			while (true) {
 				final String line;
 				System.out.print("> ");
@@ -79,13 +81,13 @@ public final class CommandHandler {
 				if (line.startsWith("#")) {
 					System.out.println(line);
 				} else if (line.equalsIgnoreCase("exit")) {
+					conn.close();
 					break;
 				} else if (!line.isEmpty()) {
 					handle(line.split("\\s+"));
 				}
 			}
 		}
-
 
 		System.out.println("Bye!");
 	}

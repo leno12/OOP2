@@ -41,6 +41,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.DecimalFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -157,7 +158,6 @@ public class LineChartUI extends AnchorPane {
 
 
 
-
 	}
 
 	/**
@@ -226,6 +226,7 @@ public class LineChartUI extends AnchorPane {
 
 						}
 					}
+
 
 			}).start();
 
@@ -308,9 +309,7 @@ public class LineChartUI extends AnchorPane {
 	 */
 	public void drawLineChart(Sensor sensor, long date_from, long date_to, long interval, String selected_sensor)
 	{
-
 		try {
-
 			DataSeries new_data_series = clientConnection.queryData(sensor, date_from, date_to, interval).get();
 			if(new_data_series.getMinTime() == -1)
 			{
@@ -371,31 +370,14 @@ public class LineChartUI extends AnchorPane {
 			}
 
 
-
 			List<DataPoint> data_points = new_data_series.getDataPoints();
 			final NumberAxis xAxis = new NumberAxis();
-			/*xAxis.setTickLabelFormatter(new StringConverter<Number>() {
-				@Override
-				public String toString(Number number) {
-					double test = number.doubleValue() * 3600000.0;
-					Date new_date = new Date((long)test);
-					return new_date.toString();
-				}
-
-				@Override
-				public Number fromString(String s) {
-					System.out.println("problem\n");
-					return null;
-				}
-			});*/
-			//xAxis.setAutoRanging(false);
 			xAxis.setTickLabelRotation(90);
 			final NumberAxis yAxis = new NumberAxis();
-			//yAxis.translateXProperty().bind(xAxis.widthProperty().divide(2));
 			xAxis.setLabel("Interval in minutes");
 			final LineChart<Number, Number> lineChart =
 					new LineChart<Number, Number>(xAxis, yAxis);
-			lineChart.setCreateSymbols(false);
+			lineChart.setCreateSymbols(true);
 			lineChart.setTitle(selected_sensor);
 			XYChart.Series series1 = new XYChart.Series();
 			series1.setName("Line Chart");
@@ -409,6 +391,19 @@ public class LineChartUI extends AnchorPane {
 				inc += interval;
 			}
 			lineChart.getData().add(series1);
+			for (XYChart.Series<Number, Number> s : lineChart.getData()) {
+				for(int i = 0; i < s.getData().size(); i++)
+				{
+
+					DecimalFormat df = new DecimalFormat("#.##");
+					Date date = new Date(data_points.get(i).getTime());
+					String y_label = sensor.getLocation() + "/" + sensor.getMetric();
+					String str = date.toString() + '\n' + y_label + " - " + df.format(s.getData().get(i).getYValue());
+					Tooltip hover = new Tooltip(str);
+					hover.setShowDelay(Duration.seconds(0));
+					Tooltip.install(s.getData().get(i).getNode(), hover);
+				}
+			}
 			VBox chart = new VBox();
 			chart.setId("chart");
 			chart.setStyle("-fx-background-color: #000000;");
