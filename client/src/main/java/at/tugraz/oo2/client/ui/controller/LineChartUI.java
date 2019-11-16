@@ -179,7 +179,6 @@ public class LineChartUI extends AnchorPane {
 		this.createProgressBar(pb,progress_label,new_progress_bar);
 
 		new Thread(() -> {
-
 					synchronized (clientConnection) {
 						try {
 
