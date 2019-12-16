@@ -5,6 +5,14 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>shared</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>nz.ac.waikato.cms.weka</groupId>
+            <artifactId>weka-stable</artifactId>
+            <version>3.8.3</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 
     <parent>
 		<groupId>at.tugraz.oo2</groupId>

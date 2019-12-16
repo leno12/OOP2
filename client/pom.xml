@@ -47,6 +47,12 @@
             <version>0.0.8</version>
             <scope>compile</scope>
         </dependency>
+		<dependency>
+			<groupId>ca.pjer</groupId>
+			<artifactId>ekmeans</artifactId>
+			<version>2.0.0</version>
+			<scope>compile</scope>
+		</dependency>
     </dependencies>
 
 	<build>

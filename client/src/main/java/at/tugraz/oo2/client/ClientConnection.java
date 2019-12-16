@@ -50,6 +50,7 @@ public final class ClientConnection implements AutoCloseable {
 	static final String LS_COMMAND = "ls";
 	static final String NOW_COMMAND = "now";
 	static final String DATA_COMMAND = "data";
+	static final String CLUSTER_COMMMAND = "cluster";
 	private boolean connectedButton = false;
 
 
@@ -343,8 +344,57 @@ public final class ClientConnection implements AutoCloseable {
 	/**
 	 * Second assignment.
 	 */
-	public CompletableFuture<List<ClusterDescriptor>> getClustering(Sensor sensor, long from, long to, long intervalClusters, long intervalPoints, int numberOfClusters) {
-		throw new UnsupportedOperationException("TODO");
+	public CompletableFuture<List<ClusterDescriptor>> getClustering(Sensor sensor, long from, long to, long intervalClusters, long intervalPoints, int numberOfClusters) throws ExecutionException, InterruptedException {
+		CompletableFuture<List<ClusterDescriptor>> completableFuture = CompletableFuture.supplyAsync(() ->
+		{
+			double[] array = new double[1];
+			boolean[] array2 = new boolean[1];
+
+			List<ClusterDescriptor>  list2 = null;
+			try {
+
+				if (intervalPoints < 1)
+				{
+					System.out.println(ANSI_RED + WRONG_INTERVAL_ERROR + ANSI_RESET);
+				}
+				else if (from >= to)
+				{
+					System.out.println(ANSI_RED + WRONG_END_DATE_ERROR + ANSI_RESET);
+				}
+				else if(from >= System.currentTimeMillis() || to >= System.currentTimeMillis())
+				{
+					System.out.println(ANSI_RED + WRONG_DATE_ERROR
+							+ ANSI_RESET);
+				}
+				else
+				{
+					List<Object> list = new ArrayList<>(Arrays.asList(CLUSTER_COMMMAND, sensor, from, to, intervalClusters,intervalPoints,numberOfClusters));
+					this.out.writeObject(list);
+					Object received_object = this.ois.readObject();
+					list2 = (List<ClusterDescriptor>) received_object;
+
+				}
+
+				return list2;
+
+			} catch (SocketTimeoutException e) {
+				System.out.println(ANSI_RED + TIMEOUT_ERROR + ANSI_RESET);
+			}
+
+			catch (IOException e) {
+				System.out.println(ANSI_RED + CANT_REACH_SERVER_ERROR + ANSI_RESET);
+
+			} catch (ClassNotFoundException e) {
+				System.out.println(ANSI_RED + CLASS_NOT_FOUND_ERROR + ANSI_RESET);
+
+			}
+
+			return list2;
+
+		});
+		completableFuture.get();
+		return completableFuture;
+
 	}
 
 	/**

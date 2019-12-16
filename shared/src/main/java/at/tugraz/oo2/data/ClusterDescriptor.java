@@ -1,8 +1,10 @@
 package at.tugraz.oo2.data;
 
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
+;
 
 /**
  * Represents a cluster returned by the k-means algorithm. It contains an average series along with its
@@ -11,6 +13,7 @@ import java.util.List;
 public final class ClusterDescriptor implements Serializable {
 	private final double[] average;
 	private final List<DataSeries> members;
+
 
 	public ClusterDescriptor(double[] average, List<DataSeries> members) {
 		this.average = average;
