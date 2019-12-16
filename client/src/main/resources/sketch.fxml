@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import at.tugraz.oo2.client.ui.component.DurationPicker?>
+<fx:root prefHeight="680.0" prefWidth="650.0" stylesheets="application.css" type="javafx.scene.layout.HBox"
+		 xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+
+	<HBox AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+		<GridPane styleClass="leftPanelPane" HBox.hgrow="ALWAYS">
+			<Label text="Choose metric:" GridPane.rowIndex="0"/>
+			<ListView fx:id="lvMetric" GridPane.rowIndex="1"/>
+			<Label text="Search from:" GridPane.rowIndex="2"/>
+			<DatePicker fx:id="dpFrom" GridPane.rowIndex="3"/>
+			<Label prefWidth="250.0" text="Search to:" GridPane.rowIndex="4"/>
+			<DatePicker fx:id="dpTo" GridPane.rowIndex="5"/>
+			<Label text="Min. Windowsize:" GridPane.rowIndex="6"/>
+			<DurationPicker fx:id="dpMinSize" GridPane.rowIndex="7"/>
+			<Label text="Max. Windowsize:" GridPane.rowIndex="8"/>
+			<DurationPicker fx:id="dpMaxSize" GridPane.rowIndex="9"/>
+			<Label text="Max. Results:" GridPane.rowIndex="10"/>
+			<Spinner fx:id="spMaxResultCount" GridPane.rowIndex="11"/>
+			<columnConstraints>
+				<ColumnConstraints/>
+			</columnConstraints>
+			<rowConstraints>
+				<RowConstraints/>
+				<RowConstraints/>
+				<RowConstraints/>
+				<RowConstraints/>
+				<RowConstraints/>
+				<RowConstraints/>
+			</rowConstraints>
+		</GridPane>
+		<Separator orientation="VERTICAL" prefHeight="200.0">
+			<HBox.margin>
+				<Insets left="-1.0" right="-5.0"/>
+			</HBox.margin>
+		</Separator>
+		<VBox prefHeight="600.0" prefWidth="400.0" HBox.hgrow="ALWAYS">
+			<Label prefHeight="300" text="TODO: Sketch here"/>
+			<Separator/>
+			<ScrollPane hbarPolicy="ALWAYS" pannable="true" VBox.vgrow="ALWAYS" vbarPolicy="NEVER">
+				<Label prefHeight="250" text="TODO: Results here"/>
+			</ScrollPane>
+		</VBox>
+	</HBox>
+</fx:root>

@@ -135,6 +135,13 @@ The API of InfludDb can be reached via [https://belinda.cgv.tugraz.at/influxdb/q
 curl -i -XPOST "https://belinda.cgv.tugraz.at/influxdb/query?db=oo2&u=oo2ro&p=ier9ieYaiJei" --data-binary "q=SHOW SERIES on oo2"
 ```
 
+For easier local testing you can download a backup of the influx database here: [https://belinda.cgv.tugraz.at/influx_backup.zip](https://belinda.cgv.tugraz.at/influx_backup.zip).
+
+With the following command you can restore the database to a running influxDB instance (influx_backup_path should be the path to the extracted zip archive):
+```
+influxd restore -portable -db oo2 influx_backup_path
+```
+
 ## When You're Done ...
 ... with setting everything up, help your teammates with doing the same and then get some sleep. If you encounter any problems, contact us ASAP.
 
@@ -176,7 +183,7 @@ The CLIs sole purpose is to improve testability for us and to provide better deb
 * `now <location> <metric>` - Queries the last reading of the specified sensor.
 * `data <location> <metric> <from-time> <to-time> <interval-minutes>` - Queries sensor data within the given range and interval. While *from* is inclusive, *to* is exclusive. For example, the query `data HSi12 temperature 2019-10-01 2019-10-04 1440` should return 3 data points at `2019-10-01 00:00:00`, `2019-10-02 00:00:00` and `2019-10-03 00:00:00`.
 * `cluster <location> <metric> <from-time> <to-time> <intervalClusters-minutes> <intervalPoints-minutes> <numClusters>` - Fetches sensor data within the given time range and divides the data into clusters. `intervalClusters` specifies which timespan one cluster member comprises, while `intervalPoints` influences how many data values one cluster member consists of. `numClusters` dictates how many clusters the final result should have. For example, `... 1440 60 4` implies that each cluster member represents one day containing 24 samples. All days are then structured into 4 clusters. A list of clusters including their average point, members and error are returned.
-* `<metric> <from-time> <to-time> <minSize-minutes> <maxSize-minutes> <maxResultCount> <ref ...>` - Fetches data from all sensors matching the given metric within the given time range and performs a distributed sliding window similarity search on it. A reference curve is given in `ref`, which is horizontally scaled between `minSize` and `maxSize` and matched with all fetched data. The `maxResultCount` most similar results are returned along with their similarity score.
+* `sim <metric> <from-time> <to-time> <minSize-minutes> <maxSize-minutes> <maxResultCount> <ref ...>` - Fetches data from all sensors matching the given metric within the given time range and performs a distributed sliding window similarity search on it. A reference curve is given in `ref`, which is horizontally scaled between `minSize` and `maxSize` and matched with all fetched data. The `maxResultCount` most similar results are returned along with their similarity score.
 
 More information on how these queries should be implemented can be found below.
 
@@ -192,7 +199,8 @@ Aside from implementing the features described below, both submissions must fulf
 * The Analysis Server performs all operations to get the data into final shape as requested by the Client. This means all computations must be performed at the Analysis Server (e.g., caching, clustering, searching).
 * The GUI must always be responsive, even when one or more requests are processed in the background.
 
-When your submission is graded, the last commit before the deadline on the **master** branch is checked out. Don't forget to write the file `README.md` in the root directory of your repository, where you document important design decisions, open issues or bonus tasks you implemented.
+When your submission is graded, the last commit before the deadline on the **master** branch is checked out. Don't forget to write the file `
+md` in the root directory of your repository, where you document important design decisions, open issues or bonus tasks you implemented.
 
 # Assignment 1 - Protocol, Caching, Simple Visualizations
 In this assignment you will implement the logic necessary for the Client and Analysis Server to exchange data. You need to integrate a graph library into the already existing GUI to display line charts and scatter plots. To reduce the number of requests to InfluxDb, the Analysis Server must cache already fetched data.
@@ -250,10 +258,10 @@ Educate yourself on how the k-Means algorithm works. In a two-dimensional scenar
 
 Now instead of working with two-dimensional points, one can also represent a data series as a point. One day with an interval of 1 hour results in a 24-dimensional point. The same mathematical rules that apply for two dimensions also work with more dimensions. For your convenience, there are already a range of libraries that implement the k-Means algorithm in a generic way.
 
-The Client sends a request to the Analysis Server containing a `Sensor` instance and a start (inclusive) and end time (exclusive). The `intervalPoints` parameter sets the interval that the raw input data is sampled in. The resulting data series is then sanitized by interpolating missing data points. The method `DataSeries.interpolate()` does that job. The whole series is then sliced into consecutive sub series with the length `intervalClusters`. Series with one or more missing values are thrown out. Each series is normalized so that the lowest and highest value within a series are 0 and 1 respectively, using the method `DataSeries.normalize()`. For example, the CLI parameters `cluster HSi12 humidity 2019-09-01 2019-10-01 120 5 10` result in a total of `31 * 24 * 60 / 120 = 372` points with `120 / 5 = 24` dimensions each, being assigned to 10 clusters.
+The Client sends a request to the Analysis Server containing a `Sensor` instance and a start (inclusive) and end time (exclusive). The `intervalPoints` parameter sets the interval that the raw input data is sampled in. The resulting data series is then sanitized by interpolating missing data points. The method `DataSeries.interpolate()` does that job. The whole series is then sliced into consecutive sub series with the length `intervalClusters`. Series with one or more missing values are thrown out. Each series is normalized so that the lowest and highest value within a series are 0 and 1 respectively, using the method `DataSeries.normalize()`. For example, the CLI parameters `cluster HSi12 humidity 2019-09-01 2019-10-01 120 5 10` result in a total of `30 * 24 * 60 / 120 = 360` points with `120 / 5 = 24` dimensions each, being assigned to 10 clusters.
 
 ## Cluster Visualization in GUI (**10P**)
-The user selects a sensor, a start and end time, intervals and enters a number of clusters. The user is presented with an overview of all clusters sorted by error, with each cluster being represented by its own line chart. The error and number of members for each cluster is also displayed. When selecting a cluster, a more detailed view with all cluster members, their timestamps and errors is shown. Each cluster member is displayed in a line chart. You can decide if there is a separate chart for each curve or if all curves are presented in one chart. If you choose the latter, the timestamp of a curve should be shown when hovering it and the thicker the curve, the lower the error.
+The user selects a sensor, a start and end time, intervals and enters a number of clusters. The user is presented with an overview of all clusters sorted by error, with each cluster being represented by its own line chart. The error and number of members for each cluster is also displayed. When selecting a cluster, a more detailed view with all cluster members, their timestamps and errors is shown. You can either present this information in a new tab or open another window. Each cluster member is displayed in a line chart. You can decide if there is a separate chart for each curve or if all curves are presented in one chart. If you choose the latter, the timestamp of a curve should be shown when hovering it and the thicker the curve, the lower the error.
 
 ## `sim` Command (**10P**)
 The Client sends a request to the Analysis Server containing a metric, a start and end time, a minimum and maximum window size, **maxResultCount** and a dimensionless reference curve. The Analysis Server fetches all data within the given interval from all sensors with the given metric. The reference curve, which must contain at least 2 points, is normalized to values between 0 and 1. All input sensor data is sanitized by interpolating missing data points. The reference curve is scaled to different timespans ranging from the minimum window size to the maximum window size. Assuming that the reference curve has **r** points and the time series has **t** values, then there are **t - r + 1** sub series to be extracted from the time series, each with length **r**. Each sub series is normalized and compared to the reference curve using an euclidean distance function. All matched sub series are sorted descendingly by their error and the best **maxResultCount** matches are sent to the Client. Each match should contain the sensor it comes from, its data series and the calculated error.
@@ -266,7 +274,7 @@ There is plenty of room for freedom regarding your implementation of similarity 
 * What kind of data series should you send back to the Client? Interval? Normalized?
 
 ## Distribution of Similarity Search (**10P**)
-Since similarity search involves many computations that can be parallelized, your task is to let the Analysis Server distribute work to connected clients. Adapt your protocol so that the Analysis Server keeps track of connected clients and each client can handle requests too. When the Analysis Server receives a similarity search request, it does some preparations and splits the workload into multiple, smaller jobs. The Analysis Server should delegate these jobs to connected clients efficiently, so that no client processes more than 5 jobs at once. As soon as all jobs are completed, a final response is computed and sent back to the requesting client.
+Since similarity search involves many computations that can be parallelized, your task is to let the Analysis Server distribute work to connected clients. Adapt your protocol so that the Analysis Server keeps track of connected clients and each client can handle requests too. When the Analysis Server receives a similarity search request, it does some preparations and splits the workload into multiple, smaller jobs. The Analysis Server should delegate these jobs to connected clients efficiently, so that no client processes more than 5 jobs at once. As soon as all jobs are completed, a final response is computed and sent back to the requesting client. When a client processes a job, it should log the job parameters in the console. The server should also log which job is assigned to which client.
 
 You should think of an efficient way to split the workload, so that it can be conventiently distributed no matter the number of connected clients:
 
@@ -291,6 +299,7 @@ There is a wide range of additional features to implement such as improvements t
 * *Protocol without serialization* - Instead of using serialization to convert between bytes and objects, find a more efficient way to encode and decode packets yourself.
 * *Live data as line chart* - Instead of merely displaying live data in a table, a line chart should show data from the last 10 minutes or so. The chart should be updated every few seconds.
 * *Line chart with multiple sensors* - The user can select multiple sensors to be displayed in one line chart. If two metrics are selected, the scale of one metric is displayed on the left side of the chart and the other metric on the right side.
+* *Job overview in the GUI* - Add an additional tab to the GUI containing a list of similarity jobs that have been processed by this client. When a job is completed, its parameters (sensor, timespan, interval etc...) get appended to this list.
 
 # Grading Scheme
 There are a total of 100 points to be achieved, with each assignment counting 50 points. The points you get on an assignment including bonus points cannot exceed 60 points. The final grade depends on the overall number of points you achieve:

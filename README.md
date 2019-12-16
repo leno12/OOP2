@@ -1,5 +1,5 @@
 ## [Click for Assignment Description](docs/README.md)
-Here is the description of the things that this program does.
+
 # OOP2 CLI AND GUI
 
 OOP2 is a program which is used to display data from all sensors available at TU Graz. It can be used either es CLI or GUI. In GUI user can also display data either as Line Chart or Scatter Plot.
@@ -24,7 +24,7 @@ OOP2 is a program which is used to display data from all sensors available at TU
 - SCATTERPLOT - User selects two sensors, date, time and interval and clicks on the Draw Scatter Plot Button. GUI gets data from server and displays them as a Scatter Plot. X axis is the value of the first sensor Y axis is the value of the second sensor.
 
 
-## BONUS TASK
+## BONUS TASKS
 
 - WRITING CACHED DATA TO DISK - We also implemented saving of the cache into file. Cache is being saved to files so every time you run the server he looks if there is a cache file and if one exists it loads the cache into RAM. If the file doesn't exists it creates a new one. Also every time new entry is inserted into the cache its also being written to the file.
 
@@ -32,6 +32,7 @@ OOP2 is a program which is used to display data from all sensors available at TU
 
 
 ## MORE REMARKS
-- We also invested a lot of time in design of the GUI. We made changes almost in every part of the GUI using css so it looks more beautiful. We also made in Scatter Plot and Line chart that user can see current time and values of the point on the hover of the mouse which is really pretty nice feature and helps user to get even better look into data. 
-Regarding synchronization. In our cased we used first come first serve principle. So user can in the same time execute more queries. But the first one executed gets first the result. 
+- We also invested a lot of time in design of the GUI. We made changes almost in every part of the GUI using css so it looks more beautiful. We also made in Scatter Plot and Line chart that user can see current time and values of the point on the hover of the mouse which is really pretty nice feature and helps user to get even better look into data. GUI is always responsive and there are also progress labels so that user knows what is hapenning.
+There are also a lot of edge cases covered. Alerts for every possible wrong input or when server cannot be reached.
+ 
 

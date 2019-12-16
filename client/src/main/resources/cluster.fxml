@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import at.tugraz.oo2.client.ui.component.DurationPicker?>
+<fx:root prefHeight="680.0" prefWidth="650.0" stylesheets="application.css" type="javafx.scene.layout.HBox"
+		 xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+
+	<HBox AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+		<GridPane styleClass="leftPanelPane" HBox.hgrow="ALWAYS">
+			<Label text="Choose sensor:" GridPane.rowIndex="0"/>
+			<ListView fx:id="lvSensors" GridPane.rowIndex="1"/>
+			<Label text="From:" GridPane.rowIndex="2"/>
+			<DatePicker fx:id="dpFrom" GridPane.rowIndex="3"/>
+			<Label prefWidth="250.0" text="To:" GridPane.rowIndex="4"/>
+			<DatePicker fx:id="dpTo" GridPane.rowIndex="5"/>
+			<Label text="Interval Clusters:" GridPane.rowIndex="6"/>
+			<DurationPicker fx:id="dpIntervalClusters" GridPane.rowIndex="7"/>
+			<Label text="Points per Cluster:" GridPane.rowIndex="8"/>
+			<Spinner fx:id="spPointsCluster" GridPane.rowIndex="9"/>
+			<Label text="Number of clusters:" GridPane.rowIndex="10"/>
+			<Spinner fx:id="spClusters" GridPane.rowIndex="11"/>
+		</GridPane>
+		<Separator orientation="VERTICAL" prefHeight="200.0">
+			<HBox.margin>
+				<Insets left="-1.0" right="-5.0"/>
+			</HBox.margin>
+		</Separator>
+		<VBox prefHeight="600.0" prefWidth="400.0" HBox.hgrow="ALWAYS">
+			<ScrollPane hbarPolicy="NEVER" pannable="true" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
+				<Label text="TODO: Results here"/>
+			</ScrollPane>
+		</VBox>
+	</HBox>
+</fx:root>

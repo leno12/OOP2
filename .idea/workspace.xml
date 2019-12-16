@@ -79,10 +79,12 @@
     <option name="width" value="1400" />
     <option name="height" value="995" />
   </component>
+  <component name="ProjectId" id="1V4ZIj0xBmxSLv7f5zQJ7NB0TnD" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
