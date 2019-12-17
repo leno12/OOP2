@@ -21,6 +21,13 @@
 			<Spinner fx:id="spPointsCluster" GridPane.rowIndex="9"/>
 			<Label text="Number of clusters:" GridPane.rowIndex="10"/>
 			<Spinner fx:id="spClusters" GridPane.rowIndex="11"/>
+			<Button styleClass="draw-button" fx:id="drawChartButton" text="Create Clusters"  GridPane.rowIndex="12" onAction="#createClusters">
+				<GridPane.margin>
+					<Insets>
+						<top>20</top>
+					</Insets>
+				</GridPane.margin>
+			</Button>
 		</GridPane>
 		<Separator orientation="VERTICAL" prefHeight="200.0">
 			<HBox.margin>
@@ -28,8 +35,9 @@
 			</HBox.margin>
 		</Separator>
 		<VBox prefHeight="600.0" prefWidth="400.0" HBox.hgrow="ALWAYS">
-			<ScrollPane hbarPolicy="NEVER" pannable="true" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
+			<ScrollPane fx:id = "scrollpane" styleClass="sp" hbarPolicy="NEVER" pannable="true" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
 				<Label text="TODO: Results here"/>
+				<ListView styleClass="list" fx:id="lvClusters" />
 			</ScrollPane>
 		</VBox>
 	</HBox>

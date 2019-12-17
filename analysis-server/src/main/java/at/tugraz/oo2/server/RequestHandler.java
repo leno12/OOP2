@@ -4,6 +4,8 @@ import at.tugraz.oo2.data.DataPoint;
 import at.tugraz.oo2.data.DataSeries;
 import at.tugraz.oo2.data.Sensor;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.apache.commons.math3.ml.clustering.Clusterable;
+import org.apache.commons.math3.ml.clustering.KMeansPlusPlusClusterer;
 import weka.clusterers.SimpleKMeans;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -11,10 +13,12 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
-
 import ca.pjer.ekmeans.EKmeans;
+import weka.core.*;
+
 public class RequestHandler extends Thread {
     private final Socket socket;
     private final ObjectOutputStream out_stream;
@@ -26,8 +30,6 @@ public class RequestHandler extends Thread {
     static final String CLUSTER_COMMMAND = "cluster";
 
     private final Cache cache;
-
-
     public RequestHandler(Socket socket, ObjectOutputStream out_stream, ObjectInputStream in_stream,
                           InfluxConnection influxConnection, Cache cache)
     {
@@ -102,7 +104,10 @@ public class RequestHandler extends Thread {
                         List<DataSeries> clusters = new ArrayList<>();
                         for(long i = cluster_from; i < cluster_to; i+=interval_clusters)
                         {
+                            if(data_series_cluster.subSeries(i,i + interval_clusters).hasGaps())
+                                continue;
                             clusters.add(data_series_cluster.subSeries(i,i + interval_clusters));
+
                         }
                         for (DataSeries cluster : clusters) {
                             cluster = cluster.normalize();
@@ -120,7 +125,7 @@ public class RequestHandler extends Thread {
                         double[][] centroids = new double[Integer.parseInt(num_of_clusters.toString())][clusters.get(0).getData().length];
                         for (int i = 0; i < num_of_clusters; i++) {
                             for(int j = 0; j < clusters.get(0).getData().length; j++) {
-                                centroids[i][j] = Math.abs(random.nextInt() % 100);
+                                centroids[i][j] = Math.abs(random.nextDouble() % 1.0);
                             }
                         }
                         EKmeans eKmeans = new EKmeans(centroids, points);
@@ -158,37 +163,20 @@ public class RequestHandler extends Thread {
                             }
                             for(int s = 0; s < average.length; s++)
                             {
-                                average[s] /= (double)list_of_clusters.get(i).size();
+                                average[s] /= list_of_clusters.get(i).size();
                             }
                             ClusterDescriptor new_cd = new ClusterDescriptor(average, list_of_clusters.get(i));
                             cds.add(new_cd);
                         }
 
-                        for (ClusterDescriptor cd : cds) {
-                            List<DataSeries> to_remove = new ArrayList<>();
-                            for (DataSeries member : cd.getMembers()) {
-                                if(member.hasGaps())
-                                {
-                                    to_remove.add(member);
-                                }
 
-                            }
-                            cd.getMembers().removeAll(to_remove);
 
-                        }
 
-                        System.out.println(list_of_clusters.size());
-                        System.out.println(list_of_clusters.get(0).size());
-                        System.out.println(list_of_clusters.get(0).get(0).getData().length);
+
                         out_stream.writeObject(cds);
-
-                        //kMeans.setNumClusters(num_of_clusters);
 
 
                         break;
-
-
-
 
 
                     default:

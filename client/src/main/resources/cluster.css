@@ -1,0 +1,18 @@
+.root > *
+{
+    -fx-background-color: black;
+}
+.vbox
+{
+    -fx-background-color: black;
+}
+.sp
+{
+    -fx-background-color: black;
+}
+.scroll-pane > .viewport {
+    -fx-background-color: black;
+}
+.scroll-pane {
+    -fx-background-color: black;
+}
