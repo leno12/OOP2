@@ -140,27 +140,43 @@ public class RequestHandler extends Thread {
                              list_of_clusters.get(assignments[i]).add(clusters.get(i));
                         }
                         List<ClusterDescriptor> cds = new ArrayList<>();
+
                         for(int i = 0; i < list_of_clusters.size(); i++)
                         {
                             System.out.println(list_of_clusters.get(i).size());
-                            double[] average = new double[list_of_clusters.get(i).size()];
+                            double average[] = new double[24];
 
                             for(int j = 0; j < list_of_clusters.get(i).size(); j++)
                             {
-                                double sum = 0;
 
                                 for(int z = 0; z < list_of_clusters.get(i).get(j).getData().length; z++)
                                 {
-                                    sum+= list_of_clusters.get(i).get(j).getData()[z];
+                                    average[z] += list_of_clusters.get(i).get(j).getData()[z];
 
                                 }
-                                average[j] = sum / (double)list_of_clusters.get(i).get(j).getData().length;
 
-
+                            }
+                            for(int s = 0; s < average.length; s++)
+                            {
+                                average[s] /= (double)list_of_clusters.get(i).size();
                             }
                             ClusterDescriptor new_cd = new ClusterDescriptor(average, list_of_clusters.get(i));
                             cds.add(new_cd);
                         }
+
+                        for (ClusterDescriptor cd : cds) {
+                            List<DataSeries> to_remove = new ArrayList<>();
+                            for (DataSeries member : cd.getMembers()) {
+                                if(member.hasGaps())
+                                {
+                                    to_remove.add(member);
+                                }
+
+                            }
+                            cd.getMembers().removeAll(to_remove);
+
+                        }
+
                         System.out.println(list_of_clusters.size());
                         System.out.println(list_of_clusters.get(0).size());
                         System.out.println(list_of_clusters.get(0).get(0).getData().length);
