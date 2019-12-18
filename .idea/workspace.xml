@@ -2,15 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b2d30622-dbb3-4f3a-b800-74617faff348" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/client/src/main/resources/cluster.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Cache.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Cache.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/analysis-server/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/analysis-server/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/analysis-server/src/main/java/at/tugraz/oo2/server/RequestHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/analysis-server/src/main/java/at/tugraz/oo2/server/RequestHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/ClusterUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/ClusterUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/resources/cluster.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/cluster.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -160,7 +155,8 @@
       <workItem from="1576530528349" duration="136000" />
       <workItem from="1576573691702" duration="1172000" />
       <workItem from="1576591758697" duration="704000" />
-      <workItem from="1576595796325" duration="16841000" />
+      <workItem from="1576595796325" duration="16972000" />
+      <workItem from="1576676036744" duration="9246000" />
     </task>
     <servers />
   </component>
@@ -190,11 +186,11 @@
     </state>
     <state x="493" y="174" width="924" height="693" key="Maven.ArtifactSearchDialog/0.0.1920.1033/1920.0.1920.1200@0.0.1920.1033" timestamp="1576609908158" />
     <state x="493" y="174" width="924" height="693" key="Maven.ArtifactSearchDialog/0.0.1920.1033@0.0.1920.1033" timestamp="1576518273165" />
-    <state x="630" y="344" key="com.intellij.ide.util.TipDialog" timestamp="1576595798302">
+    <state x="630" y="344" key="com.intellij.ide.util.TipDialog" timestamp="1576676036210">
       <screen x="0" y="0" width="1920" height="1033" />
     </state>
     <state x="630" y="344" key="com.intellij.ide.util.TipDialog/0.0.1920.1033/1920.0.1920.1200@0.0.1920.1033" timestamp="1576595798302" />
-    <state x="630" y="344" key="com.intellij.ide.util.TipDialog/0.0.1920.1033@0.0.1920.1033" timestamp="1576573691698" />
+    <state x="630" y="344" key="com.intellij.ide.util.TipDialog/0.0.1920.1033@0.0.1920.1033" timestamp="1576676036210" />
     <state x="624" y="199" width="662" height="644" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1576519022060">
       <screen x="0" y="0" width="1920" height="1033" />
     </state>
@@ -207,9 +203,9 @@
       <screen x="0" y="0" width="1600" height="876" />
     </state>
     <state x="463" y="204" key="run.anything.popup/0.0.1600.876@0.0.1600.876" timestamp="1573900918741" />
-    <state x="623" y="227" width="672" height="678" key="search.everywhere.popup" timestamp="1576528667152">
+    <state x="623" y="227" width="672" height="678" key="search.everywhere.popup" timestamp="1576685727052">
       <screen x="0" y="0" width="1920" height="1033" />
     </state>
-    <state x="623" y="227" width="672" height="678" key="search.everywhere.popup/0.0.1920.1033@0.0.1920.1033" timestamp="1576528667152" />
+    <state x="623" y="227" width="672" height="678" key="search.everywhere.popup/0.0.1920.1033@0.0.1920.1033" timestamp="1576685727052" />
   </component>
 </project>

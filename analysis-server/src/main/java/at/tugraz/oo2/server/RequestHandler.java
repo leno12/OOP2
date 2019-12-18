@@ -101,17 +101,19 @@ public class RequestHandler extends Thread {
                         Long num_of_clusters = Long.parseLong(command_request.get(6).toString());
                         DataSeries data_series_cluster = influx_connection.getDataSeries(cluster_sensor, cluster_from, cluster_to, interval_points, cache);
                         data_series_cluster = data_series_cluster.interpolate();
-                        List<DataSeries> clusters = new ArrayList<>();
+                        List<DataSeries> clusters_temp = new ArrayList<>();
                         for(long i = cluster_from; i < cluster_to; i+=interval_clusters)
                         {
                             if(data_series_cluster.subSeries(i,i + interval_clusters).hasGaps())
                                 continue;
-                            clusters.add(data_series_cluster.subSeries(i,i + interval_clusters));
+                            clusters_temp.add(data_series_cluster.subSeries(i,i + interval_clusters));
 
                         }
-                        for (DataSeries cluster : clusters) {
-                            cluster = cluster.normalize();
+                        List<DataSeries>  clusters = new ArrayList<>();
+                        for (DataSeries cluster : clusters_temp) {
+                            clusters.add(cluster.normalize());
                         }
+
 
                         double [][] points = new double[clusters.size()][clusters.get(0).getData().length];
                         for (int i = 0; i < clusters.size(); i++) {
@@ -128,7 +130,7 @@ public class RequestHandler extends Thread {
                                 centroids[i][j] = Math.abs(random.nextDouble() % 1.0);
                             }
                         }
-                        EKmeans eKmeans = new EKmeans(centroids, points);
+                       /* EKmeans eKmeans = new EKmeans(centroids, points);
                         eKmeans.setEqual(true);
                         eKmeans.run();
                         List<List<DataSeries>> list_of_clusters = new ArrayList<>();
@@ -143,6 +145,50 @@ public class RequestHandler extends Thread {
                         for (int i = 0; i < clusters.size(); i++) {
                             //System.out.println(MessageFormat.format("point {0} is assigned to cluster {1}", i, assignments[i]));
                              list_of_clusters.get(assignments[i]).add(clusters.get(i));
+                        }
+                        */
+                        List<List<DataSeries>> list_of_clusters = new ArrayList<>();
+                        for(int i = 0; i < num_of_clusters; i++)
+                        {
+                            List<DataSeries> new_list = new ArrayList<>();
+                            list_of_clusters.add(new_list);
+                        }
+                        ArrayList<Attribute> attrList = new ArrayList<Attribute>();
+                        for(int i = 0; i < 24; i++) {
+                            Attribute attr1 = new Attribute("attr" + i);
+
+                            attrList.add(attr1);
+                        }
+
+                        Instances dataset = new Instances("test", attrList, 0);
+
+                        for(int i = 0; i < clusters.size(); i++)
+                        {
+
+
+                                Instance instance0 = new DenseInstance(1.0, clusters.get(i).getData());
+                                instance0.setDataset(dataset);
+                                dataset.add(instance0);
+
+                        }
+
+
+
+                        SimpleKMeans kmeans = new SimpleKMeans();
+
+                        kmeans.setPreserveInstancesOrder(true);
+                        kmeans.setNumClusters(Integer.parseInt(num_of_clusters.toString()));
+                        kmeans.setSeed(Integer.parseInt(num_of_clusters.toString()));
+                        kmeans.setDontReplaceMissingValues(true);
+                        kmeans.buildClusterer(dataset);
+                        kmeans.setMaxIterations(10);
+                        Instances instances = kmeans.getClusterCentroids();
+                        int assignments2[] = kmeans.getAssignments();
+                        System.out.println(assignments2.length);
+
+                        for (int i = 0; i < clusters.size(); i++) {
+                            //System.out.println(MessageFormat.format("point {0} is assigned to cluster {1}", i, assignments[i]));
+                            list_of_clusters.get(assignments2[i]).add(clusters.get(i));
                         }
                         List<ClusterDescriptor> cds = new ArrayList<>();
 

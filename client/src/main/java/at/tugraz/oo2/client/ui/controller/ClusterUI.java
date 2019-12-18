@@ -195,8 +195,9 @@ public class ClusterUI extends HBox {
 			cds = clientConnection.getClustering(sensor, date_from, date_to,cluster_inerval, interval, num_of_clusters).get();
 			ObservableList<String> clusters_list = FXCollections.observableArrayList();
 
-			final NumberAxis xAxis = new NumberAxis(date_from,date_to,1000000);
+			final NumberAxis xAxis = new NumberAxis(date_from/(1000*60),date_to/(1000*60), 1440);
 			xAxis.setTickLabelRotation(90);
+			xAxis.setAutoRanging(false);
 			final NumberAxis yAxis = new NumberAxis();
 			xAxis.setLabel("Interval in minutes");
 			final LineChart<Number, Number> lineChart =
@@ -208,15 +209,21 @@ public class ClusterUI extends HBox {
 						"Number of members: " + cds.get(i).getMembers().size();
 				clusters_list.add(new_sensor);
 				XYChart.Series series1 = new XYChart.Series();
+				/*
 				for(int j = 0; j < cds.get(i).getMembers().size(); j++)
 				{
-					for(int z = 0; z < cds.get(i).getMembers().get(j).getData().length; z++) {
+					for(int z = 0; z < cds.get(i).getMembers().get(j).getDataPoints().size(); z++) {
 
-						series1.getData().add(new XYChart.Data(cds.get(i).getMembers().get(j).getMinTime(), cds.get(i).getErrorOf(cds.get(i).getMembers().get(j))));
 
+						series1.getData().add(new XYChart.Data(cds.get(i).getMembers().get(j).getDataPoints().get(z).getTime() / (1000*60), cds.get(i).getErrorOf(cds.get(i).getMembers().get(j))));
 					}
 
+
+
 				}
+				*/
+
+
 
 				lineChart.getData().add(series1);
 
