@@ -99,7 +99,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/pom.xml" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../upstream/P3/pom.xml" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -156,7 +156,13 @@
       <workItem from="1576573691702" duration="1172000" />
       <workItem from="1576591758697" duration="704000" />
       <workItem from="1576595796325" duration="16972000" />
-      <workItem from="1576676036744" duration="9246000" />
+      <workItem from="1576676036744" duration="10231000" />
+      <workItem from="1576687302763" duration="374000" />
+      <workItem from="1576703125985" duration="894000" />
+      <workItem from="1576763244889" duration="11080000" />
+      <workItem from="1576790823203" duration="267000" />
+      <workItem from="1576791157980" duration="707000" />
+      <workItem from="1576864582478" duration="4476000" />
     </task>
     <servers />
   </component>
@@ -181,16 +187,20 @@
       <screen x="0" y="0" width="1920" height="1033" />
     </state>
     <state x="805" y="408" width="300" height="225" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.0.1920.1033/1920.0.1920.1200@0.0.1920.1033" timestamp="1576592413562" />
+    <state x="743" y="274" width="424" height="493" key="FileChooserDialogImpl" timestamp="1576687321904">
+      <screen x="0" y="0" width="1920" height="1033" />
+    </state>
+    <state x="743" y="274" width="424" height="493" key="FileChooserDialogImpl/0.0.1920.1033@0.0.1920.1033" timestamp="1576687321904" />
     <state x="493" y="174" width="924" height="693" key="Maven.ArtifactSearchDialog" timestamp="1576609908158">
       <screen x="0" y="0" width="1920" height="1033" />
     </state>
     <state x="493" y="174" width="924" height="693" key="Maven.ArtifactSearchDialog/0.0.1920.1033/1920.0.1920.1200@0.0.1920.1033" timestamp="1576609908158" />
     <state x="493" y="174" width="924" height="693" key="Maven.ArtifactSearchDialog/0.0.1920.1033@0.0.1920.1033" timestamp="1576518273165" />
-    <state x="630" y="344" key="com.intellij.ide.util.TipDialog" timestamp="1576676036210">
+    <state x="630" y="344" key="com.intellij.ide.util.TipDialog" timestamp="1576864583440">
       <screen x="0" y="0" width="1920" height="1033" />
     </state>
     <state x="630" y="344" key="com.intellij.ide.util.TipDialog/0.0.1920.1033/1920.0.1920.1200@0.0.1920.1033" timestamp="1576595798302" />
-    <state x="630" y="344" key="com.intellij.ide.util.TipDialog/0.0.1920.1033@0.0.1920.1033" timestamp="1576676036210" />
+    <state x="630" y="344" key="com.intellij.ide.util.TipDialog/0.0.1920.1033@0.0.1920.1033" timestamp="1576864583440" />
     <state x="624" y="199" width="662" height="644" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1576519022060">
       <screen x="0" y="0" width="1920" height="1033" />
     </state>

@@ -115,21 +115,7 @@ public class RequestHandler extends Thread {
                         }
 
 
-                        double [][] points = new double[clusters.size()][clusters.get(0).getData().length];
-                        for (int i = 0; i < clusters.size(); i++) {
-                            points[i] = new double[clusters.get(i).getData().length];
-                            for (int j = 0; j < points[i].length; j++) {
-                                points[i][j] = clusters.get(i).getData()[j];
-                            }
-                        }
-                        Random random = new Random(System.currentTimeMillis());
 
-                        double[][] centroids = new double[Integer.parseInt(num_of_clusters.toString())][clusters.get(0).getData().length];
-                        for (int i = 0; i < num_of_clusters; i++) {
-                            for(int j = 0; j < clusters.get(0).getData().length; j++) {
-                                centroids[i][j] = Math.abs(random.nextDouble() % 1.0);
-                            }
-                        }
                        /* EKmeans eKmeans = new EKmeans(centroids, points);
                         eKmeans.setEqual(true);
                         eKmeans.run();
