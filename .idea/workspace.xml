@@ -2,10 +2,22 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b2d30622-dbb3-4f3a-b800-74617faff348" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__ca_pjer_ekmeans_2_0_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_github_kerner1000_javafx_chart_zooming_0_0_8.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Cache.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Cache.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/analysis-server/analysis-server.iml" beforeDir="false" afterPath="$PROJECT_DIR$/analysis-server/analysis-server.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/analysis-server/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/analysis-server/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/analysis-server/src/main/java/at/tugraz/oo2/server/RequestHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/analysis-server/src/main/java/at/tugraz/oo2/server/RequestHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/client.iml" beforeDir="false" afterPath="$PROJECT_DIR$/client/client.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/client/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/GUIMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/GUIMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/AssignmentUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/AssignmentUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/ClusterUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/ClusterUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/resources/application.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/application.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/resources/chart.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/chart.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/resources/cluster.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/cluster.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/resources/cluster.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/cluster.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,12 +90,6 @@
         <option value="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_simple_1_7_25.xml" />
       </list>
     </option>
-  </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="260" />
-    <option name="y" value="20" />
-    <option name="width" value="1400" />
-    <option name="height" value="995" />
   </component>
   <component name="ProjectId" id="1V4ZIj0xBmxSLv7f5zQJ7NB0TnD" />
   <component name="ProjectLevelVcsManager">
@@ -162,7 +168,12 @@
       <workItem from="1576763244889" duration="11080000" />
       <workItem from="1576790823203" duration="267000" />
       <workItem from="1576791157980" duration="707000" />
-      <workItem from="1576864582478" duration="4476000" />
+      <workItem from="1576864582478" duration="5603000" />
+      <workItem from="1576930998460" duration="214000" />
+      <workItem from="1576933246053" duration="10000" />
+      <workItem from="1577104493183" duration="599000" />
+      <workItem from="1577187109738" duration="21639000" />
+      <workItem from="1577357055278" duration="16127000" />
     </task>
     <servers />
   </component>
@@ -196,11 +207,11 @@
     </state>
     <state x="493" y="174" width="924" height="693" key="Maven.ArtifactSearchDialog/0.0.1920.1033/1920.0.1920.1200@0.0.1920.1033" timestamp="1576609908158" />
     <state x="493" y="174" width="924" height="693" key="Maven.ArtifactSearchDialog/0.0.1920.1033@0.0.1920.1033" timestamp="1576518273165" />
-    <state x="630" y="344" key="com.intellij.ide.util.TipDialog" timestamp="1576864583440">
+    <state x="630" y="344" key="com.intellij.ide.util.TipDialog" timestamp="1577357159166">
       <screen x="0" y="0" width="1920" height="1033" />
     </state>
     <state x="630" y="344" key="com.intellij.ide.util.TipDialog/0.0.1920.1033/1920.0.1920.1200@0.0.1920.1033" timestamp="1576595798302" />
-    <state x="630" y="344" key="com.intellij.ide.util.TipDialog/0.0.1920.1033@0.0.1920.1033" timestamp="1576864583440" />
+    <state x="630" y="344" key="com.intellij.ide.util.TipDialog/0.0.1920.1033@0.0.1920.1033" timestamp="1577357159166" />
     <state x="624" y="199" width="662" height="644" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1576519022060">
       <screen x="0" y="0" width="1920" height="1033" />
     </state>
@@ -209,13 +220,14 @@
       <screen x="0" y="0" width="1920" height="1033" />
     </state>
     <state x="628" y="126" width="663" height="780" key="find.popup/0.0.1920.1033@0.0.1920.1033" timestamp="1576530262652" />
-    <state x="463" y="204" key="run.anything.popup" timestamp="1573900918741">
-      <screen x="0" y="0" width="1600" height="876" />
-    </state>
-    <state x="463" y="204" key="run.anything.popup/0.0.1600.876@0.0.1600.876" timestamp="1573900918741" />
-    <state x="623" y="227" width="672" height="678" key="search.everywhere.popup" timestamp="1576685727052">
+    <state x="556" y="241" key="run.anything.popup" timestamp="1577214110095">
       <screen x="0" y="0" width="1920" height="1033" />
     </state>
-    <state x="623" y="227" width="672" height="678" key="search.everywhere.popup/0.0.1920.1033@0.0.1920.1033" timestamp="1576685727052" />
+    <state x="463" y="204" key="run.anything.popup/0.0.1600.876@0.0.1600.876" timestamp="1573900918741" />
+    <state x="556" y="241" key="run.anything.popup/0.0.1920.1033@0.0.1920.1033" timestamp="1577214110095" />
+    <state x="623" y="227" width="672" height="678" key="search.everywhere.popup" timestamp="1577373435151">
+      <screen x="0" y="0" width="1920" height="1033" />
+    </state>
+    <state x="623" y="227" width="672" height="678" key="search.everywhere.popup/0.0.1920.1033@0.0.1920.1033" timestamp="1577373435151" />
   </component>
 </project>

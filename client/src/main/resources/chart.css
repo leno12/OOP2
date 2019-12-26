@@ -13,8 +13,13 @@
 
 }
 .chart-legend {
-    -fx-background-color: rgba(2, 2, 4, 0.8);
-    -fx-padding: 20px;
+    -fx-background-color: rgba(38, 38, 38, 0.85);
+    -fx-text-fill: white;
+    -fx-background-size: 5px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-padding: 10px;
+    -fx-border-radius: 10 10 10 10;
 }
 .chart-plot-background {
     -fx-background-color: rgba(2, 2, 4, 0.8);
@@ -71,3 +76,4 @@
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.5) , 10, 0.0 , 0 , 3 );
     -fx-font-size: 0.85em;
 }
+

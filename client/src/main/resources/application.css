@@ -15,7 +15,7 @@
 .list-view
 {
     -fx-background-color: rgba(52, 52, 52, 0.85);
-    -fx-border-color: #4581ff;
+    -fx-border-color: #2748ae;
     -fx-border-width: 2px;
 }
 .list-cell:filled:selected:focused, .list-cell:filled:selected {

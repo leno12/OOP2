@@ -1,9 +1,10 @@
 package at.tugraz.oo2.client.ui.controller;
 
+import at.tugraz.oo2.Util;
 import at.tugraz.oo2.client.ClientConnection;
-import at.tugraz.oo2.client.ui.GUIMain;
 import at.tugraz.oo2.client.ui.component.DurationPicker;
 import at.tugraz.oo2.data.ClusterDescriptor;
+import at.tugraz.oo2.data.DataSeries;
 import at.tugraz.oo2.data.Sensor;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -12,21 +13,21 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
+import javafx.geometry.HPos;
+import javafx.geometry.Pos;
+import javafx.geometry.VPos;
+import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
-import javafx.util.Duration;
-
-
+import javafx.scene.layout.*;
+import javafx.scene.text.Font;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -50,7 +51,9 @@ public class ClusterUI extends HBox {
 	@FXML
 	private ListView<String> lvClusters;
 	@FXML
-	private ScrollPane scrollpane;
+	private ScrollPane overviewpane;
+	@FXML
+	private GridPane grid;
 
 	public ClusterUI(ClientConnection clientConnection) {
 		this.clientConnection = clientConnection;
@@ -162,7 +165,6 @@ public class ClusterUI extends HBox {
 					date = Date.from(instant);
 					long date_to = date.getTime();
 					long interval = spPointsCluster.getValue() * 60 * 1000;
-					System.out.println(Long.parseLong(dpIntervalClusters.getValue().toString()) + " here");
 					long cluster_interval = Long.parseLong(dpIntervalClusters.getValue().toString()) *  1000;
 					int num_of_clusters = spClusters.getValue();
 					if(date_from >= date_to)
@@ -175,6 +177,7 @@ public class ClusterUI extends HBox {
 						});
 					}
 					createClustersscrollPane(sensor, date_from, date_to, interval, selected_sensor,cluster_interval,num_of_clusters);
+
 
 
 				} catch (NullPointerException e) {
@@ -193,123 +196,238 @@ public class ClusterUI extends HBox {
 	{
 
 		try {
-			System.out.println(date_from);
-			System.out.println(date_to);
-			System.out.println(sensor.getLocation());
-			System.out.println(interval);
-			System.out.println(cluster_inerval);
+
+
+			grid.setVgap(10);
+			grid.setHgap(10);
+
+
+
 			final List<ClusterDescriptor> cds =  clientConnection.getClustering(sensor, date_from, date_to,cluster_inerval, interval, num_of_clusters).get();
 			ObservableList<String> clusters_list = FXCollections.observableArrayList();
+			Platform.runLater(new Runnable()
+			{
+				@Override
+				public void run()
+				{
 
-			final NumberAxis xAxis = new NumberAxis();
-			xAxis.setTickLabelRotation(90);
-			xAxis.setAutoRanging(true);
-			final NumberAxis yAxis = new NumberAxis();
-			xAxis.setLabel("Interval in minutes");
-			final LineChart<Number, Number> lineChart =
-					new LineChart<Number, Number>(xAxis, yAxis);
+					grid.getChildren().clear();
+					lvClusters.getItems().clear();
+					Label new_label = new Label("Cluster Overview");
+
+					new_label.setMinSize(50,50);
+					new_label.setFont(new Font("Arial", 25));
+					new_label.setStyle("-fx-text-fill: white");
+					GridPane.setHalignment(new_label, HPos.CENTER);
+
+					grid.add(new_label, 0, 0);
 
 
+				}
+			});
+
+
+           int counter = 1;
+
+			cds.sort(Comparator.comparing(ClusterDescriptor::getClusterError));
 			for (int i = 0; i < cds.size(); i++) {
 
-				String new_sensor = "Cluster #" + (i+1) + "\nError: " + cds.get(i).getClusterError() + "\n" + "" +
+				/*String new_sensor = "Cluster #" + (i + 1) + "\nError: " + cds.get(i).getClusterError() + "\n" + "" +
 						"Number of members: " + cds.get(i).getMembers().size();
-				clusters_list.add(new_sensor);
-				final ClusterDescriptor cluster = cds.get(i);
-				System.out.println("\tCluster #" + i + " with error of " + cluster.getClusterError() + ":");
-				XYChart.Series series1 = new XYChart.Series();
-				int interval_from_start = 0;
-				for(int j = 0; j < cluster.getAverage().length; j++)
-				{
-					System.out.println(cluster.getAverage()[j]);
-					series1.getData().add(new XYChart.Data<>(interval_from_start, cluster.getAverage()[j]));
-					interval_from_start += 24;
+						*/
+				StringBuilder new_cluster = new StringBuilder("Cluster #" + (i + 1) + " with error of " + cds.get(i).getClusterError() + ":" + "\n");
+				clusters_list.add(new_cluster.toString());
+
+				for(int c = 0; c < cds.get(i).getMembers().size(); c++) {
+					DataSeries member = cds.get(i).getMembers().get(c);
+					StringBuilder new_one = new StringBuilder();
+					new_one.append("\t\t").append(Util.TIME_FORMAT.format(new Date(member.getMinTime()))).append('\t').append(cds.get(i).getErrorOf(member)).append("\n");
+					clusters_list.add(new_one.toString());
 
 				}
 
 
-					//System.out.println("\t\t" + Util.TIME_FORMAT.format(new Date(member.getMinTime())) + '\t' + cluster.getErrorOf(member));
-				//series1.getData().add(new XYChart.Data( i + 1, cds.get(i).getClusterError()));
-				lineChart.getData().add(series1);
+				final ClusterDescriptor cluster = cds.get(i);
+				XYChart.Series series1 = new XYChart.Series();
+				final NumberAxis xAxis = new NumberAxis(0, cds.get(i).getAverage().length, 1);
+				xAxis.setTickLabelRotation(90);
 
+				final NumberAxis yAxis = new NumberAxis();
+				yAxis.setLabel("Avg value of a dimension");
+				final LineChart<Number, Number> lineChart =
+						new LineChart<Number, Number>(xAxis, yAxis);
+				lineChart.setCreateSymbols(true);
+				String title = "Cluster " + (i + 1) + "\n" + "Curves: " + cds.get(i).getMembers().size()
+						+  "\n" + "Error: " + cds.get(i).getClusterError();
+				lineChart.setTitle(title);
+				lineChart.setLegendVisible(false);
+				xAxis.setTickLabelsVisible(false);
+				yAxis.setTickLabelsVisible(false);
+				yAxis.setTickMarkVisible(false);
+				xAxis.setTickMarkVisible(false);
+				xAxis.setOpacity(0);
+				yAxis.setOpacity(0);
+
+				lineChart.setHorizontalGridLinesVisible(false);
+				lineChart.setVerticalGridLinesVisible(false);
+				for (int j = 0; j < cluster.getAverage().length; j++) {
+					series1.getData().add(new XYChart.Data<>(j, cluster.getAverage()[j]));
+
+				}
+
+
+				lineChart.getStylesheets().add("/chart.css");
+				lineChart.getData().add(series1);
+				lineChart.setPrefHeight(500);
+
+
+				final int row_num = counter;
+				final int num = i;
+				Button button = new Button("View");
+				button.getStyleClass().add("draw-button");
+				button.setMinSize(150,50);
+				GridPane.setHalignment(button, HPos.CENTER); // To align horizontally in the cell
+				GridPane.setValignment(button, VPos.CENTER);
+				Separator separator1 = new Separator();
+				separator1.setStyle("-fx-min-width: 200");
+
+				button.setOnAction(new EventHandler<ActionEvent>() {
+					@Override public void handle(ActionEvent e) {
+
+						GridPane grid_tab = new GridPane();
+						Label new_label = new Label("Cluster " + (num + 1) + " Detailed view" + "\n" +
+								"Error: " + cds.get(num).getClusterError() + "\n" + "Curves: " +
+								cds.get(num).getMembers().size());
+
+						new_label.setMinSize(40,40);
+						new_label.setFont(new Font("Arial", 20));
+						new_label.setStyle("-fx-text-fill: white");
+						GridPane.setHalignment(new_label, HPos.LEFT);
+						GridPane.setValignment(new_label,VPos.CENTER);
+
+						grid_tab.add(new_label, 0, 0);
+
+
+						int counter_row = 1;
+						int counter_column = 0;
+
+						for(int i = 0; i < cds.get(num).getMembers().size(); i++)
+						{
+
+							XYChart.Series series2 = new XYChart.Series();
+							final CategoryAxis xAxis_2 = new CategoryAxis();
+							xAxis.setTickLabelRotation(90);
+							xAxis.setAutoRanging(true);
+							final NumberAxis yAxis_2 = new NumberAxis();
+							//xAxis.setLabel("Interval in minutes");
+							final LineChart<String, Number> lineChart_2 =
+									new LineChart<String, Number>(xAxis_2, yAxis_2);
+							lineChart_2.setCreateSymbols(true);
+
+							lineChart_2.setHorizontalGridLinesVisible(false);
+							lineChart_2.setVerticalGridLinesVisible(false);
+
+							Double error = cds.get(num).getErrorOf(cds.get(num).getMembers().get(i));
+
+							lineChart_2.setTitle("Curve " + (i + 1) + "\n" + "Error: " +  error);
+							lineChart_2.setLegendVisible(false);
+							for(int j = 0; j < cds.get(num).getMembers().get(i).getDataPoints().size(); j++)
+							{
+								String date = new Date(cds.get(num).getMembers().get(i).getDataPoints().get(j).getTime()).toString();
+								String[] split_date = date.split("CEST");
+								series2.getData().add(new XYChart.Data<>(split_date[0],
+										cds.get(num).getMembers().get(i).getDataPoints().get(j).getValue()));
+							}
+							lineChart_2.getStylesheets().add("/chart.css");
+							lineChart_2.getData().add(series2);
+							lineChart_2.setPrefHeight(500);
+
+
+
+
+
+
+
+							grid_tab.add(lineChart_2,counter_column,counter_row,1,1);
+
+
+							counter_column++;
+							if(counter_column == 2)
+							{
+								counter_column = 0;
+								counter_row++;
+							}
+
+
+						}
+						ColumnConstraints col1 = new ColumnConstraints();
+						col1.setHgrow(Priority.SOMETIMES);
+						col1.setPercentWidth(50);
+						col1.setMinWidth(10);
+						col1.setPrefWidth(100);
+
+						ColumnConstraints col2 = new ColumnConstraints();
+						col2.setHgrow(Priority.SOMETIMES);
+						col2.setPercentWidth(50);
+						col2.setMinWidth(10);
+						col2.setPrefWidth(100);
+
+						grid_tab.getColumnConstraints().addAll(col1,col2);
+
+
+
+						Tab new_tab = new Tab("Cluster" + (num + 1));
+						AssignmentUI.addTab(new_tab);
+						ScrollPane new_scroll_pane = new ScrollPane();
+						new_scroll_pane.setStyle("-fx-background-color: black;");
+						new_scroll_pane.getStyleClass().add("sp");
+						new_scroll_pane.setFitToWidth(true);
+						new_scroll_pane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+						new_scroll_pane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+						new_scroll_pane.setPannable(true);
+						new_scroll_pane.setContent(grid_tab);
+						grid_tab.setStyle("-fx-background-color: black");
+						new_tab.setContent(new_scroll_pane);
+
+
+
+					}
+				});
+
+
+				Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
+
+						grid.addRow(row_num, lineChart);
+
+						grid.addRow(row_num + 1, button);
+
+						grid.addRow(row_num + 2, separator1);
+
+					}
+				});
+				counter += 3;
 
 			}
 
-			lineChart.setPrefWidth(750);
+
 			Platform.runLater(new Runnable()
 			{
 				@Override
 				public void run()
 				{
 					lvClusters.setItems(clusters_list);
-					getChildren().add(lineChart);
-
 
 				}
 			});
 
 
-			lineChart.setCreateSymbols(true);
-			lineChart.setTitle(selected_sensor);
 
-			lineChart.setHorizontalGridLinesVisible(false);
-			lineChart.setVerticalGridLinesVisible(false);
 			//lineChart.getStylesheets().add("/chart.css");
 
 
 
-			lvClusters.setOnMouseClicked(new EventHandler<MouseEvent>() {
-				@Override
-				public void handle(MouseEvent mouseEvent) {
-					final NumberAxis xAxis_2 = new NumberAxis();
-					xAxis_2.setTickLabelRotation(90);
-					final NumberAxis yAxis_2 = new NumberAxis();
-					xAxis_2.setLabel("Interval in minutes");
-					final LineChart<Number, Number> lineChart_cluster =
-							new LineChart<Number, Number>(xAxis_2, yAxis_2);
-					lineChart_cluster.setCreateSymbols(true);
-					lineChart_cluster.setTitle(selected_sensor);
-					xAxis_2.setAutoRanging(true);
-					yAxis_2.setAutoRanging(true);
-
-					lineChart_cluster.setHorizontalGridLinesVisible(false);
-					lineChart_cluster.setVerticalGridLinesVisible(false);
-					String selected_sensor = lvClusters.getSelectionModel().getSelectedItem();
-					String[] arr = selected_sensor.split("\n");
-					if(mouseEvent.getClickCount() == 2)
-					{
-						int index = Integer.parseInt(arr[0].split(" ")[1].split("#")[1]);
-						ClusterDescriptor temp = cds.get(index-1);
-
-						for(int i = 0; i < temp.getMembers().size(); i++)
-						{
-							XYChart.Series series_cluster = new XYChart.Series();
-							int interval_in_hours = 0;
-							for(int j = 0; j < temp.getMembers().get(i).getDataPoints().size(); j++)
-							{
-								XYChart.Data ss = new XYChart.Data<>(interval_in_hours, temp.getMembers().get(i).getDataPoints().get(j).getValue());
-								series_cluster.getData().add(ss);
-								interval_in_hours += 24;
-
-								Date date = new Date(temp.getMembers().get(i).getDataPoints().get(j).getTime());
-								Tooltip hover = new Tooltip(date.toString());
-								hover.setShowDelay(Duration.seconds(0));
-								Tooltip.install(ss.getNode(), hover);
-
-							}
-							lineChart_cluster.getData().add(series_cluster);
-
-
-						}
-
-						Stage stage = new Stage();
-						stage.setTitle("Cluster Num: " + "#" + index);
-						stage.setScene(new Scene(lineChart_cluster,1600,1200));
-						stage.show();
-
-					}
-				}
-			});
 
 
 
@@ -326,10 +444,15 @@ public class ClusterUI extends HBox {
 		dpIntervalClusters.setDuration(24*60*60);
 		spPointsCluster.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000, 24, 1));
 		spClusters.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, 2, 1));
-		lvClusters.prefWidthProperty().bind(scrollpane.widthProperty());
-		lvClusters.prefHeightProperty().bind(scrollpane.heightProperty());
+		//lvClusters.prefWidthProperty().bind(scrollpane.widthProperty());
+		//lvClusters.prefHeightProperty().bind(scrollpane.heightProperty());
 		this.setStyle("-fx-background-color: black");
+		overviewpane.setStyle("-fx-background-color: black");
 		this.getStylesheets().add("/cluster.css");
+
+
 	}
+
+
 
 }

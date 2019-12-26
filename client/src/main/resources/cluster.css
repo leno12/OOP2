@@ -16,3 +16,9 @@
 .scroll-pane {
     -fx-background-color: black;
 }
+.separator{
+    -fx-border-style: solid;
+    -fx-background-color: #2748ae;
+    -fx-border-width: 1px;
+
+}

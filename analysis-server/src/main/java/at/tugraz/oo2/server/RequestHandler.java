@@ -4,19 +4,13 @@ import at.tugraz.oo2.data.DataPoint;
 import at.tugraz.oo2.data.DataSeries;
 import at.tugraz.oo2.data.Sensor;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import org.apache.commons.math3.ml.clustering.Clusterable;
-import org.apache.commons.math3.ml.clustering.KMeansPlusPlusClusterer;
 import weka.clusterers.SimpleKMeans;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
-import ca.pjer.ekmeans.EKmeans;
+import java.util.*;
+
 import weka.core.*;
 
 public class RequestHandler extends Thread {
@@ -104,11 +98,13 @@ public class RequestHandler extends Thread {
                         List<DataSeries> clusters_temp = new ArrayList<>();
                         for(long i = cluster_from; i < cluster_to; i+=interval_clusters)
                         {
+                           // System.out.println(new Date(data_series_cluster.subSeries(i,i + interval_clusters).getMinTime()));
                             if(data_series_cluster.subSeries(i,i + interval_clusters).hasGaps())
                                 continue;
                             clusters_temp.add(data_series_cluster.subSeries(i,i + interval_clusters));
 
                         }
+
                         List<DataSeries>  clusters = new ArrayList<>();
                         for (DataSeries cluster : clusters_temp) {
                             clusters.add(cluster.normalize());
@@ -139,8 +135,12 @@ public class RequestHandler extends Thread {
                             List<DataSeries> new_list = new ArrayList<>();
                             list_of_clusters.add(new_list);
                         }
+
+                        int dimensions = (int)((interval_clusters / (60*1000)) / (interval_points / (60 * 1000)));
+
+
                         ArrayList<Attribute> attrList = new ArrayList<Attribute>();
-                        for(int i = 0; i < 24; i++) {
+                        for(int i = 0; i < dimensions; i++) {
                             Attribute attr1 = new Attribute("attr" + i);
 
                             attrList.add(attr1);
@@ -148,11 +148,11 @@ public class RequestHandler extends Thread {
 
                         Instances dataset = new Instances("test", attrList, 0);
 
+
                         for(int i = 0; i < clusters.size(); i++)
                         {
 
-
-                                Instance instance0 = new DenseInstance(1.0, clusters.get(i).getData());
+                                Instance instance0 = new DenseInstance(Math.random(), clusters.get(i).getData());
                                 instance0.setDataset(dataset);
                                 dataset.add(instance0);
 
@@ -170,7 +170,6 @@ public class RequestHandler extends Thread {
                         kmeans.setMaxIterations(10);
                         Instances instances = kmeans.getClusterCentroids();
                         int assignments2[] = kmeans.getAssignments();
-                        System.out.println(assignments2.length);
 
                         for (int i = 0; i < clusters.size(); i++) {
                             //System.out.println(MessageFormat.format("point {0} is assigned to cluster {1}", i, assignments[i]));
@@ -180,7 +179,7 @@ public class RequestHandler extends Thread {
 
                         for(int i = 0; i < list_of_clusters.size(); i++)
                         {
-                            System.out.println(list_of_clusters.get(i).size());
+                            //System.out.println(list_of_clusters.get(i).size());
                             double average[] = new double[24];
 
                             for(int j = 0; j < list_of_clusters.get(i).size(); j++)
@@ -200,9 +199,6 @@ public class RequestHandler extends Thread {
                             ClusterDescriptor new_cd = new ClusterDescriptor(average, list_of_clusters.get(i));
                             cds.add(new_cd);
                         }
-
-
-
 
 
                         out_stream.writeObject(cds);
