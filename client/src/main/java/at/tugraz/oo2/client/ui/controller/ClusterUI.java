@@ -103,6 +103,7 @@ public class ClusterUI extends HBox {
 
 						}
 						Platform.runLater(new Runnable()
+
 						{
 							@Override
 							public void run()

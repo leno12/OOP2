@@ -1,8 +1,6 @@
 package at.tugraz.oo2.server;
-import at.tugraz.oo2.data.ClusterDescriptor;
-import at.tugraz.oo2.data.DataPoint;
-import at.tugraz.oo2.data.DataSeries;
-import at.tugraz.oo2.data.Sensor;
+import at.tugraz.oo2.Util;
+import at.tugraz.oo2.data.*;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import weka.clusterers.SimpleKMeans;
 import java.io.IOException;
@@ -10,8 +8,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.*;
+import java.lang.Object.*;
 
 import weka.core.*;
+import weka.filters.supervised.instance.Resample;
+
+import javax.xml.crypto.Data;
 
 public class RequestHandler extends Thread {
     private final Socket socket;
@@ -22,6 +24,7 @@ public class RequestHandler extends Thread {
     static final String NOW_COMMAND = "now";
     static final String DATA_COMMAND = "data";
     static final String CLUSTER_COMMMAND = "cluster";
+    static final String SIM_COMMAND = "sim";
 
     private final Cache cache;
     public RequestHandler(Socket socket, ObjectOutputStream out_stream, ObjectInputStream in_stream,
@@ -199,13 +202,86 @@ public class RequestHandler extends Thread {
                             ClusterDescriptor new_cd = new ClusterDescriptor(average, list_of_clusters.get(i));
                             cds.add(new_cd);
                         }
-
-
                         out_stream.writeObject(cds);
-
-
                         break;
 
+                    case SIM_COMMAND:
+                        String metric = (String)command_request.get(1);
+                        long start_time = (long)command_request.get(2);
+                        long end_time = (long)command_request.get(3);
+                        long min_size = (long)command_request.get(4);
+                        long max_size = (long)command_request.get(5);
+                        int max_result_count = (int)command_request.get(6);
+                        double[] ref = (double[])command_request.get(7);
+
+                        List<Sensor> sensor_list = influx_connection.getLocationandMetrics();
+                        List<Sensor> sensors_list2 = new ArrayList<>();
+                        for(Sensor sen : sensor_list)
+                        {
+                            if(sen.getMetric().equals(metric))
+                            {
+                                sensors_list2.add(sen);
+                            }
+                        }
+
+                        long inc_int = 5*60*1000;
+                        List<DataSeries> complete_time_series = new ArrayList<>();
+                        SortedMap<Double, MatchedCurve> sm = new TreeMap<Double, MatchedCurve>();
+                        DataSeries.normalize(ref);
+
+                        for(Sensor sen : sensors_list2)
+                        {
+                            Sensor sensor_tmp = sen;
+                            DataSeries data_series_complete = influx_connection.getDataSeries(sensor_tmp, start_time, end_time, inc_int, cache);
+                            if(data_series_complete == null)
+                                continue;
+
+                            DataSeries data_series_sim = data_series_complete.interpolate();
+                            DataSeries normalized = data_series_sim.normalize();
+                            complete_time_series.add(normalized);
+                            if((((max_size/1000)/60) - ((min_size/1000)/60)) > 500)
+                            {
+                                inc_int = 20*60*1000;
+                                while(max_size % inc_int != 0 && min_size % inc_int != 0)
+                                    inc_int += 5*60*1000;
+                            }
+
+                            for(long scale = min_size; scale <= max_size; scale += inc_int)
+                            {
+                                long data_num = scale/(5*60*1000);
+                                //double[] scaled_ref = new double[(int)data_num];
+                                double[] scaled_ref = Util.resize(ref, (int)data_num);
+                                scaled_ref = Util.interpolate(scaled_ref);
+
+                                DataSeries.normalize(scaled_ref);
+                                for(long i = start_time; i < end_time - scale; i += (5*60*1000))
+                                {
+                                    DataSeries subseries = normalized.subSeries(i, i + scale);
+                                    DataSeries normalized_ss = subseries.normalize();
+                                    if(normalized_ss.getPresentValueCount() != scaled_ref.length)
+                                        continue;
+                                    //System.out.println("Subseries len: " + subseries.getValueCount());
+                                    MatchedCurve tmp = new MatchedCurve(sen, normalized_ss, normalized_ss.similarity(scaled_ref));
+                                    sm.put(normalized_ss.similarity(scaled_ref), tmp);
+                                    subseries = null;
+                                    normalized_ss = null;
+                                }
+                               // System.gc();
+
+                            }
+                        }
+                        List<MatchedCurve> mc = new ArrayList<>();
+                        int count = 0;
+                        for(Map.Entry<Double, MatchedCurve> entry : sm.entrySet())
+                        {
+                            mc.add(entry.getValue());
+                            count++;
+                            if(count == max_result_count)
+                                break;
+                        }
+
+                        out_stream.writeObject(mc);
+                        break;
 
                     default:
                         System.out.println("Error Wrong Command");

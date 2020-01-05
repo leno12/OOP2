@@ -46,11 +46,15 @@ public final class ClientConnection implements AutoCloseable {
 
 	static final String NO_VALUES_ERROR =  "[ERROR] Wrong parameters or there " +
 			"are no values for the selected date";
-	static  final String CLASS_NOT_FOUND_ERROR = "[ERROR] Class could not be found";
+	static final String CLASS_NOT_FOUND_ERROR = "[ERROR] Class could not be found";
+	static final String INVALID_REF_CURVE_ERROR = "[ERROR] Reference curve must have at least 2 points";
+	static final String INVALID_MIN_MAX_SIZE = "[ERROR] Wrong parameters - minSize must be smaller than maxSize";
+	static final String INVALID_RESULT_COUNT = "[ERROR] Wrong parameters - Result count must be greater than 0";
 	static final String LS_COMMAND = "ls";
 	static final String NOW_COMMAND = "now";
 	static final String DATA_COMMAND = "data";
 	static final String CLUSTER_COMMMAND = "cluster";
+	static final String SIM_COMMAND = "sim";
 	private boolean connectedButton = false;
 
 
@@ -118,7 +122,7 @@ public final class ClientConnection implements AutoCloseable {
 		try {
 			this.running = true;
 			this.client_socket = new Socket(url,port);
-			this.client_socket.setSoTimeout(30*1000);
+			this.client_socket.setSoTimeout(300*1000);
 		} catch (IOException e) {
 			System.out.println(ANSI_RED + CANT_REACH_SERVER_ERROR + ANSI_RESET);
 			return false;
@@ -400,8 +404,57 @@ public final class ClientConnection implements AutoCloseable {
 	/**
 	 * Second assignment.
 	 */
-	public CompletableFuture<List<MatchedCurve>> getSimilarity(String metric, long from, long to, long minSize, long maxSize, int maxResultCount, double[] ref) {
-		throw new UnsupportedOperationException("TODO");
+	public CompletableFuture<List<MatchedCurve>> getSimilarity(String metric, long from, long to, long minSize, long maxSize, int maxResultCount, double[] ref) throws ExecutionException, InterruptedException {
+		CompletableFuture<List<MatchedCurve>> completableFuture = CompletableFuture.supplyAsync(() ->
+		{
+			List<MatchedCurve> sim_list = null;
+			try
+			{
+				if(ref.length < 2)
+				{
+					System.out.println(ANSI_RED + INVALID_REF_CURVE_ERROR + ANSI_RESET);
+				}
+				else if(from >= to)
+				{
+					System.out.println(ANSI_RED + WRONG_END_DATE_ERROR + ANSI_RESET);
+				}
+				else if(from >= System.currentTimeMillis() || to >= System.currentTimeMillis())
+				{
+					System.out.println(ANSI_RED + WRONG_DATE_ERROR + ANSI_RESET);
+				}
+				else if(minSize >= maxSize)
+				{
+					System.out.println(ANSI_RED  + INVALID_MIN_MAX_SIZE + ANSI_RESET);
+
+				}
+				else if(maxResultCount < 1)
+				{
+					System.out.println(ANSI_RED + INVALID_RESULT_COUNT + ANSI_RESET);
+				}
+				else
+				{
+					List<Object> list = new ArrayList<>(Arrays.asList(SIM_COMMAND, metric, from, to, minSize, maxSize, maxResultCount, ref));
+					this.out.writeObject(list);
+					Object received_object = this.ois.readObject();
+					sim_list = (List<MatchedCurve>)received_object;
+				}
+				return sim_list;
+			}catch (SocketTimeoutException e) {
+				System.out.println(ANSI_RED + TIMEOUT_ERROR + ANSI_RESET);
+			}
+
+			catch (IOException e) {
+				System.out.println(ANSI_RED + CANT_REACH_SERVER_ERROR + ANSI_RESET);
+
+			} catch (ClassNotFoundException e) {
+				System.out.println(ANSI_RED + CLASS_NOT_FOUND_ERROR + ANSI_RESET);
+
+			}
+
+			return sim_list;
+		});
+		completableFuture.get();
+		return completableFuture;
 	}
 
 	@FunctionalInterface
