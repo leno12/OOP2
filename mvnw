@@ -50,6 +50,7 @@ fi
 cygwin=false;
 darwin=false;
 mingw=false
+
 case "`uname`" in
   CYGWIN*) cygwin=true ;;
   MINGW*) mingw=true;;
@@ -262,7 +263,7 @@ export MAVEN_PROJECTBASEDIR=${MAVEN_BASEDIR:-"$BASE_DIR"}
 if [ "$MVNW_VERBOSE" = true ]; then
   echo $MAVEN_PROJECTBASEDIR
 fi
-MAVEN_OPTS="$(concat_lines "$MAVEN_PROJECTBASEDIR/.mvn/jvm.config") $MAVEN_OPTS"
+MAVEN_OPTS=" $(concat_lines "-Xmx512m $MAVEN_PROJECTBASEDIR/.mvn/jvm.config") $MAVEN_OPTS"
 
 # For Cygwin, switch paths to Windows format before running java
 if $cygwin; then

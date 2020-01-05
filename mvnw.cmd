@@ -38,6 +38,8 @@
 @REM set title of command window
 title %0
 @REM enable echoing my setting MAVEN_BATCH_ECHO to 'on'
+
+MAVEN_OPTS  = -XX:MaxPermSize=512m
 @if "%MAVEN_BATCH_ECHO%" == "on"  echo %MAVEN_BATCH_ECHO%
 
 @REM set %HOME% to equivalent of $HOME

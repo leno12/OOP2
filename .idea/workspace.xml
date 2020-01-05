@@ -2,22 +2,23 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b2d30622-dbb3-4f3a-b800-74617faff348" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__ca_pjer_ekmeans_2_0_0.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_github_kerner1000_javafx_chart_zooming_0_0_8.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cache.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Cache.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/analysis-server/analysis-server.iml" beforeDir="false" afterPath="$PROJECT_DIR$/analysis-server/analysis-server.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/analysis-server/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/analysis-server/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/analysis-server/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/analysis-server/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/analysis-server/src/main/java/at/tugraz/oo2/server/RequestHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/analysis-server/src/main/java/at/tugraz/oo2/server/RequestHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/client.iml" beforeDir="false" afterPath="$PROJECT_DIR$/client/client.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/client/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/client/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/GUIMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/GUIMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/AssignmentUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/AssignmentUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/ClusterUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/ClusterUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/resources/application.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/application.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/resources/chart.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/chart.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/resources/cluster.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/cluster.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/resources/cluster.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/cluster.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mvnw" beforeDir="false" afterPath="$PROJECT_DIR$/mvnw" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mvnw.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/mvnw.cmd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/quickmvn" beforeDir="false" afterPath="$PROJECT_DIR$/quickmvn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/shared/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/shared/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared/src/main/java/at/tugraz/oo2/Util.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/at/tugraz/oo2/Util.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared/src/main/java/at/tugraz/oo2/data/DataPoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/at/tugraz/oo2/data/DataPoint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared/src/main/java/at/tugraz/oo2/data/Sensor.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/at/tugraz/oo2/data/Sensor.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -105,7 +106,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../upstream/P3/pom.xml" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../098/pom.xml" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -115,9 +116,9 @@
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="ServiceViewManager">
@@ -173,7 +174,11 @@
       <workItem from="1576933246053" duration="10000" />
       <workItem from="1577104493183" duration="599000" />
       <workItem from="1577187109738" duration="21639000" />
-      <workItem from="1577357055278" duration="16127000" />
+      <workItem from="1577357055278" duration="16471000" />
+      <workItem from="1577555856120" duration="1559000" />
+      <workItem from="1578145361590" duration="94000" />
+      <workItem from="1578145885481" duration="10872000" />
+      <workItem from="1578166738012" duration="2908000" />
     </task>
     <servers />
   </component>
@@ -198,33 +203,40 @@
       <screen x="0" y="0" width="1920" height="1033" />
     </state>
     <state x="805" y="408" width="300" height="225" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.0.1920.1033/1920.0.1920.1200@0.0.1920.1033" timestamp="1576592413562" />
-    <state x="743" y="274" width="424" height="493" key="FileChooserDialogImpl" timestamp="1576687321904">
-      <screen x="0" y="0" width="1920" height="1033" />
+    <state x="743" y="274" width="424" height="493" key="FileChooserDialogImpl" timestamp="1578228151610">
+      <screen x="0" y="0" width="1920" height="1032" />
     </state>
+    <state x="743" y="274" width="424" height="493" key="FileChooserDialogImpl/0.0.1920.1032@0.0.1920.1032" timestamp="1578228151610" />
     <state x="743" y="274" width="424" height="493" key="FileChooserDialogImpl/0.0.1920.1033@0.0.1920.1033" timestamp="1576687321904" />
     <state x="493" y="174" width="924" height="693" key="Maven.ArtifactSearchDialog" timestamp="1576609908158">
       <screen x="0" y="0" width="1920" height="1033" />
     </state>
     <state x="493" y="174" width="924" height="693" key="Maven.ArtifactSearchDialog/0.0.1920.1033/1920.0.1920.1200@0.0.1920.1033" timestamp="1576609908158" />
     <state x="493" y="174" width="924" height="693" key="Maven.ArtifactSearchDialog/0.0.1920.1033@0.0.1920.1033" timestamp="1576518273165" />
-    <state x="630" y="344" key="com.intellij.ide.util.TipDialog" timestamp="1577357159166">
-      <screen x="0" y="0" width="1920" height="1033" />
+    <state x="443" y="93" width="1024" height="854" key="SettingsEditor" timestamp="1578146444446">
+      <screen x="0" y="0" width="1920" height="1032" />
     </state>
+    <state x="443" y="93" width="1024" height="854" key="SettingsEditor/0.0.1920.1032@0.0.1920.1032" timestamp="1578146444446" />
+    <state x="630" y="344" key="com.intellij.ide.util.TipDialog" timestamp="1578228138478">
+      <screen x="0" y="0" width="1920" height="1032" />
+    </state>
+    <state x="630" y="344" key="com.intellij.ide.util.TipDialog/0.0.1920.1032@0.0.1920.1032" timestamp="1578228138478" />
     <state x="630" y="344" key="com.intellij.ide.util.TipDialog/0.0.1920.1033/1920.0.1920.1200@0.0.1920.1033" timestamp="1576595798302" />
-    <state x="630" y="344" key="com.intellij.ide.util.TipDialog/0.0.1920.1033@0.0.1920.1033" timestamp="1577357159166" />
+    <state x="630" y="344" key="com.intellij.ide.util.TipDialog/0.0.1920.1033@0.0.1920.1033" timestamp="1577555862679" />
     <state x="624" y="199" width="662" height="644" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1576519022060">
       <screen x="0" y="0" width="1920" height="1033" />
     </state>
     <state x="624" y="199" width="662" height="644" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1920.1033@0.0.1920.1033" timestamp="1576519022060" />
-    <state x="628" y="126" width="663" height="780" key="find.popup" timestamp="1576530262652">
-      <screen x="0" y="0" width="1920" height="1033" />
+    <state x="628" y="126" width="663" height="780" key="find.popup" timestamp="1578162058566">
+      <screen x="0" y="0" width="1920" height="1032" />
     </state>
+    <state x="628" y="126" width="663" height="780" key="find.popup/0.0.1920.1032@0.0.1920.1032" timestamp="1578162058566" />
     <state x="628" y="126" width="663" height="780" key="find.popup/0.0.1920.1033@0.0.1920.1033" timestamp="1576530262652" />
-    <state x="556" y="241" key="run.anything.popup" timestamp="1577214110095">
+    <state x="556" y="241" key="run.anything.popup" timestamp="1577557741758">
       <screen x="0" y="0" width="1920" height="1033" />
     </state>
     <state x="463" y="204" key="run.anything.popup/0.0.1600.876@0.0.1600.876" timestamp="1573900918741" />
-    <state x="556" y="241" key="run.anything.popup/0.0.1920.1033@0.0.1920.1033" timestamp="1577214110095" />
+    <state x="556" y="241" key="run.anything.popup/0.0.1920.1033@0.0.1920.1033" timestamp="1577557741758" />
     <state x="623" y="227" width="672" height="678" key="search.everywhere.popup" timestamp="1577373435151">
       <screen x="0" y="0" width="1920" height="1033" />
     </state>

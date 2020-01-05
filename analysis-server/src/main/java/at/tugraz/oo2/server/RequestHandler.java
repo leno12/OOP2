@@ -139,6 +139,10 @@ public class RequestHandler extends Thread {
                         int dimensions = (int)((interval_clusters / (60*1000)) / (interval_points / (60 * 1000)));
 
 
+                        System.out.println(dimensions);
+                        System.out.println(clusters.size());
+
+
                         ArrayList<Attribute> attrList = new ArrayList<Attribute>();
                         for(int i = 0; i < dimensions; i++) {
                             Attribute attr1 = new Attribute("attr" + i);
@@ -163,11 +167,12 @@ public class RequestHandler extends Thread {
                         SimpleKMeans kmeans = new SimpleKMeans();
 
                         kmeans.setPreserveInstancesOrder(true);
+                        kmeans.setDontReplaceMissingValues(false);
                         kmeans.setNumClusters(Integer.parseInt(num_of_clusters.toString()));
                         kmeans.setSeed(Integer.parseInt(num_of_clusters.toString()));
-                        kmeans.setDontReplaceMissingValues(true);
-                        kmeans.buildClusterer(dataset);
                         kmeans.setMaxIterations(10);
+                        kmeans.buildClusterer(dataset);
+
                         Instances instances = kmeans.getClusterCentroids();
                         int assignments2[] = kmeans.getAssignments();
 
@@ -180,7 +185,7 @@ public class RequestHandler extends Thread {
                         for(int i = 0; i < list_of_clusters.size(); i++)
                         {
                             //System.out.println(list_of_clusters.get(i).size());
-                            double average[] = new double[24];
+                            double average[] = new double[dimensions];
 
                             for(int j = 0; j < list_of_clusters.get(i).size(); j++)
                             {

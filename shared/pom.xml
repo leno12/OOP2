@@ -33,6 +33,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.7.0</version>
 				<configuration>
+
+
 					<source>${javaVersion}</source>
 					<target>${javaVersion}</target>
 					<optimize>true</optimize>
