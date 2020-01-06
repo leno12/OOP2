@@ -4,10 +4,10 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import at.tugraz.oo2.client.ui.component.DurationPicker?>
+<?import javafx.scene.canvas.Canvas?>
 <fx:root prefHeight="680.0" prefWidth="650.0" stylesheets="application.css" type="javafx.scene.layout.HBox"
 		 xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
 
-	<HBox AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
 		<GridPane styleClass="leftPanelPane" HBox.hgrow="ALWAYS">
 			<Label text="Choose metric:" GridPane.rowIndex="0"/>
 			<ListView fx:id="lvMetric" GridPane.rowIndex="1"/>
@@ -21,6 +21,21 @@
 			<DurationPicker fx:id="dpMaxSize" GridPane.rowIndex="9"/>
 			<Label text="Max. Results:" GridPane.rowIndex="10"/>
 			<Spinner fx:id="spMaxResultCount" GridPane.rowIndex="11"/>
+			<Button styleClass="draw-button" fx:id="drawChartButton" text="Compute similarities"  GridPane.rowIndex="12" onAction="#getSimilarity">
+				<GridPane.margin>
+					<Insets>
+						<top>20</top>
+					</Insets>
+				</GridPane.margin>
+			</Button>
+
+			<Button styleClass="draw-button" fx:id="clearRefButton" text="Clear Reference Curve"  GridPane.rowIndex="13" onAction="#clearRef">
+				<GridPane.margin>
+					<Insets>
+						<top>20</top>
+					</Insets>
+				</GridPane.margin>
+			</Button>
 			<columnConstraints>
 				<ColumnConstraints/>
 			</columnConstraints>
@@ -34,17 +49,17 @@
 			</rowConstraints>
 		</GridPane>
 		<Separator orientation="VERTICAL" prefHeight="200.0">
-			<HBox.margin>
-				<Insets left="-1.0" right="-5.0"/>
-			</HBox.margin>
-		</Separator>
-		<VBox prefHeight="600.0" prefWidth="400.0" HBox.hgrow="ALWAYS">
 
-			<Label prefHeight="300" text="TODO: Sketch here"/>
-			<Separator/>
-			<ScrollPane hbarPolicy="ALWAYS" pannable="true" VBox.vgrow="ALWAYS" vbarPolicy="NEVER">
-				<Label prefHeight="250" text="TODO: Results here"/>
-			</ScrollPane>
-		</VBox>
-	</HBox>
+		</Separator>
+	<VBox fx:id="vbx" prefHeight="600.0" prefWidth="400.0" HBox.hgrow="ALWAYS">
+		<HBox fx:id="vx" prefHeight="380.0" prefWidth="400.0" HBox.hgrow="ALWAYS">
+			<AnchorPane fx:id="ap" VBox.vgrow="ALWAYS">
+			</AnchorPane>
+		</HBox>
+		<AnchorPane VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS">
+			<TableView fx:id="sp"  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+			</TableView>
+		</AnchorPane>
+	</VBox>
+
 </fx:root>

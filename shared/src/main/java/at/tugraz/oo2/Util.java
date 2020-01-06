@@ -63,6 +63,30 @@ public final class Util {
 		return out;
 	}
 
+	public static double[] interpolate(double[] data) {
+		int startIdx = -1;
+		double startValue = 0f;
+		double element;
+		for (int i = 0; i < data.length - 1; i++) {
+			element = data[i];
+			if (element != 0f) {
+				if (startIdx != -1) {
+					doInterpolate(startValue, element, startIdx + 1, i - startIdx - 1, data);
+				}
+				startValue = element;
+				startIdx = i;
+			}
+		}
+		return data;
+	}
+
+	private static void doInterpolate(double start, double end, int startIdx, int count, double[] data) {
+		double delta = (end - start) / (count + 1);
+		for (int i = startIdx; i < startIdx + count; i++) {
+			data[i] = start + delta * (i - startIdx + 1);
+		}
+	}
+
 	private Util() {
 
 	}

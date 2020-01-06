@@ -13,8 +13,8 @@ import at.tugraz.oo2.Util;
 
 public final class DataSeries implements Serializable, Iterable<DataPoint> {
 	private final long minTime, maxTime, interval;
-	private final double[] data;
-	private final boolean[] present;
+	private double[] data;
+	private boolean[] present;
 
 
 	public DataSeries(long minTime, long maxTime,long interval, double[] data, boolean[] present) {
@@ -244,6 +244,7 @@ public final class DataSeries implements Serializable, Iterable<DataPoint> {
 				}
 			}
 		}
+		data = null;
 		return new DataSeries(minTime,maxTime, interval, normalizedData, present);
 	}
 
@@ -287,6 +288,8 @@ public final class DataSeries implements Serializable, Iterable<DataPoint> {
 				resultPresent[i] = true;
 			}
 		}
+		data = null;
+		present = null;
 		return new DataSeries(minTime,maxTime, interval, resultData, resultPresent);
 	}
 
