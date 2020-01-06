@@ -2,16 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b2d30622-dbb3-4f3a-b800-74617faff348" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Cache.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Cache.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/analysis-server/src/main/java/at/tugraz/oo2/server/RequestHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/analysis-server/src/main/java/at/tugraz/oo2/server/RequestHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ClientConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ClientConnection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/ClusterUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/ClusterUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/GUIMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/GUIMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/LiveUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/LiveUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/SketchUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/SketchUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/resources/sketch.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/sketch.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/src/main/java/at/tugraz/oo2/Util.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/at/tugraz/oo2/Util.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/src/main/java/at/tugraz/oo2/data/DataSeries.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/at/tugraz/oo2/data/DataSeries.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -175,7 +171,7 @@
       <workItem from="1578166738012" duration="2908000" />
       <workItem from="1578228137786" duration="486000" />
       <workItem from="1578231401431" duration="10616000" />
-      <workItem from="1578316905030" duration="4400000" />
+      <workItem from="1578316905030" duration="13309000" />
     </task>
     <servers />
   </component>
@@ -237,9 +233,10 @@
     </state>
     <state x="463" y="204" key="run.anything.popup/0.0.1600.876@0.0.1600.876" timestamp="1573900918741" />
     <state x="556" y="241" key="run.anything.popup/0.0.1920.1033@0.0.1920.1033" timestamp="1577557741758" />
-    <state x="623" y="227" width="672" height="678" key="search.everywhere.popup" timestamp="1577373435151">
-      <screen x="0" y="0" width="1920" height="1033" />
+    <state x="623" y="227" width="672" height="678" key="search.everywhere.popup" timestamp="1578326876203">
+      <screen x="0" y="0" width="1920" height="1032" />
     </state>
+    <state x="623" y="227" width="672" height="678" key="search.everywhere.popup/0.0.1920.1032@0.0.1920.1032" timestamp="1578326876203" />
     <state x="623" y="227" width="672" height="678" key="search.everywhere.popup/0.0.1920.1033@0.0.1920.1033" timestamp="1577373435151" />
   </component>
 </project>

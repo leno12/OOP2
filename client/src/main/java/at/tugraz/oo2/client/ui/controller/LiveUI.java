@@ -111,6 +111,9 @@ public class LiveUI extends AnchorPane {
 											 "and then connect again");
 									 alert.show();
 								 });
+								 sched_future.cancel(true);
+								 ses.shutdown();
+								 ses.awaitTermination(10, TimeUnit.SECONDS);
 								 return;
 							 }
 						 } catch (InterruptedException e)

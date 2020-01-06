@@ -14,7 +14,10 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.HPos;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
@@ -24,14 +27,12 @@ import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.*;
 import javafx.scene.canvas.*;
 import javafx.scene.input.*;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 import lombok.Data;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -50,6 +51,7 @@ import java.util.concurrent.ExecutionException;
 public class SketchUI extends HBox {
 
 	private final ClientConnection clientConnection;
+	private TableView sp;
 
 	@FXML
 	private ListView<String> lvMetric;
@@ -63,14 +65,15 @@ public class SketchUI extends HBox {
 	private DurationPicker dpMaxSize;
 	@FXML
 	private Spinner<Integer> spMaxResultCount;
-	@FXML
-	private TableView sp;
+
 	@FXML
 	private VBox vbx;
 	@FXML
 	private AnchorPane ap;
 	@FXML
 	private HBox vx;
+	@FXML
+	private GridPane grid;
 
 
 
@@ -230,9 +233,12 @@ public class SketchUI extends HBox {
 		dpMinSize.setDuration(60*60);
 		dpMaxSize.setDuration(60*60*24*2);
 		spMaxResultCount.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000, 16, 5));
+		sp = new TableView();
 		this.setStyle("-fx-background-color: black");
 		sp.setStyle("-fx-background-color: black");
 		this.getStylesheets().add("/cluster.css");
+		//grid.setStyle("-fx-background-color: green");
+
 
 		TableColumn<SketchUI.LiveData, String> locationColumn = new TableColumn<>("Location");
 		TableColumn<SketchUI.LiveData, String> dateColumn = new TableColumn<>("Date");
@@ -251,12 +257,13 @@ public class SketchUI extends HBox {
 
 		Canvas canvas = new Canvas(1000, 400);
 		gc = canvas.getGraphicsContext2D();
-		//gc.setFill(Color.LIGHTCORAL);
-		//gc.setStroke(Color.LEMONCHIFFON);
+
+		gc.setFill(Color.LIGHTCORAL);
+		gc.setStroke(Color.LEMONCHIFFON);
 		//gc.setLineWidth(5);
 		gc.fill();
-		gc.strokeRect(0, 0, 200, 200);
-		gc.setFill(Color.PALEVIOLETRED);
+		gc.strokeRect(0, 0, canvas.getWidth(), canvas.getWidth());
+		gc.setFill(Color.RED);
 		gc.setStroke(Color.CORNFLOWERBLUE);
 		gc.setLineWidth(1);
 
@@ -303,22 +310,38 @@ public class SketchUI extends HBox {
 		new_label.setMinSize(40, 40);
 		new_label.setFont(new Font("Arial", 20));
 		new_label.setStyle("-fx-text-fill: white");
-		ap.getChildren().add(0, new_label);
+	//	ap.getChildren().add(0, new_label);
 		new_label.setLayoutX(200);
-		canvas.setStyle("-fx-background-color: green");
+		//canvas.setStyle("-fx-background-color: green");
 		new_label.setAlignment(Pos.BASELINE_CENTER);
+		//refernce curve here", Math.round(canvas.getWidth()/2), Math.round(canvas.getHeight()/2));
+
 		//new_label.setMaxWidth(Double.MAX_VALUE);
 		//AnchorPane.setLeftAnchor(new_label, 350.0);
 		//AnchorPane.setRightAnchor(new_label, 200.0);
 		//vbx.getChildren().add(1, canvas);
 		//canvas.widthProperty().bind(ap.widthProperty());
-		ap.getChildren().add(canvas);
-		gc.fillText("Draw your refernce curve here", canvas.getWidth()/2, canvas.getHeight()/2);
-		canvas.widthProperty().bind(vx.widthProperty());
-		canvas.heightProperty().bind(vx.heightProperty());
+		//vx.getChildren().add(canvas);
 
 
+		canvas.widthProperty().bind(grid.widthProperty());
 
+		new_label.setAlignment(Pos.CENTER);
+		//canvas.heightProperty().bind(vx.heightProperty());
+		Separator separator = new Separator(Orientation.HORIZONTAL);
+		VBox new_box = new VBox();
+		GridPane.setHalignment(new_label, HPos.CENTER);
+		new_box.getChildren().add(new_label);
+		new_box.getChildren().add(separator);
+		new_box.getChildren().add(canvas);
+		new_box.setAlignment(Pos.CENTER);
+
+
+		grid.addRow(0,new_box);
+		grid.addRow(1,sp);
+
+  canvas.setStyle("-fx-border-color: red");
+  canvas.setStyle("-fx-border-width: 20");
 	}
 	public void incrementCount()
 	{

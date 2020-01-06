@@ -51,15 +51,18 @@
 		<Separator orientation="VERTICAL" prefHeight="200.0">
 
 		</Separator>
-	<VBox fx:id="vbx" prefHeight="600.0" prefWidth="400.0" HBox.hgrow="ALWAYS">
-		<HBox fx:id="vx" prefHeight="380.0" prefWidth="400.0" HBox.hgrow="ALWAYS">
-			<AnchorPane fx:id="ap" VBox.vgrow="ALWAYS">
-			</AnchorPane>
-		</HBox>
-		<AnchorPane VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS">
-			<TableView fx:id="sp"  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-			</TableView>
-		</AnchorPane>
-	</VBox>
+	<GridPane fx:id = "grid" HBox.hgrow="ALWAYS" AnchorPane.leftAnchor="0"
+			  AnchorPane.rightAnchor="0"
+			  AnchorPane.topAnchor="0"
+			  AnchorPane.bottomAnchor="0">
+		<columnConstraints>
+			<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="100.0" prefWidth="100.0" />
+		</columnConstraints>
+		<rowConstraints>
+		<RowConstraints  percentHeight="50"/>
+		<RowConstraints  percentHeight="50"/>
+		</rowConstraints>
+	</GridPane>
+
 
 </fx:root>

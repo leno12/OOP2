@@ -29,7 +29,7 @@ public final class GUIMain extends Application {
 		guiStage = stage;
 
 		final Parent root = new MainUI();
-		final Scene scene = new Scene(root,1250,1000);
+		final Scene scene = new Scene(root,1250,960);
 		stage.setScene(scene);
 
 		stage.show();
