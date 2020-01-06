@@ -2,6 +2,7 @@ package at.tugraz.oo2.client.ui.controller;
 
 import at.tugraz.oo2.Util;
 import at.tugraz.oo2.client.ClientConnection;
+import at.tugraz.oo2.client.ui.component.DateTimePicker;
 import at.tugraz.oo2.client.ui.component.DurationPicker;
 import at.tugraz.oo2.data.ClusterDescriptor;
 import at.tugraz.oo2.data.DataSeries;
@@ -26,6 +27,7 @@ import javafx.scene.text.Font;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Comparator;
 import java.util.Date;
@@ -141,7 +143,8 @@ public class ClusterUI extends HBox {
 
 		this.getChildren().remove(this.lookup("#chart"));
 		Alert alert = new Alert(Alert.AlertType.NONE);
-		Alert alert2 = new Alert(Alert.AlertType.NONE);
+		if(!checkParameters(lvSensors,null,dpFrom,dpTo))
+			return;
 
 
 
@@ -453,6 +456,52 @@ public class ClusterUI extends HBox {
 
 
 	}
+
+	/**
+	 * Checks if user input is correct (Sensor, Date, Interval)
+	 * @param lvSensors
+	 * @param lvSensorsY
+	 * @param dpFrom
+	 * @param dpTo
+	 * @return
+	 */
+	public static boolean checkParameters(ListView<String> lvSensors, ListView<String> lvSensorsY, DatePicker dpFrom, DatePicker dpTo)
+	{
+		Alert alert = new Alert(Alert.AlertType.NONE);
+		Alert alert2 = new Alert(Alert.AlertType.NONE);
+		if(lvSensors.getSelectionModel().isEmpty() || (lvSensorsY != null && lvSensorsY.getSelectionModel().isEmpty()))
+		{
+
+			alert.setAlertType(Alert.AlertType.ERROR);
+			alert.setContentText("Please choose one sensor");
+			alert.show();
+			return false;
+		}
+		else if(dpFrom.getValue() == null || dpTo.getValue() == null)
+		{
+			alert.setAlertType(Alert.AlertType.ERROR);
+			alert.setContentText("Please select date");
+			alert.show();
+			return false;
+		}
+
+		else if(dpFrom.getValue().isAfter(LocalDate.now()) || dpTo.getValue().isAfter(LocalDate.now()))
+		{
+			alert.setAlertType(Alert.AlertType.ERROR);
+			alert.setContentText("Date should be smaller than the current date");
+			alert.show();
+			return false;
+		}
+		else if(dpFrom.getValue().isAfter(dpTo.getValue()))
+		{
+			alert.setAlertType(Alert.AlertType.ERROR);
+			alert.setContentText("End Date should be bigger than Start Date");
+			alert.show();
+			return false;
+		}
+		return true;
+	}
+
 
 
 

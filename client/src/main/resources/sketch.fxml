@@ -39,6 +39,7 @@
 			</HBox.margin>
 		</Separator>
 		<VBox prefHeight="600.0" prefWidth="400.0" HBox.hgrow="ALWAYS">
+
 			<Label prefHeight="300" text="TODO: Sketch here"/>
 			<Separator/>
 			<ScrollPane hbarPolicy="ALWAYS" pannable="true" VBox.vgrow="ALWAYS" vbarPolicy="NEVER">

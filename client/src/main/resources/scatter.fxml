@@ -3,7 +3,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import org.controlsfx.control.RangeSlider?>
 <?import at.tugraz.oo2.client.ui.component.DateTimePicker?>
 <fx:root styleClass="backround" xmlns:fx="http://javafx.com/fxml/1" type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/8.0.221" stylesheets="application.css">
 	<GridPane prefHeight="1000" styleClass="leftPanelPane">
