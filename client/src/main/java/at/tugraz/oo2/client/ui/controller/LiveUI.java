@@ -35,7 +35,8 @@ public class LiveUI extends AnchorPane {
 	private final ClientConnection clientConnection;
 	private static	ScheduledThreadPoolExecutor ses;
 	private Runnable new_runnable;
-	private static  ScheduledFuture<?> sched_future;
+	public static  ScheduledFuture<?> sched_future;
+	List<Sensor> sensors_line_chart = null;
 
 	@FXML
 	private TableView<LiveData> tvData;
@@ -89,6 +90,7 @@ public class LiveUI extends AnchorPane {
 		Label fetching_data = new Label("Fetching Live Data");
 		HBox new_progress_bar = new HBox();
 		this.createProgressBar(fetching_data,pb,new_progress_bar);
+
 
 	    ses = new ScheduledThreadPoolExecutor(1);
 
@@ -184,6 +186,7 @@ public class LiveUI extends AnchorPane {
 		ses.setContinueExistingPeriodicTasksAfterShutdownPolicy(true);
 		sched_future = ses.scheduleAtFixedRate(new_runnable , 0, 10, TimeUnit.SECONDS);
 
+
 	}
 
 
@@ -232,4 +235,7 @@ public class LiveUI extends AnchorPane {
 		fetching_data.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font: 20px 'Arial'");
 		this.getChildren().add(fetching_data);
 	}
+
+
+
 }

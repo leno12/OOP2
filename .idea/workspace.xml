@@ -2,12 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b2d30622-dbb3-4f3a-b800-74617faff348" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/LiveDataLineChartUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/main/resources/live_data_chart.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Cache.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Cache.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/GUIMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/GUIMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/AssignmentUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/AssignmentUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/ClusterUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/ClusterUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/LineChartUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/LineChartUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/LiveUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/LiveUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/SketchUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/SketchUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/resources/sketch.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/sketch.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,6 +25,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Class" />
         <option value="CSS File" />
       </list>
     </option>
@@ -171,7 +174,8 @@
       <workItem from="1578166738012" duration="2908000" />
       <workItem from="1578228137786" duration="486000" />
       <workItem from="1578231401431" duration="10616000" />
-      <workItem from="1578316905030" duration="13309000" />
+      <workItem from="1578316905030" duration="22334000" />
+      <workItem from="1578391622720" duration="10890000" />
     </task>
     <servers />
   </component>
@@ -213,30 +217,30 @@
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
     <state x="443" y="93" width="1024" height="854" key="SettingsEditor/0.0.1920.1032@0.0.1920.1032" timestamp="1578146444446" />
-    <state x="630" y="344" key="com.intellij.ide.util.TipDialog" timestamp="1578231416768">
+    <state x="630" y="344" key="com.intellij.ide.util.TipDialog" timestamp="1578391624253">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state x="630" y="344" key="com.intellij.ide.util.TipDialog/0.0.1920.1032@0.0.1920.1032" timestamp="1578231416768" />
+    <state x="630" y="344" key="com.intellij.ide.util.TipDialog/0.0.1920.1032@0.0.1920.1032" timestamp="1578391624253" />
     <state x="630" y="344" key="com.intellij.ide.util.TipDialog/0.0.1920.1033/1920.0.1920.1200@0.0.1920.1033" timestamp="1576595798302" />
     <state x="630" y="344" key="com.intellij.ide.util.TipDialog/0.0.1920.1033@0.0.1920.1033" timestamp="1577555862679" />
     <state x="624" y="199" width="662" height="644" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1576519022060">
       <screen x="0" y="0" width="1920" height="1033" />
     </state>
     <state x="624" y="199" width="662" height="644" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1920.1033@0.0.1920.1033" timestamp="1576519022060" />
-    <state x="628" y="126" width="663" height="780" key="find.popup" timestamp="1578162058566">
+    <state x="628" y="126" width="663" height="780" key="find.popup" timestamp="1578400305122">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state x="628" y="126" width="663" height="780" key="find.popup/0.0.1920.1032@0.0.1920.1032" timestamp="1578162058566" />
+    <state x="628" y="126" width="663" height="780" key="find.popup/0.0.1920.1032@0.0.1920.1032" timestamp="1578400305122" />
     <state x="628" y="126" width="663" height="780" key="find.popup/0.0.1920.1033@0.0.1920.1033" timestamp="1576530262652" />
     <state x="556" y="241" key="run.anything.popup" timestamp="1577557741758">
       <screen x="0" y="0" width="1920" height="1033" />
     </state>
     <state x="463" y="204" key="run.anything.popup/0.0.1600.876@0.0.1600.876" timestamp="1573900918741" />
     <state x="556" y="241" key="run.anything.popup/0.0.1920.1033@0.0.1920.1033" timestamp="1577557741758" />
-    <state x="623" y="227" width="672" height="678" key="search.everywhere.popup" timestamp="1578326876203">
+    <state x="623" y="227" width="672" height="678" key="search.everywhere.popup" timestamp="1578393440875">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state x="623" y="227" width="672" height="678" key="search.everywhere.popup/0.0.1920.1032@0.0.1920.1032" timestamp="1578326876203" />
+    <state x="623" y="227" width="672" height="678" key="search.everywhere.popup/0.0.1920.1032@0.0.1920.1032" timestamp="1578393440875" />
     <state x="623" y="227" width="672" height="678" key="search.everywhere.popup/0.0.1920.1033@0.0.1920.1033" timestamp="1577373435151" />
   </component>
 </project>

@@ -154,6 +154,7 @@ public class LineChartUI extends AnchorPane {
 
 		Thread thread = new Thread(task);
 		thread.setDaemon(true);
+		thread.setPriority(Thread.MAX_PRIORITY);
 		thread.start();
 
 

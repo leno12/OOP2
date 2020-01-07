@@ -33,6 +33,8 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class ClusterUI extends HBox {
 
@@ -147,50 +149,53 @@ public class ClusterUI extends HBox {
 		if(!checkParameters(lvSensors,null,dpFrom,dpTo))
 			return;
 
+		Runnable task = new Runnable()
+		{
+			public void run() {
+				synchronized (clientConnection) {
+					try {
+
+						String selected_sensor = lvSensors.getSelectionModel().getSelectedItem();
+
+						String current_sensor[] = selected_sensor.split("-");
+						String location = current_sensor[0].replaceAll("\\s+", "");
+						String metric = current_sensor[1].replaceAll("\\s+", "");
+						Sensor sensor = new Sensor(location, metric);
+
+						LocalDate localDate = dpFrom.getValue();
+						Instant instant = localDate.atStartOfDay(ZoneId.of(ZoneId.systemDefault().toString())).toInstant();  //atZone(ZoneId.of(ZoneId.systemDefault().toString())).toInstant();
+						Date date = Date.from(instant);
+						long date_from = date.getTime();
+						localDate = dpTo.getValue();
+						instant = localDate.atStartOfDay(ZoneId.of(ZoneId.systemDefault().toString())).toInstant();
+						date = Date.from(instant);
+						long date_to = date.getTime();
+						long interval = spPointsCluster.getValue() * 60 * 1000;
+						long cluster_interval = Long.parseLong(dpIntervalClusters.getValue().toString()) * 1000;
+						int num_of_clusters = spClusters.getValue();
+						if (date_from >= date_to) {
+							Platform.runLater(() -> {
+								alert.setAlertType(Alert.AlertType.ERROR);
+								alert.setContentText("End Date should be bigger than Start Date");
+								alert.show();
+								return;
+							});
+						}
+						createClustersscrollPane(sensor, date_from, date_to, interval, selected_sensor, cluster_interval, num_of_clusters);
 
 
-		new Thread(() -> {
-			synchronized (clientConnection) {
-				try {
+					} catch (NullPointerException e) {
 
-					String selected_sensor = lvSensors.getSelectionModel().getSelectedItem();
-
-					String current_sensor[] = selected_sensor.split("-");
-					String location = current_sensor[0].replaceAll("\\s+", "");
-					String metric = current_sensor[1].replaceAll("\\s+", "");
-					Sensor sensor = new Sensor(location, metric);
-
-					LocalDate localDate = dpFrom.getValue();
-					Instant instant = localDate.atStartOfDay(ZoneId.of(ZoneId.systemDefault().toString())).toInstant();  //atZone(ZoneId.of(ZoneId.systemDefault().toString())).toInstant();
-					Date date = Date.from(instant);
-					long date_from = date.getTime();
-					localDate = dpTo.getValue();
-					instant =  localDate.atStartOfDay(ZoneId.of(ZoneId.systemDefault().toString())).toInstant();
-					date = Date.from(instant);
-					long date_to = date.getTime();
-					long interval = spPointsCluster.getValue() * 60 * 1000;
-					long cluster_interval = Long.parseLong(dpIntervalClusters.getValue().toString()) *  1000;
-					int num_of_clusters = spClusters.getValue();
-					if(date_from >= date_to)
-					{
-						Platform.runLater(() -> {
-							alert.setAlertType(Alert.AlertType.ERROR);
-							alert.setContentText("End Date should be bigger than Start Date");
-							alert.show();
-							return;
-						});
 					}
-					createClustersscrollPane(sensor, date_from, date_to, interval, selected_sensor,cluster_interval,num_of_clusters);
-
-
-
-				} catch (NullPointerException e) {
-
 				}
 			}
 
+		};
+		Thread thread = new Thread(task);
+		thread.setDaemon(true);
+		thread.setPriority(Thread.MAX_PRIORITY);
+		thread.start();
 
-		}).start();
 
 
 	}
@@ -204,6 +209,9 @@ public class ClusterUI extends HBox {
 
 			grid.setVgap(10);
 			grid.setHgap(10);
+
+
+
 
 
 
@@ -384,6 +392,7 @@ public class ClusterUI extends HBox {
 						AssignmentUI.addTab(new_tab);
 						ScrollPane new_scroll_pane = new ScrollPane();
 						new_scroll_pane.setStyle("-fx-background-color: black;");
+						new_scroll_pane.getStylesheets().add("/cluster.css");
 						new_scroll_pane.getStyleClass().add("sp");
 						new_scroll_pane.setFitToWidth(true);
 						new_scroll_pane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);

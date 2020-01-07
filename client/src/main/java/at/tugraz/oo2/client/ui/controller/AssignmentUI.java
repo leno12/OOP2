@@ -16,11 +16,14 @@ public class AssignmentUI extends TabPane {
 		Tab scatterTab = new Tab("Scatter");
 		Tab clusterVisualization = new Tab("Cluster Visualization");
 		Tab sketchbasedSearch = new Tab("Sketch Search");
+		Tab liveDataLineChart = new Tab("Live Data Line Chart");
+
 		getTabs().add(liveTab);
 		getTabs().add(lineChartTab);
 		getTabs().add(scatterTab);
 		getTabs().add(clusterVisualization);
 		getTabs().add(sketchbasedSearch);
+		getTabs().add(liveDataLineChart);
 		tabs = this;
 
 		liveTab.setContent(new LiveUI(clientConnection));
@@ -28,11 +31,13 @@ public class AssignmentUI extends TabPane {
 		scatterTab.setContent(new ScatterUI(clientConnection));
 		clusterVisualization.setContent(new ClusterUI(clientConnection));
 		sketchbasedSearch.setContent(new SketchUI(clientConnection));
+		liveDataLineChart.setContent(new LiveDataLineChartUI(clientConnection));
 		liveTab.setClosable(false);
 		lineChartTab.setClosable(false);
 		scatterTab.setClosable(false);
 		clusterVisualization.setClosable(false);
 		sketchbasedSearch.setClosable(false);
+		liveDataLineChart.setClosable(false);
 
 		this.getSelectionModel().select(liveTab);
 
