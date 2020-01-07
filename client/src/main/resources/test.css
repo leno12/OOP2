@@ -1,0 +1,59 @@
+.chart-plot-background {
+    -fx-background-color: transparent;
+}
+.default-color0.chart-series-line {
+    -fx-stroke: blue;
+}
+.default-color0.chart-line-symbol {
+    -fx-background-color: blue, white;
+}
+
+.chart {
+    -fx-padding: 10px;
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+
+
+}
+.chart-title
+{
+    -fx-text-fill: #fdfdfd;
+}
+.chart-content {
+    -fx-padding: 41px;
+    -fx-background-color:transparent;
+    -fx-text-fill: white;
+
+}
+.chart-legend {
+    -fx-background-color: rgba(38, 38, 38, 0.85);
+    -fx-text-fill: white;
+    -fx-background-size: 5px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-padding: 10px;
+    -fx-border-radius: 10 10 10 10;
+}
+.axis {
+     -fx-font-size: 1.4em;
+     -fx-tick-label-fill: #fcfcfc;
+     -fx-font-family: Arial;
+     -fx-tick-length: 20;
+     -fx-minor-tick-length: 20;
+     -fx-text-fill: white;
+ }
+.axis-label
+{
+    -fx-text-fill: white;
+    -fx-padding: 30 0 0 0;
+}
+.tooltip {
+    -fx-background: rgba(30,30,30);
+    -fx-text-fill: white;
+    -fx-background-color: rgba(30,30,30,0.8);
+    -fx-background-radius: 6px;
+    -fx-background-insets: 0;
+    -fx-padding: 0.667em 0.75em 0.667em 0.75em; /* 10px */
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.5) , 10, 0.0 , 0 , 3 );
+    -fx-font-size: 0.85em;
+}

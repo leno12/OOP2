@@ -8,9 +8,13 @@
     -fx-text-fill: #fdfdfd;
 }
 .chart-content {
-    -fx-padding: 30px;
+    -fx-padding: 40px;
     -fx-background-color: rgba(2, 2, 4, 0.8);
 
+}
+.axis-label
+{
+    -fx-padding: -40 0 0 0;
 }
 .chart-legend {
     -fx-background-color: rgba(38, 38, 38, 0.85);

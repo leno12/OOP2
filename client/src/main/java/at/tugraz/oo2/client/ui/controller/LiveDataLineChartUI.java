@@ -106,13 +106,16 @@ public class LiveDataLineChartUI extends ScrollPane {
             }
         };
 
-        ses.setContinueExistingPeriodicTasksAfterShutdownPolicy(true);
-        sched_future = ses.scheduleAtFixedRate(new_runnable , 0, 10, TimeUnit.SECONDS);
+
 
 
 
     }
-
+public  static  void executeTask()
+{
+    ses.setContinueExistingPeriodicTasksAfterShutdownPolicy(true);
+    sched_future = ses.scheduleAtFixedRate(new_runnable , 0, 10, TimeUnit.SECONDS);
+}
     private void onConnectionClosed()
     {
 
