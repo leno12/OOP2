@@ -1,12 +1,22 @@
 .chart-plot-background {
     -fx-background-color: transparent;
 }
+/*
 .default-color0.chart-series-line {
     -fx-stroke: blue;
 }
 .default-color0.chart-line-symbol {
     -fx-background-color: blue, white;
 }
+
+.default-color1.chart-series-line {
+    -fx-stroke: red;
+}
+
+.default-color1.chart-line-symbol {
+    -fx-background-color: red, white;
+}
+*/
 
 .chart {
     -fx-padding: 10px;
@@ -26,7 +36,7 @@
 
 }
 .chart-legend {
-    -fx-background-color: rgba(38, 38, 38, 0.85);
+    -fx-background-color: transparent;
     -fx-text-fill: white;
     -fx-background-size: 5px;
     -fx-background-repeat: no-repeat;
@@ -34,6 +44,12 @@
     -fx-padding: 10px;
     -fx-border-radius: 10 10 10 10;
 }
+.chart-legend-item {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+}
+
 .axis {
      -fx-font-size: 1.4em;
      -fx-tick-label-fill: #fcfcfc;

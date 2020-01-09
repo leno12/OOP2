@@ -384,11 +384,12 @@ public class LineChartUI extends AnchorPane {
 			lineChart.setCreateSymbols(true);
 
 			XYChart.Series series1 = new XYChart.Series();
-			series1.setName("Line Chart");
+			//series1.setName("Line Chart");
 			lineChart.setHorizontalGridLinesVisible(false);
 			lineChart.setVerticalGridLinesVisible(false);
 			lineChart.getStylesheets().add("/chart.css");
-			lineChart.setLegendVisible(false);
+			lineChart.setLegendVisible(true);
+			series1.setName(selected_sensor.get(0));
 
 			long inc = 0;
 			for (int i = 0; i < data_points.size(); i++) {
@@ -447,7 +448,7 @@ public class LineChartUI extends AnchorPane {
 			second_line_chart.prefHeight(700);
 
 
-			second_line_chart.setLegendVisible(false);
+			second_line_chart.setLegendVisible(true);
 			second_line_chart.setAnimated(false);
 			second_line_chart.setAlternativeRowFillVisible(false);
 			second_line_chart.setAlternativeColumnFillVisible(false);
@@ -466,46 +467,106 @@ public class LineChartUI extends AnchorPane {
 			yAxis_2.setPrefWidth(30);
 			xAxis_2.setPrefHeight(76);
 			xAxis.setPrefHeight(76);
+			XYChart.Series trying = new XYChart.Series();
+			trying.setName(selected_sensor.get(0));
+			second_line_chart.getData().add(trying);
 			((Path)second_line_chart.getXAxis().lookup(".axis-minor-tick-mark")).setVisible(false);
 
 			xAxis_2.setOpacity(0);
 			//yAxis_2.setTranslateZ(200);
 
+			Sensor check_metric = null;
 
-
-			if(selected_sensor.size() == 2)
+			if(selected_sensor.size() > 1)
 			{
-				String current_sensor[] = selected_sensor.get(1).split("-");
-				String location = current_sensor[0].replaceAll("\\s+", "");
-				String metric = current_sensor[1].replaceAll("\\s+", "");
-				Sensor sensor_two = new Sensor(location, metric);
-				yAxis_2.setLabel(sensor_two.getMetric());
-				lineChart.setTitle(sensor.getLocation() + " " + sensor.getMetric() + "/" + sensor_two.getMetric());
-				if(!metric.equals(sensor.getMetric()))
+
+
+
+				for(int i = 1; i < selected_sensor.size(); i++)
 				{
-					new_series = drawAnotherLineChart(sensor_two, date_from,date_to,interval);
-					second_line_chart.getData().add(new_series);
-					List<DataPoint> data_points_two = new_data_series.getDataPoints();
-					for (XYChart.Series<Number, Number> s : second_line_chart.getData()) {
-						for(int i = 0; i < s.getData().size(); i++)
+
+
+					String current_sensor[] = selected_sensor.get(i).split("-");
+					String location = current_sensor[0].replaceAll("\\s+", "");
+					String metric = current_sensor[1].replaceAll("\\s+", "");
+					Sensor sensor_two = new Sensor(location, metric);
+					yAxis_2.setLabel(sensor_two.getMetric());
+					//lineChart.setTitle(sensor.getLocation() + " " + sensor.getMetric() + "/" + sensor_two.getMetric());
+					if(check_metric != null && (!check_metric.getMetric().equals(sensor_two.getMetric()) && !check_metric.getMetric().equals(sensor.getMetric())))
+					{
+
+						Platform.runLater(() -> {
+							Alert alert = new Alert(Alert.AlertType.ERROR);
+							alert.setContentText("PLease select max two different metrics");
+							alert.show();
+							return;
+						});
+						return;
+
+					}
+					if (!metric.equals(sensor.getMetric()))
+					{
+						check_metric = sensor_two;
+
+						new_series = drawAnotherLineChart(sensor_two, date_from, date_to, interval);
+						new_series.setName(selected_sensor.get(i));
+						second_line_chart.getData().add(new_series);
+						XYChart.Series test = new XYChart.Series();
+						test.setName(selected_sensor.get(i));
+						lineChart.getData().add(test);
+						List<DataPoint> data_points_two = new_data_series.getDataPoints();
+						for(int series_count = i; series_count < second_line_chart.getData().size(); series_count++)
 						{
 
-							DecimalFormat df = new DecimalFormat("#.##");
+							for (int j = 0; j < second_line_chart.getData().get(series_count).getData().size(); j++) {
 
-							Date date = new Date(data_points_two.get(i).getTime());
-							String y_label = sensor_two.getLocation() + "/" + sensor_two.getMetric();
-							String str = date.toString() + '\n' + y_label + " - " + df.format(s.getData().get(i).getYValue());
-							Tooltip hover = new Tooltip(str);
-							hover.setShowDelay(Duration.seconds(0));
-							Tooltip.install(s.getData().get(i).getNode(), hover);
+								DecimalFormat df = new DecimalFormat("#.##");
+
+								Date date = new Date(data_points_two.get(j).getTime());
+								String y_label = sensor_two.getLocation() + "/" + sensor_two.getMetric();
+								String str = date.toString() + '\n' + y_label + " - " + df.format(second_line_chart.getData().get(series_count).getData().get(j).getYValue());
+								Tooltip hover = new Tooltip(str);
+								hover.setShowDelay(Duration.seconds(0));
+								Tooltip.install(second_line_chart.getData().get(series_count).getData().get(j).getNode(), hover);
+							}
 						}
+
 					}
+					else
+					{
+						new_series = drawAnotherLineChart(sensor_two, date_from, date_to, interval);
+						new_series.setName(selected_sensor.get(i));
+						lineChart.getData().add(new_series);
+						XYChart.Series testing = new XYChart.Series();
+						testing.setName(selected_sensor.get(i));
+						second_line_chart.getData().add(testing);
+						List<DataPoint> data_points_two = new_data_series.getDataPoints();
+						for(int series_count = i; series_count < second_line_chart.getData().size(); series_count++)
+						{
+							for (int j = 0; j < second_line_chart.getData().get(series_count).getData().size(); j++) {
+
+
+								DecimalFormat df = new DecimalFormat("#.##");
+
+								Date date = new Date(data_points_two.get(j).getTime());
+								String y_label = sensor_two.getLocation() + "/" + sensor_two.getMetric();
+								String str = date.toString() + '\n' + y_label + " - " + df.format(second_line_chart.getData().get(series_count).getData().get(j).getYValue());
+								Tooltip hover = new Tooltip(str);
+								hover.setShowDelay(Duration.seconds(0));
+								Tooltip.install(second_line_chart.getData().get(series_count).getData().get(j).getNode(), hover);
+							}
+						}
+
+
+					}
+
 
 				}
 
 			}
-			else
-				lineChart.setTitle(selected_sensor.get(0));
+			lineChart.getXAxis()
+					.lookup(".axis-label")
+					.setStyle("-fx-label-padding: 20 0 0 0;");
 			if(!clientConnection.getMaximised())
 			{
 				lineChart.setPrefWidth(800);
@@ -525,7 +586,7 @@ public class LineChartUI extends AnchorPane {
 			AnchorPane.setBottomAnchor(chart, 0.0);
 			AnchorPane.setTopAnchor(chart, 0.0);
 			chart.setAlignment(Pos.CENTER);
-			if(new_series != null)
+			if(check_metric != null)
 			{
 				chart.getChildren().addAll(lineChart,second_line_chart);
 			}
@@ -625,7 +686,7 @@ public class LineChartUI extends AnchorPane {
 
 
 			XYChart.Series series1 = new XYChart.Series();
-			series1.setName("Line Chart");
+			//series1.setName("Line Chart");
 			List<DataPoint> data_points = new_data_series.getDataPoints();
 			long inc = 0;
 			for (int i = 0; i < data_points.size(); i++) {

@@ -36,7 +36,9 @@ public class LiveUI extends AnchorPane {
 	private static	ScheduledThreadPoolExecutor ses;
 	private Runnable new_runnable;
 	public static  ScheduledFuture<?> sched_future;
-	List<Sensor> sensors_line_chart = null;
+	List<Sensor> sensors = null;
+	boolean init = true;
+	long time_interval = System.currentTimeMillis();
 
 	@FXML
 	private TableView<LiveData> tvData;
@@ -99,9 +101,14 @@ public class LiveUI extends AnchorPane {
 			 public void run() {
 					 synchronized (clientConnection) {
 
-						 List<Sensor> sensors = null;
+
 						 try {
-							 sensors = clientConnection.querySensors().get();
+						 	if(init || (System.currentTimeMillis() > time_interval + 20 * 60 * 1000))
+						 	{
+						 		init = false;
+								sensors = clientConnection.querySensors().get();
+								time_interval = System.currentTimeMillis();
+							}
 							 if(sensors == null)
 							 {
 								 Platform.runLater(() -> {

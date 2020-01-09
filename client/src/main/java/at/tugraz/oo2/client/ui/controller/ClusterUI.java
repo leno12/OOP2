@@ -7,10 +7,13 @@ import at.tugraz.oo2.client.ui.component.DurationPicker;
 import at.tugraz.oo2.data.ClusterDescriptor;
 import at.tugraz.oo2.data.DataSeries;
 import at.tugraz.oo2.data.Sensor;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,6 +27,8 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
+
 import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -59,8 +64,11 @@ public class ClusterUI extends HBox {
 	@FXML
 	private GridPane grid;
 
+	private Label fetching_data_status;
+
 	public ClusterUI(ClientConnection clientConnection) {
 		this.clientConnection = clientConnection;
+		this.fetching_data_status = null;
 
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/cluster.fxml"));
 		loader.setRoot(this);
@@ -76,6 +84,7 @@ public class ClusterUI extends HBox {
 	}
 
 	private void onConnectionOpened() {
+
 		Runnable task = new Runnable()
 		{
 			public void run()
@@ -513,6 +522,35 @@ public class ClusterUI extends HBox {
 	}
 
 
+	/**
+	 * Created fetching data Animation so that user knows that sensor data is being fetched
+	 * @param fetching_data_status
+	 */
+
+	private void fetchingDataAnimation(Label fetching_data_status)
+	{
+
+		final Timeline fetching_data_animation = new Timeline(
+				new KeyFrame(Duration.ZERO, new EventHandler() {
+					@Override public void handle(Event event) {
+						String fetching_status = fetching_data_status.getText();
+						if("Fetching Data . . .".equals(fetching_status))
+							fetching_status =  "Fetching Data .";
+						else
+							fetching_status = fetching_status + " .";
+
+						fetching_data_status.setText(fetching_status);
+					}
+				}),
+				new KeyFrame(Duration.millis(1000))
+		);
+		fetching_data_animation.setCycleCount(Timeline.INDEFINITE);
+		fetching_data_status.setStyle("-fx-text-fill: white; -fx-font-weight: bold");
+		fetching_data_status.setLayoutX(70);
+		fetching_data_status.setLayoutY(180);
+		overviewpane.setContent(fetching_data_status);
+		fetching_data_animation.play();
+	}
 
 
 }

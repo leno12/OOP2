@@ -12,7 +12,7 @@ import org.apache.commons.math3.util.MathArrays;
 import at.tugraz.oo2.Util;
 
 public final class DataSeries implements Serializable, Iterable<DataPoint> {
-	private final long minTime, maxTime, interval;
+	private  long minTime, maxTime, interval;
 	private double[] data;
 	private boolean[] present;
 
@@ -302,5 +302,59 @@ public final class DataSeries implements Serializable, Iterable<DataPoint> {
 			throw new IllegalArgumentException("Series must have no gaps!");
 		}
 		return MathArrays.distance(data, ref);
+	}
+
+	public void addValue(double value)
+	{
+		for(int i = 0; i < data.length - 1; i++)
+		{
+			data[i] = data[i + 1];
+			present[i] = present[i + 1];
+		}
+		data[data.length - 1] = value;
+		present[data.length - 1] = true;
+
+	}
+
+	public void setMinTime(long min_time)
+	{
+		this.minTime = min_time;
+	}
+	public void fill(double value)
+	{
+		if(data.length < 10) {
+			double[] new_data = new double[10];
+			boolean[] new_present = new boolean[10];
+			for(int i = 0; i < data.length; i++)
+			{
+				new_data[i] = data[i];
+				new_present[i] = present[i];
+			}
+
+			for (int i = data.length; i < 10; i++)
+			{
+				new_data[i] = value;
+				new_present[i] = true;
+
+			}
+			for (int i = 0; i < new_data.length; i++) {
+				if (!new_present[i]) {
+					new_data[i] = value;
+					new_present[i] = true;
+				}
+			}
+			data = new_data;
+			present = new_present;
+
+		}
+		else {
+			for (int i = 0; i < data.length; i++) {
+				if (!present[i]) {
+					data[i] = value;
+					present[i] = true;
+				}
+			}
+		}
+
 	}
 }

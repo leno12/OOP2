@@ -14,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
+import org.joda.time.DateTime;
 
 import java.util.*;
 import java.util.concurrent.*;
@@ -24,8 +25,12 @@ public class LiveDataLineChartUI extends ScrollPane {
     public static ScheduledThreadPoolExecutor ses;
     public static Runnable new_runnable;
     public static ScheduledFuture<?> sched_future;
+    HashMap<String, HashMap<String, DataSeries>> metric_location_map = new HashMap<>();
     List<Sensor> sensors_line_chart = null;
     int row_index = 0;
+    boolean init = true;
+    long time_interval = System.currentTimeMillis();
+    List<Sensor> sensors = null;
     public LiveDataLineChartUI(ClientConnection clientConnection) {
 
         this.clientConnection = clientConnection;
@@ -50,6 +55,7 @@ public class LiveDataLineChartUI extends ScrollPane {
     private void onConnectionOpened()  {
 
 
+
         ProgressBar pb = new ProgressBar();
         Label new_label = new Label("Creating line chart");
         new_label.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font: 20px 'Arial'; -fx-padding: 10,0,0,0");
@@ -71,9 +77,13 @@ public class LiveDataLineChartUI extends ScrollPane {
             public void run() {
                 synchronized (clientConnection) {
 
-                    List<Sensor> sensors = null;
+
                     try {
-                        sensors = clientConnection.querySensors().get();
+                        if(init || (System.currentTimeMillis() > time_interval + 20 * 60 * 1000)) {
+
+                            sensors = clientConnection.querySensors().get();
+                            time_interval = System.currentTimeMillis();
+                        }
                         sensors_line_chart = new ArrayList<>(sensors);
                         createLiveDataLineChart();
 
@@ -98,7 +108,12 @@ public class LiveDataLineChartUI extends ScrollPane {
                     } catch (InterruptedException e)
                     {
                         System.out.println("Disconnected!");
-                        setContent(null);
+                        Platform.runLater(() -> {
+                            setContent(null);
+
+                        });
+
+
                     } catch (ExecutionException e) {
                         e.printStackTrace();
                     }
@@ -120,7 +135,8 @@ public  static  void executeTask()
     {
 
         try {
-            sched_future.cancel(true);
+            if(sched_future != null)
+                 sched_future.cancel(true);
             ses.shutdown();
             ses.awaitTermination(10, TimeUnit.SECONDS);
 
@@ -137,36 +153,56 @@ public  static  void executeTask()
         col1.setHgrow(Priority.SOMETIMES);
         col1.setPercentWidth(100);
         new_pane.getColumnConstraints().add(col1);
-        HashMap<String, HashMap<String, DataSeries>> metric_location_map = new HashMap<>();
+
         for(int i = 0; i < sensors_line_chart.size(); i++)
         {
+            if(init) {
 
-            if(metric_location_map.containsKey(sensors_line_chart.get(i).getMetric()))
-            {
+                if (metric_location_map.containsKey(sensors_line_chart.get(i).getMetric())) {
 
-                Sensor sensor = new Sensor(sensors_line_chart.get(i).getLocation(), sensors_line_chart.get(i).getMetric());
-                DataPoint now = clientConnection.queryValue(sensor).get();
-                DataSeries data_series = clientConnection.queryData(sensor,now.getTime()-(50*60*1000), now.getTime(), 5*60*1000).get();
-                if(data_series != null) {
-                    HashMap<String, DataSeries> get_list = metric_location_map.get(sensors_line_chart.get(i).getMetric());
-                    get_list.put(sensors_line_chart.get(i).getLocation(), data_series);
+                    Sensor sensor = new Sensor(sensors_line_chart.get(i).getLocation(), sensors_line_chart.get(i).getMetric());
+                    DataPoint now = clientConnection.queryValue(sensor).get();
+                    DataSeries data_series = clientConnection.queryData(sensor, now.getTime() - (50 * 60 * 1000), now.getTime() - 1, 5 * 60 * 1000).get();
+                    data_series = data_series.interpolate();
+                    data_series.fill(now.getValue());
+                    if (data_series != null) {
+                        HashMap<String, DataSeries> get_list = metric_location_map.get(sensors_line_chart.get(i).getMetric());
+                        get_list.put(sensors_line_chart.get(i).getLocation(), data_series);
+                    }
+                } else {
+
+
+                    HashMap<String, DataSeries> new_locations = new HashMap<>();
+                    Sensor sensor = new Sensor(sensors_line_chart.get(i).getLocation(), sensors_line_chart.get(i).getMetric());
+                    DataPoint now = clientConnection.queryValue(sensor).get();
+                    DataSeries data_series = clientConnection.queryData(sensor, now.getTime() - (50 * 60 * 1000), now.getTime() - 1, 5 * 60 * 1000).get();
+                    data_series = data_series.interpolate();
+                    data_series.fill(now.getValue());
+                    if (data_series != null) {
+                        new_locations.put(sensors_line_chart.get(i).getLocation(), data_series);
+
+                        metric_location_map.put(sensors_line_chart.get(i).getMetric(), new_locations);
+                    }
                 }
             }
             else
             {
 
-
-                HashMap<String, DataSeries> new_locations = new HashMap<>();
                 Sensor sensor = new Sensor(sensors_line_chart.get(i).getLocation(), sensors_line_chart.get(i).getMetric());
                 DataPoint now = clientConnection.queryValue(sensor).get();
-                DataSeries data_series = clientConnection.queryData(sensor,now.getTime()-(50*60*1000), now.getTime(), 5*60*1000).get();
-                if(data_series != null) {
-                    new_locations.put(sensors_line_chart.get(i).getLocation(), data_series);
-
-                    metric_location_map.put(sensors_line_chart.get(i).getMetric(), new_locations);
+                DataSeries data_series = metric_location_map.get(sensors_line_chart.get(i).getMetric()).get(sensors_line_chart.get(i).getLocation());
+                if(data_series != null)
+                {
+                    data_series.setMinTime(now.getTime() - (50 * 60 * 1000));
+                    data_series.addValue(now.getValue());
                 }
+
+
             }
         }
+
+        if(init)
+            init = false;
         row_index = 0;
         for (Map.Entry<String, HashMap<String,DataSeries>> entry : metric_location_map.entrySet()) {
 
@@ -204,7 +240,7 @@ public  static  void executeTask()
                 lineChart_2.getData().add(series2);
 
             }
-            lineChart_2.setPrefHeight(500);
+            lineChart_2.setPrefHeight(700);
 
             new_pane.addRow(row_index,lineChart_2);
             row_index++;
