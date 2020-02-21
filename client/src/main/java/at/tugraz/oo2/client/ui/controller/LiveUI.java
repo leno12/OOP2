@@ -93,7 +93,6 @@ public class LiveUI extends AnchorPane {
 		HBox new_progress_bar = new HBox();
 		this.createProgressBar(fetching_data,pb,new_progress_bar);
 
-
 	    ses = new ScheduledThreadPoolExecutor(1);
 
 		this.new_runnable = new Runnable() {

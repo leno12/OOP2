@@ -2,6 +2,7 @@ package at.tugraz.oo2.server;
 import at.tugraz.oo2.Util;
 import at.tugraz.oo2.data.*;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.apache.commons.math3.util.MathArrays;
 import weka.clusterers.SimpleKMeans;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -232,23 +233,68 @@ public class RequestHandler extends Thread {
                         long inc_int = 5*60*1000;
                         List<DataSeries> complete_time_series = new ArrayList<>();
                         SortedMap<Double, MatchedCurve> sm = new TreeMap<Double, MatchedCurve>();
+                        List<MatchedCurve> temp_list = new ArrayList<>();
                         DataSeries.normalize(ref);
 
                         for(Sensor sen : sensors_list2)
                         {
-                            Sensor sensor_tmp = sen;
-                            DataSeries data_series_complete = influx_connection.getDataSeries(sensor_tmp, start_time, end_time, inc_int, cache);
+                            DataSeries data_series_complete = influx_connection.getDataSeries(sen, start_time, end_time, 5*60*1000, cache);
                             if(data_series_complete == null)
                                 continue;
 
-                            DataSeries data_series_sim = data_series_complete.interpolate();
-                            DataSeries normalized = data_series_sim.normalize();
+                            DataSeries interpolated = data_series_complete.interpolate();
+                            DataSeries normalized = interpolated.normalize();
                             complete_time_series.add(normalized);
-                            if((((max_size/1000)/60) - ((min_size/1000)/60)) > 500)
+
+                            if((((max_size/1000)/60) - ((min_size/1000)/60)) > 20000)
                             {
-                                inc_int = 20*60*1000;
-                                while(max_size % inc_int != 0 && min_size % inc_int != 0)
+                                while(((max_size - min_size) / inc_int) > 2)
+                                {
                                     inc_int += 5*60*1000;
+                                    while(((max_size - min_size) % inc_int) != 0)
+                                        inc_int += 5*60*1000;
+
+                                }
+                            }
+
+                            else if((((max_size/1000)/60) - ((min_size/1000)/60)) > 10000)
+                            {
+                                while(((max_size - min_size) / inc_int) > 5)
+                                {
+                                    inc_int += 5*60*1000;
+                                    while(((max_size - min_size) % inc_int) != 0)
+                                        inc_int += 5*60*1000;
+
+                                }
+                            }
+                            else if((((max_size/1000)/60) - ((min_size/1000)/60)) > 2500)
+                            {
+                                while(((max_size - min_size) / inc_int) > 10)
+                                {
+                                    inc_int += 5*60*1000;
+                                    while(((max_size - min_size) % inc_int) != 0)
+                                        inc_int += 5*60*1000;
+                                }
+                            }
+
+                            else if((((max_size/1000)/60) - ((min_size/1000)/60)) > 500 && (sen.getMetric().equals("humidity")))
+                            {
+                                while(((max_size - min_size) / inc_int) > 10)
+                                {
+                                    inc_int += 5*60*1000;
+                                    while(((max_size - min_size) % inc_int) != 0)
+                                        inc_int += 5*60*1000;
+                                }
+                            }
+
+                            else if((((max_size/1000)/60) - ((min_size/1000)/60)) > 500 || (sen.getMetric().equals("humidity")))
+                            {
+                                while(((max_size - min_size) / inc_int) > 30)
+                                {
+                                    inc_int += 5*60*1000;
+                                    while(((max_size - min_size) % inc_int) != 0)
+                                        inc_int += 5*60*1000;
+                                }
                             }
 
                             for(long scale = min_size; scale <= max_size; scale += inc_int)
@@ -256,33 +302,53 @@ public class RequestHandler extends Thread {
                                 long data_num = scale/(5*60*1000);
                                 //double[] scaled_ref = new double[(int)data_num];
                                 double[] scaled_ref = Util.resize(ref, (int)data_num);
+                                DataSeries.normalize(scaled_ref);
                                 scaled_ref = Util.interpolate(scaled_ref);
 
-                                DataSeries.normalize(scaled_ref);
                                 for(long i = start_time; i < end_time - scale; i += (5*60*1000))
                                 {
-                                    DataSeries subseries = normalized.subSeries(i, i + scale);
-                                    DataSeries normalized_ss = subseries.normalize();
+                                    DataSeries scaled = normalized.subSeries(i, i + scale);
+                                    DataSeries normalized_ss = scaled.normalize();
                                     if(normalized_ss.getPresentValueCount() != scaled_ref.length)
+                                    {
+                                        normalized_ss = null;
                                         continue;
+                                    }
+
                                     //System.out.println("Subseries len: " + subseries.getValueCount());
-                                    MatchedCurve tmp = new MatchedCurve(sen, normalized_ss, normalized_ss.similarity(scaled_ref));
-                                    sm.put(normalized_ss.similarity(scaled_ref), tmp);
-                                    subseries = null;
+                                    MatchedCurve tmp = new MatchedCurve(sen, normalized_ss, MathArrays.distance(Util.resize(normalized_ss.getData(), ref.length), Util.resize(scaled_ref, ref.length)));
+                                    //MatchedCurve tmp = new MatchedCurve(sen, normalized_ss, normalized_ss.similarity(scaled_ref));
+                                   // if(nonMaximaSuppression(tmp, sm))
+                                    sm.put(tmp.getError(), tmp);
+                                    //sm.put(normalized_ss.similarity(scaled_ref), tmp);
                                     normalized_ss = null;
                                 }
-                               // System.gc();
+
 
                             }
+                            System.gc();
                         }
+                        /*for(MatchedCurve mtch : temp_list)
+                        {
+                            if(nonMaximaSuppression(mtch, sm))
+                                sm.put(mtch.getError(), mtch);
+                        }*/
                         List<MatchedCurve> mc = new ArrayList<>();
+                        SortedMap<Double, MatchedCurve> final_map = new TreeMap<Double, MatchedCurve>();
                         int count = 0;
                         for(Map.Entry<Double, MatchedCurve> entry : sm.entrySet())
                         {
-                            mc.add(entry.getValue());
-                            count++;
+                            if(count == 0 || nonMaximaSuppression(entry.getValue(), final_map))
+                            {
+                                final_map.put(entry.getKey(), entry.getValue());
+                                count++;
+                            }
                             if(count == max_result_count)
                                 break;
+                        }
+                        for(Map.Entry<Double, MatchedCurve> entry : final_map.entrySet())
+                        {
+                            mc.add(entry.getValue());
                         }
 
                         out_stream.writeObject(mc);
@@ -315,6 +381,27 @@ public class RequestHandler extends Thread {
         }catch(IOException e){
             e.printStackTrace();
         }
+
+    }
+    private boolean nonMaximaSuppression(MatchedCurve curve, SortedMap<Double, MatchedCurve> matches)
+    {
+
+        for(Map.Entry<Double, MatchedCurve> entry : matches.entrySet())
+        {
+            MatchedCurve curve2 = entry.getValue();
+            if(curve.getSensor().getLocation().equals(curve2.getSensor().getLocation()))
+            {
+                if(curve.getSeries().getMinTime() >= curve2.getSeries().getMinTime() && curve.getSeries().getMinTime() + curve.getSeries().getLength() <= curve2.getSeries().getMinTime() + curve2.getSeries().getLength())
+                {
+                    return false;
+                }
+                else if(curve2.getSeries().getMinTime() >= curve.getSeries().getMinTime() && curve2.getSeries().getMinTime() + curve2.getSeries().getLength() <= curve.getSeries().getMinTime() + curve.getSeries().getLength())
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
 
     }
 }

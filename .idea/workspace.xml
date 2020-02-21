@@ -2,16 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b2d30622-dbb3-4f3a-b800-74617faff348" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/Cache.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LineChartHistory.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cache.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Cache.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LineChartHistory.txt" beforeDir="false" afterPath="$PROJECT_DIR$/LineChartHistory.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/ClusterUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/ClusterUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/LineChartUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/LineChartUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/LiveDataLineChartUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/LiveDataLineChartUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/LiveUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/LiveUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/resources/chart.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/chart.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/resources/test.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/test.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/src/main/java/at/tugraz/oo2/data/DataSeries.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/at/tugraz/oo2/data/DataSeries.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/SketchUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/at/tugraz/oo2/client/ui/controller/SketchUI.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,7 +95,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../098/pom.xml" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/pom.xml" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -179,7 +173,14 @@
       <workItem from="1578316905030" duration="22334000" />
       <workItem from="1578391622720" duration="33417000" />
       <workItem from="1578507444030" duration="10751000" />
-      <workItem from="1578564082046" duration="11172000" />
+      <workItem from="1578564082046" duration="11374000" />
+      <workItem from="1578656247451" duration="630000" />
+      <workItem from="1578740468251" duration="594000" />
+      <workItem from="1579280066826" duration="57000" />
+      <workItem from="1579450525142" duration="46000" />
+      <workItem from="1579697833644" duration="1683000" />
+      <workItem from="1579699534165" duration="330000" />
+      <workItem from="1579705496301" duration="645000" />
     </task>
     <servers />
   </component>
@@ -221,10 +222,10 @@
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
     <state x="443" y="93" width="1024" height="854" key="SettingsEditor/0.0.1920.1032@0.0.1920.1032" timestamp="1578146444446" />
-    <state x="630" y="344" key="com.intellij.ide.util.TipDialog" timestamp="1578564082317">
+    <state x="630" y="344" key="com.intellij.ide.util.TipDialog" timestamp="1579705503067">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state x="630" y="344" key="com.intellij.ide.util.TipDialog/0.0.1920.1032@0.0.1920.1032" timestamp="1578564082317" />
+    <state x="630" y="344" key="com.intellij.ide.util.TipDialog/0.0.1920.1032@0.0.1920.1032" timestamp="1579705503067" />
     <state x="630" y="344" key="com.intellij.ide.util.TipDialog/0.0.1920.1033/1920.0.1920.1200@0.0.1920.1033" timestamp="1576595798302" />
     <state x="630" y="344" key="com.intellij.ide.util.TipDialog/0.0.1920.1033@0.0.1920.1033" timestamp="1577555862679" />
     <state x="624" y="199" width="662" height="644" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1576519022060">

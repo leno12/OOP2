@@ -2,12 +2,15 @@ package at.tugraz.oo2.client.ui.controller;
 
 import at.tugraz.oo2.Util;
 import at.tugraz.oo2.client.ClientConnection;
+import at.tugraz.oo2.client.ui.GUIMain;
 import at.tugraz.oo2.client.ui.component.DateTimePicker;
 import at.tugraz.oo2.client.ui.component.DurationPicker;
 import at.tugraz.oo2.data.DataSeries;
 import at.tugraz.oo2.data.MatchedCurve;
 import at.tugraz.oo2.data.Sensor;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -87,6 +90,7 @@ public class SketchUI extends HBox {
 
 	}
 
+	boolean draw = true;
 	int count = 0;
 	int skip_count = 0;
 	int copy_count = 0;
@@ -181,10 +185,12 @@ public class SketchUI extends HBox {
 				Object selected_sensor = sp.getSelectionModel().getSelectedItem();
 				if(mouseEvent.getClickCount() == 2)
 				{
+					if(sp.getSelectionModel().getSelectedItem() == null)
+						return;
 					BorderPane border = new BorderPane();
 					int index = sp.getItems().indexOf(sp.getSelectionModel().getSelectedItem());
 					MatchedCurve selected_match = matches.get(index);
-					final DataSeries series = selected_match.getSeries();
+					DataSeries series = selected_match.getSeries();
 					String location = selected_match.getSensor().getLocation();
 					Double error = selected_match.getError();
 
@@ -202,12 +208,16 @@ public class SketchUI extends HBox {
 					lineChart_2.setVerticalGridLinesVisible(false);
 
 
-					lineChart_2.setTitle("Similarity match " + (index + 1) + "\n" + "Metric: " +  selected_match.getSensor().getMetric() + "\n" + "Error: " +  error);
+					lineChart_2.setTitle("Similarity match " + (index + 1) + " for Metric: " + selected_match.getSensor().getMetric() + "\n" + "Location: " +  selected_match.getSensor().getLocation() + "\n" + "Error: " +  error);
 					lineChart_2.setLegendVisible(false);
+					int skip = series.getDataPoints().size()/30;
 					for(int i = 0; i < series.getDataPoints().size(); ++i)
 					{
+						if((series.getDataPoints().size() > 30) && (i != 0 && i != series.getDataPoints().size() - 1 && (i % skip) != 0))
+							continue;
 						String date = new Date(series.getDataPoints().get(i).getTime()).toString();
 						String[] split_date = date.split("CEST");
+						split_date = split_date[0].split("CET");
 						series2.getData().add(new XYChart.Data<>(split_date[0], series.getDataPoints().get(i).getValue()));
 					}
 					lineChart_2.getStylesheets().add("/chart.css");
@@ -231,7 +241,7 @@ public class SketchUI extends HBox {
 	public void initialize() {
 		reference_curve[0] = -12345;
 		dpMinSize.setDuration(60*60);
-		dpMaxSize.setDuration(60*60*24*2);
+		dpMaxSize.setDuration(60*60*3);
 		spMaxResultCount.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000, 16, 5));
 		sp = new TableView();
 		this.setStyle("-fx-background-color: black");
@@ -255,6 +265,7 @@ public class SketchUI extends HBox {
 		sp.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		this.sp.getStylesheets().add("/liveui.css");
 
+
 		Canvas canvas = new Canvas(1000, 400);
 		gc = canvas.getGraphicsContext2D();
 
@@ -266,44 +277,53 @@ public class SketchUI extends HBox {
 		gc.setFill(Color.RED);
 		gc.setStroke(Color.CORNFLOWERBLUE);
 		gc.setLineWidth(1);
+		gc.setFont(new Font("Arial", 20));
+
 
 		canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, new EventHandler<javafx.scene.input.MouseEvent>() {
 			@Override
 			public void handle(MouseEvent t) {
-				gc.beginPath();
-				gc.moveTo(t.getX(), t.getY());
-				reference_curve[count] = t.getY();
-				incrementCount();
-				gc.stroke();
+				if(draw)
+				{
+					gc.beginPath();
+					gc.moveTo(t.getX(), t.getY());
+					reference_curve[count] = t.getY();
+					incrementCount();
+					gc.stroke();
+				}
+
 			}
 		});
 		canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, new EventHandler<javafx.scene.input.MouseEvent>() {
 			@Override
 			public void handle(MouseEvent t) {
-				gc.lineTo(t.getX(), t.getY());
-				//reference_curve[count] = t.getY();
-				incrementSkipCount();
-				if(checkCount())
+				if(draw)
 				{
-					reference_curve[count] = t.getY();
-					incrementCount();
+					gc.lineTo(t.getX(), t.getY());
+					//reference_curve[count] = t.getY();
+					incrementSkipCount();
+					if(checkCount())
+					{
+						reference_curve[count] = t.getY();
+						incrementCount();
+					}
+					gc.stroke();
 				}
-				gc.stroke();
+
 			}
 		});
 		canvas.addEventHandler(MouseEvent.MOUSE_RELEASED, new EventHandler<javafx.scene.input.MouseEvent>() {
 			@Override
 			public void handle(MouseEvent t) {
-				reference_curve[count] = t.getY();
-				incrementCount();
-				//System.out.println(count);
+				if(draw)
+				{
+					reference_curve[count] = t.getY();
+					incrementCount();
+					//System.out.println(count);
 
-				DataSeries.normalize(reference_curve);
-				for(int i = 0; i < count; ++i)
-					System.out.println(reference_curve[i]);
-				resetCount();
-
-
+					DataSeries.normalize(reference_curve);
+					resetCount();
+				}
 			}
 		});
 		Label new_label = new Label("Draw your reference curve here");
@@ -357,6 +377,7 @@ public class SketchUI extends HBox {
 		copy_count = count;
 		count -= count;
 		skip_count -= skip_count;
+		draw = false;
 	}
 
 	public boolean checkCount()
@@ -396,10 +417,15 @@ public class SketchUI extends HBox {
 					int max_results = spMaxResultCount.getValue();
 					double[] copy_ref = new double[copy_count];
 					System.arraycopy(reference_curve, 0, copy_ref, 0, copy_count);
-					ArrayUtils.reverse(copy_ref);
+					//ArrayUtils.reverse(copy_ref);
+					double[] final_ref = new double[copy_ref.length];
+					for(int i = 0; i < copy_ref.length; ++i)
+					{
+						final_ref[i] = 1.0 - copy_ref[i];
+					}
 
 
-					matches = clientConnection.getSimilarity(selected_metric, date_from, date_to, min_size, max_size, max_results, copy_ref).get();
+					matches = clientConnection.getSimilarity(selected_metric, date_from, date_to, min_size, max_size, max_results, final_ref).get();
 
 					StringBuilder new_sim = new StringBuilder("Got " + matches.size() + " matched curves:" + "\n");
 					ObservableList<LiveData> sim_list = FXCollections.observableArrayList();
@@ -445,6 +471,7 @@ public class SketchUI extends HBox {
 		sp.getItems().clear();
 		Arrays.fill(reference_curve, 0.0);
 		reference_curve[0] = -12345;
+		draw = true;
 
 
 	}
